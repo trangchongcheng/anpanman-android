@@ -1,0 +1,17 @@
+# Android Studio
+.gradle
+/local.properties
+/.idea
+/build
+*.swo
+*swp
+*.iml
+
+#OSX file
+.DS_Store
+
+# Windows thumbnail db
+Thumbs.db
+
+#screenshots
+/captures

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">AndroidFW</string>
+
+
+
+    <!-- XView -->
+    <string name="pull_to_refresh_pull_label">下に引っ張る事で更新する</string>
+    <string name="pull_to_refresh_release_label">指を離して更新する</string>
+    <string name="pull_to_refresh_refreshing_label">データをロード中</string>
+    <string name="pull_to_refresh_tap_label">下に引っ張る事で更新する </string>
+
+    <!--     <string name="xlistview_header_hint_normal">Kéo xuống để Refresh dữ liệu</string>-->
+    <string name="xlistview_header_hint_normal">下に引っ張る事で更新する</string>
+
+    <!--    <string name="xlistview_header_hint_ready">Thả ra để Refresh </string> -->
+    <string name="xlistview_header_hint_ready">指を離して更新する </string>
+
+    <string name="xlistview_header_hint_loading">更新中・・・</string>
+    <string name="xlistview_header_last_time"></string>
+    <string name="xlistview_footer_hint_normal"></string>
+    <string name="xlistview_footer_hint_ready"></string>
+</resources>
