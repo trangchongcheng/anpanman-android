@@ -14,6 +14,9 @@ import com.framework.restfulService.parser.IParser;
 import com.framework.phvtUtils.AppLog;
 import com.framework.phvtUtils.NetworkUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -51,7 +54,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
 
     private DownloadCallback mCallback;
     private int mRequestCode = DownloadCallback.UNKNOWN_CODE;
-    protected ResponseCodeHolder mResponseCode = new ResponseCodeHolder();
+    protected int mResponseCode = DownloadCallback.UNKNOWN_CODE;
 
     //progress dialog
     protected ProgressDialog mProgressbar;
@@ -152,13 +155,16 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
                 }
             }
             AppLog.log(getClass().getName(), "got data from server: " + data);
-            if (mParser != null && data != null)
-                return mParser.parse(mContext.get(), data, mResponseCode);
-            else
-                return data;
+
+            return parseResponseData(data);
+
         } catch (IOException e) {
-            e.printStackTrace();
             mException = e;
+            e.printStackTrace();
+
+        } catch (JSONException e) {
+            mException = e;
+            e.printStackTrace();
         }
 
         return null;
@@ -172,9 +178,9 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             return;
         }
         if (mException == null)
-            mCallback.onDownloadSuccessfully(o, mRequestCode, mResponseCode.getValue());
+            mCallback.onDownloadSuccessfully(o, mRequestCode, mResponseCode);
         else {
-            mCallback.onDownloadFailed(mException, mRequestCode, mResponseCode.getValue());
+            mCallback.onDownloadFailed(mException, mRequestCode, mResponseCode);
         }
         try {
             if (mProgressbar != null  && mContext.get() != null && mProgressbar.isShowing()) {
@@ -603,6 +609,25 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     }
 
     /**
+     * try to parse a string data that received from remote server,
+     * retrieve response code then set that value to {@link #mRequestCode}
+     * @param data to be parsed
+     * @return an object that result from parsing of parser
+     * @throws JSONException
+     */
+    private Object parseResponseData(String data) throws JSONException {
+        if (mParser != null && data != null) {
+            JSONObject root = new JSONObject(data);
+            mResponseCode = root.optInt("returnCode");
+
+            return mParser.parse(mContext.get(), data);
+
+        }else {
+            return data;
+        }
+    }
+
+    /**
      * show notification progress on notification bar. this will show the progress of downloading.
      *
      * @param contentText the message will be showed in the notification
@@ -624,29 +649,6 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     }
 
     //================ inner classes ===============================================================
-
-    /**
-     * this class will be used to instance an object which is passed to an parser as a parameter to get the response code from server.
-     */
-    public class ResponseCodeHolder {
-        private int value = DownloadCallback.UNKNOWN_CODE;
-
-        public ResponseCodeHolder() {
-        }
-
-        public ResponseCodeHolder(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
-    }
-
     public enum Method {
         GET, POST, MULTIPART
     }
