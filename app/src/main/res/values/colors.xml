@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#f29a65</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBackground">#fff</color>
+    <color name="colorDivider">#b4b4b4</color>
+
+    <!--drawer navigation-->
+    <color name="drawer_background">#F99A6C</color>
+    <color name="drawer_item_background">#eab499</color>
+    <color name="drawer_item_pressed_background">#ef793e</color>
+    <color name="bottom_nav_background">#f3d4d2d2</color>
+
+    <!--press states-->
+    <color name="pressed_state">#f3d4d2d2</color>
+    <color name="normal_state">#00000000</color>
+
 </resources>

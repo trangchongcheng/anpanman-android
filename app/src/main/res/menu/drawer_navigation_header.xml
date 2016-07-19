@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<group>-->
+        <item android:id="@+id/item_group1"
+            android:title="group">
+            <menu>
+                <group
+                    android:title="group"
+                    android:id="@+id/group1"
+                    android:checkableBehavior="single">
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                </group>
+            </menu>
+        </item>
+        <item android:id="@+id/item_group2"
+            android:title="group">
+            <menu>
+                <group
+                    android:id="@+id/group2"
+                    android:checkableBehavior="single">
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="group">
+            <menu>
+                <group android:id="@+id/group3"
+                     android:checkableBehavior="single"
+                    android:title="group3">
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="group">
+            <menu>
+                <group android:id="@+id/group4"
+                    android:checkableBehavior="single"
+                    android:title="group4">
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                    <item
+                        android:icon="@android:drawable/ic_dialog_info"
+                        android:title="item" />
+                </group>
+            </menu>
+        </item>
+    <!--</group>-->
+</menu>

@@ -14,6 +14,9 @@ public class SampleActivity extends BaseActivity implements View.OnClickListener
     private int mInt;
 
     //=============== constructors =================================================================
+    public SampleActivity() {
+    }
+
     public SampleActivity(int mInt) {
         this.mInt = mInt;
     }
