@@ -10,4 +10,10 @@
         <item name="android:textSize">@dimen/text_size_12sp</item>
     </style>
 
+    <style
+        name="dialog_animation" >
+        <item name="android:windowEnterAnimation">@anim/slide_enter_bottom_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_exit_top_bottom</item>
+    </style>
+
 </resources>

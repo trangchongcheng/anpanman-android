@@ -50,6 +50,10 @@ public abstract class BaseFragment extends Fragment {
      * @return Root layout view id
      */
     public abstract @LayoutRes int getRootLayoutId();
+
+    protected abstract void getMandatoryViews(View root, Bundle savedInstanceState);
+
+    protected abstract void registerEventHandlers();
     //----------------------------------------------------------------------------------------------------
 
     /**
@@ -71,6 +75,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootLayout =  inflater.inflate(getRootLayoutId(), container, false);
+        getMandatoryViews(mRootLayout, savedInstanceState);
+        registerEventHandlers();
         return mRootLayout;
     }
 

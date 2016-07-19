@@ -53,6 +53,7 @@
             android:paddingStart="@dimen/positive_16dp">
 
             <ImageButton
+                android:id="@+id/btn_img_tab_wall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -64,6 +65,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btn_img_tab_guridingu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -75,6 +77,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btn_img_tab_terms_of_use"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -86,6 +89,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btn_img_tab_privacy_policy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -97,6 +101,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btn_img_tab_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"

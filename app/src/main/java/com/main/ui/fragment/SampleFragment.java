@@ -1,5 +1,8 @@
 package com.main.ui.fragment;
 
+import android.os.Bundle;
+import android.view.View;
+
 import com.framework.phvtFragment.BaseFragment;
 import com.main.R;
 
@@ -21,6 +24,16 @@ public class SampleFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected void getMandatoryViews(View root, Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void registerEventHandlers() {
+
     }
 
     //=============== implemented methods ==========================================================
