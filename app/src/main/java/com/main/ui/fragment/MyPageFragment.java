@@ -9,7 +9,7 @@ import com.main.R;
 /**
  * Created by linhphan on 7/19/16.
  */
-public class PrivacyPolicyFragment extends BaseFragment {
+public class MyPageFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
         return R.layout.fragment_privacy_policy;

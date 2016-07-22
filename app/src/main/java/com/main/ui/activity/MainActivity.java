@@ -17,13 +17,11 @@ import android.widget.Toast;
 import com.framework.phvtActivity.BaseActivity;
 import com.framework.phvtCommon.FragmentTransitionInfo;
 import com.main.R;
-import com.main.ui.fragment.ContactFragment;
-import com.main.ui.fragment.GuridinguFragment;
-import com.main.ui.fragment.PrivacyPolicyFragment;
-import com.main.ui.fragment.TermsOfUseFragment;
-import com.main.ui.fragment.WallFragment;
-
-import java.security.acl.Group;
+import com.main.ui.fragment.SettingFragment;
+import com.main.ui.fragment.CouponFragment;
+import com.main.ui.fragment.MyPageFragment;
+import com.main.ui.fragment.PresentFragment;
+import com.main.ui.fragment.NewFragment;
 
 /**
  * Created by linhphan on 7/15/16.
@@ -37,11 +35,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private NavigationView navigationView;
 
     //== bottom nav
-    private ImageButton btnWallTab;
-    private ImageButton btnGuridinguTab;
-    private ImageButton btnTermsOfUseTab;
-    private ImageButton btnPrivacyPolicyTab;
-    private ImageButton btnContactTab;
+    private ImageButton btnNewsTab;
+    private ImageButton btnCouponTab;
+    private ImageButton btnPresentTab;
+    private ImageButton btnMyPageTab;
+    private ImageButton btnSettingTab;
 
     public static MainTabs currentTab;
 
@@ -57,7 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        switchTab(MainTabs.Wall, false);
+        switchTab(MainTabs.News, false);
         setDisplayBottomNav();
     }
 
@@ -69,11 +67,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void getMandatoryViews(Bundle savedInstanceState) {
         //== bottom nav
-        btnWallTab = (ImageButton) findViewById(R.id.btn_img_tab_wall);
-        btnGuridinguTab = (ImageButton) findViewById(R.id.btn_img_tab_guridingu);
-        btnTermsOfUseTab = (ImageButton) findViewById(R.id.btn_img_tab_terms_of_use);
-        btnPrivacyPolicyTab = (ImageButton) findViewById(R.id.btn_img_tab_privacy_policy);
-        btnContactTab = (ImageButton) findViewById(R.id.btn_img_tab_contact);
+        btnNewsTab = (ImageButton) findViewById(R.id.btn_img_tab_news);
+        btnCouponTab = (ImageButton) findViewById(R.id.btn_img_tab_coupon);
+        btnPresentTab = (ImageButton) findViewById(R.id.btn_img_tab_present);
+        btnMyPageTab = (ImageButton) findViewById(R.id.btn_img_tab_my_page);
+        btnSettingTab = (ImageButton) findViewById(R.id.btn_img_tab_setting);
 
         btnHamburgerMenu = (ImageButton) findViewById(R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -86,11 +84,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void registerEventHandlers() {
         //== bottom nav
-        btnWallTab.setOnClickListener(this);
-        btnGuridinguTab.setOnClickListener(this);
-        btnTermsOfUseTab.setOnClickListener(this);
-        btnPrivacyPolicyTab.setOnClickListener(this);
-        btnContactTab.setOnClickListener(this);
+        btnNewsTab.setOnClickListener(this);
+        btnCouponTab.setOnClickListener(this);
+        btnPresentTab.setOnClickListener(this);
+        btnMyPageTab.setOnClickListener(this);
+        btnSettingTab.setOnClickListener(this);
 
         btnHamburgerMenu.setOnClickListener(this);
         lvDrawerNav.setOnItemClickListener(this);
@@ -105,24 +103,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 drawerLayout.openDrawer(navigationView);
                 break;
 
-            case R.id.btn_img_tab_wall:
-                switchTab(MainTabs.Wall, true);
+            case R.id.btn_img_tab_news:
+                switchTab(MainTabs.News, true);
                 break;
 
-            case R.id.btn_img_tab_guridingu:
-                switchTab(MainTabs.Guridingu, true);
+            case R.id.btn_img_tab_coupon:
+                switchTab(MainTabs.Coupon, true);
                 break;
 
-            case R.id.btn_img_tab_terms_of_use:
-                switchTab(MainTabs.TermsOfUse, true);
+            case R.id.btn_img_tab_present:
+                switchTab(MainTabs.Present, true);
                 break;
 
-            case R.id.btn_img_tab_privacy_policy:
-                switchTab(MainTabs.PrivacyPolicy, true);
+            case R.id.btn_img_tab_my_page:
+                switchTab(MainTabs.MyPage, true);
                 break;
 
-            case R.id.btn_img_tab_contact:
-                switchTab(MainTabs.Contact, true);
+            case R.id.btn_img_tab_setting:
+                switchTab(MainTabs.Setting, true);
                 break;
 
             default:
@@ -132,20 +130,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        switchTab(MainTabs.Contact, true);
+        switchTab(MainTabs.Setting, true);
     }
 
     //=============== inner methods ================================================================
     private void setDrawerNavigation(){
-        DrawerAdapter drawerAdapter = new DrawerAdapter();
-        lvDrawerNav.setAdapter(drawerAdapter);
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(R.layout.drawer_nav_footer, null, false);
 
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
+
+        DrawerAdapter drawerAdapter = new DrawerAdapter();
+        lvDrawerNav.setAdapter(drawerAdapter);
     }
 
     public void switchTab(MainTabs newTab, boolean isAnimation){
@@ -155,24 +153,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         switch (newTab){
-            case Wall:
-                openWallFragment(isAnimation);
+            case News:
+                openNewsFragment(isAnimation);
                 break;
 
-            case Guridingu:
-                openGuridinguFragment();
+            case Coupon:
+                openCouponFragment();
                 break;
 
-            case TermsOfUse:
-                openTermsOfUseFragment();
+            case Present:
+                openPresentFragment();
                 break;
 
-            case PrivacyPolicy:
-                openPrivacyPolicyFragment();
+            case MyPage:
+                openMyPageFragment();
                 break;
 
-            case Contact:
-                openContactDialog();
+            case Setting:
+                openSettingDialog();
                 break;
         }
         currentTab = newTab;
@@ -181,75 +179,75 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void setDisplayBottomNav(){
         switch (currentTab){
-            case Wall:
-                btnWallTab.setSelected(true);
-                btnGuridinguTab.setSelected(false);
-                btnTermsOfUseTab.setSelected(false);
-                btnPrivacyPolicyTab.setSelected(false);
-                btnContactTab.setSelected(false);
+            case News:
+                btnNewsTab.setSelected(true);
+                btnCouponTab.setSelected(false);
+                btnPresentTab.setSelected(false);
+                btnMyPageTab.setSelected(false);
+                btnSettingTab.setSelected(false);
                 break;
 
-            case Guridingu:
-                btnWallTab.setSelected(false);
-                btnGuridinguTab.setSelected(true);
-                btnTermsOfUseTab.setSelected(false);
-                btnPrivacyPolicyTab.setSelected(false);
-                btnContactTab.setSelected(false);
+            case Coupon:
+                btnNewsTab.setSelected(false);
+                btnCouponTab.setSelected(true);
+                btnPresentTab.setSelected(false);
+                btnMyPageTab.setSelected(false);
+                btnSettingTab.setSelected(false);
                 break;
 
-            case TermsOfUse:
-                btnWallTab.setSelected(false);
-                btnGuridinguTab.setSelected(false);
-                btnTermsOfUseTab.setSelected(true);
-                btnPrivacyPolicyTab.setSelected(false);
-                btnContactTab.setSelected(false);
+            case Present:
+                btnNewsTab.setSelected(false);
+                btnCouponTab.setSelected(false);
+                btnPresentTab.setSelected(true);
+                btnMyPageTab.setSelected(false);
+                btnSettingTab.setSelected(false);
                 break;
 
-            case PrivacyPolicy:
-                btnWallTab.setSelected(false);
-                btnGuridinguTab.setSelected(false);
-                btnTermsOfUseTab.setSelected(false);
-                btnPrivacyPolicyTab.setSelected(true);
-                btnContactTab.setSelected(false);
+            case MyPage:
+                btnNewsTab.setSelected(false);
+                btnCouponTab.setSelected(false);
+                btnPresentTab.setSelected(false);
+                btnMyPageTab.setSelected(true);
+                btnSettingTab.setSelected(false);
                 break;
 
-            case Contact:
-//                btnWallTab.setSelected(false);
-//                btnGuridinguTab.setSelected(false);
-//                btnTermsOfUseTab.setSelected(false);
-//                btnPrivacyPolicyTab.setSelected(false);
-//                btnContactTab.setSelected(false);
-                currentTab = MainTabs.Wall;
+            case Setting:
+//                btnNewsTab.setSelected(false);
+//                btnCouponTab.setSelected(false);
+//                btnPresentTab.setSelected(false);
+//                btnMyPageTab.setSelected(false);
+//                btnSettingTab.setSelected(false);
+                currentTab = MainTabs.News;
                 break;
         }
     }
 
-    private void openWallFragment(boolean isAnimation){
+    private void openNewsFragment(boolean isAnimation){
         FragmentTransitionInfo transition = null;
         if (isAnimation) {
             transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
         }
-        replaceFragment(R.id.fl_main_content, WallFragment.class.getName(), false, null, transition);
+        replaceFragment(R.id.fl_main_content, NewFragment.class.getName(), false, null, transition);
     }
 
-    private void openGuridinguFragment(){
+    private void openCouponFragment(){
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(R.id.fl_main_content, GuridinguFragment.class.getName(), false, null, transition);
+        replaceFragment(R.id.fl_main_content, CouponFragment.class.getName(), false, null, transition);
     }
 
-    private void openTermsOfUseFragment(){
+    private void openPresentFragment(){
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(R.id.fl_main_content, TermsOfUseFragment.class.getName(), false, null, transition);
+        replaceFragment(R.id.fl_main_content, PresentFragment.class.getName(), false, null, transition);
     }
 
-    private void openPrivacyPolicyFragment(){
+    private void openMyPageFragment(){
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(R.id.fl_main_content, PrivacyPolicyFragment.class.getName(), false, null, transition);
+        replaceFragment(R.id.fl_main_content, MyPageFragment.class.getName(), false, null, transition);
     }
 
-    private void openContactDialog(){
-        ContactFragment contactFragment = new ContactFragment();
-        contactFragment.show(getSupportFragmentManager(), ContactFragment.class.getName());
+    private void openSettingDialog(){
+        SettingFragment fragment = new SettingFragment();
+        fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
     }
 
     //=============== inner classes ================================================================
@@ -348,6 +346,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     enum MainTabs{
-        Wall, Guridingu, TermsOfUse, PrivacyPolicy, Contact
+        News, Coupon, Present, MyPage, Setting
     }
 }

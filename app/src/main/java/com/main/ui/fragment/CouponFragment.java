@@ -9,7 +9,7 @@ import com.main.R;
 /**
  * Created by linhphan on 7/19/16.
  */
-public class GuridinguFragment extends BaseFragment {
+public class CouponFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
         return R.layout.fragment_guridingu;

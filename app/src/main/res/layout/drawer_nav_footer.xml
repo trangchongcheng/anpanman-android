@@ -7,8 +7,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/positive_160dp"
-        android:src="@drawable/img_footer_drawer_nav"
-        android:scaleType="centerCrop"/>
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_drawer_nav_footer"/>
 
 </LinearLayout>

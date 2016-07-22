@@ -2456,8 +2456,8 @@ public class ScaleAndZoomImageView extends View {
      * Externally change the scale and translation of the source image. This may be used with getCenter() and getScale()
      * to restore the scale and zoom after a screen rotate.
      *
-     * @param scale   New scale to set.
-     * @param sCenter New source image coordinate to center on the screen, subject to boundaries.
+     * @param scale   News scale to set.
+     * @param sCenter News source image coordinate to center on the screen, subject to boundaries.
      */
     public final void setScaleAndCenter(float scale, PointF sCenter) {
         this.anim = null;
@@ -2630,7 +2630,7 @@ public class ScaleAndZoomImageView extends View {
      * as a zoom out gesture - if the scale is greater than 90% of this value, a double tap zooms out. Avoid using values
      * greater than the max zoom.
      *
-     * @param doubleTapZoomScale New value for double tap gesture zoom scale.
+     * @param doubleTapZoomScale News value for double tap gesture zoom scale.
      */
     public final void setDoubleTapZoomScale(float doubleTapZoomScale) {
         this.doubleTapZoomScale = doubleTapZoomScale;
@@ -2641,7 +2641,7 @@ public class ScaleAndZoomImageView extends View {
      * image will zoom in to when double tapped in terms of the image pixel density. Values lower than the max scale will
      * be ignored. A sensible starting point is 160 - the default used by this view.
      *
-     * @param dpi New value for double tap gesture zoom scale.
+     * @param dpi News value for double tap gesture zoom scale.
      */
     public final void setDoubleTapZoomDpi(int dpi) {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -2652,7 +2652,7 @@ public class ScaleAndZoomImageView extends View {
     /**
      * Set the type of zoom animation to be used for double taps. See static fields.
      *
-     * @param doubleTapZoomStyle New value for zoom style.
+     * @param doubleTapZoomStyle News value for zoom style.
      */
     public final void setDoubleTapZoomStyle(int doubleTapZoomStyle) {
         if (!VALID_ZOOM_STYLES.contains(doubleTapZoomStyle)) {

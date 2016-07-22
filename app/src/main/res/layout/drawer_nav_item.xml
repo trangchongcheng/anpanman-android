@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/negative_1dp"
-    android:background="@drawable/drawer_nav_item_state"
-    >
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="@dimen/positive_16dp"
-        android:layout_marginStart="@dimen/positive_16dp"
-        android:layout_marginTop="@dimen/positive_8dp"
-        android:layout_marginBottom="@dimen/positive_8dp"
-        android:layout_centerVertical="true"
-        android:src="@android:drawable/ic_dialog_info" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/positive_1dp"
+        android:background="@drawable/drawer_nav_item_state">
 
-    <TextView
-        android:id="@+id/txt_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/img_icon"
-        android:layout_toEndOf="@+id/img_icon"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/positive_16dp"
-        android:layout_marginStart="@dimen/positive_16dp"
-        android:text="item title" />
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/positive_8dp"
+            android:layout_marginLeft="@dimen/positive_16dp"
+            android:layout_marginStart="@dimen/positive_16dp"
+            android:layout_marginTop="@dimen/positive_8dp"
+            android:src="@drawable/icon_item_drawer_nav_circle" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/positive_8dp"
-        android:layout_marginEnd="@dimen/positive_8dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_arrow_right_white"/>
+        <TextView
+            android:id="@+id/txt_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/positive_16dp"
+            android:layout_marginStart="@dimen/positive_16dp"
+            android:layout_toEndOf="@+id/img_icon"
+            android:layout_toRightOf="@+id/img_icon"
+            android:text="item title" />
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/positive_8dp"
+            android:layout_marginRight="@dimen/positive_8dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </RelativeLayout>
+
+</FrameLayout>

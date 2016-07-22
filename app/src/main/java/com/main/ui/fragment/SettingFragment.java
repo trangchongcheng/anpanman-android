@@ -14,7 +14,7 @@ import com.main.R;
 /**
  * Created by linhphan on 7/19/16.
  */
-public class ContactFragment extends DialogFragment{
+public class SettingFragment extends DialogFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

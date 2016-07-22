@@ -9,10 +9,10 @@ import com.main.R;
 /**
  * Created by linhphan on 7/19/16.
  */
-public class WallFragment extends BaseFragment {
+public class PresentFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_wall;
+        return R.layout.fragment_terms_of_use;
     }
 
     @Override

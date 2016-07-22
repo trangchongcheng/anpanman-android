@@ -8,9 +8,9 @@
 
     <!--drawer navigation-->
     <color name="drawer_background">#F99A6C</color>
-    <color name="drawer_item_background">#eab499</color>
-    <color name="drawer_item_pressed_background">#ef793e</color>
-    <color name="bottom_nav_background">#f3d4d2d2</color>
+    <color name="drawer_item_background">#14fafaf7</color>
+    <color name="drawer_item_background_pressed">#ef793e</color>
+    <color name="bottom_nav_background">#64f6f6f6</color>
 
     <!--press states-->
     <color name="pressed_state">#f3d4d2d2</color>

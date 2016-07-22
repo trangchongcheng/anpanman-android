@@ -75,7 +75,7 @@ public class MemoryCache {
 				if (size <= limit)
 					break;
 			}
-			//App.log(TAG, "Clean cache. New size " + cache.size());
+			//App.log(TAG, "Clean cache. News size " + cache.size());
 		}
 	}
 
