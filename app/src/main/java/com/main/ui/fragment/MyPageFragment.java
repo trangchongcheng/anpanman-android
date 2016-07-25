@@ -12,7 +12,7 @@ import com.main.R;
 public class MyPageFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_privacy_policy;
+        return R.layout.fragment_my_page;
     }
 
     @Override

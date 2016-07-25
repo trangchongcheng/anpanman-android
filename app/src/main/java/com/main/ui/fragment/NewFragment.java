@@ -12,7 +12,7 @@ import com.main.R;
 public class NewFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_wall;
+        return R.layout.fragment_news;
     }
 
     @Override

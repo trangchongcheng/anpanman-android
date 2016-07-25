@@ -12,7 +12,7 @@ import com.main.R;
 public class PresentFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_terms_of_use;
+        return R.layout.fragment_present;
     }
 
     @Override

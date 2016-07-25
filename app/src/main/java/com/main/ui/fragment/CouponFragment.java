@@ -12,7 +12,7 @@ import com.main.R;
 public class CouponFragment extends BaseFragment {
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_guridingu;
+        return R.layout.fragment_coupon;
     }
 
     @Override
