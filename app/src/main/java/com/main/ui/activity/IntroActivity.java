@@ -1,6 +1,5 @@
 package com.main.ui.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.framework.phvtActivity.BaseActivity;
 import com.main.R;
@@ -61,7 +59,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_skip:
-                gotoTopScreen();
+                gotoTermsOfUseScreen();
                 break;
 
             default:
@@ -113,9 +111,10 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     }
 
     //============== inner methods =================================================================
-    private void gotoTopScreen(){
-        Intent intent = new Intent(this, MainActivity.class);
+    private void gotoTermsOfUseScreen(){
+        Intent intent = new Intent(this, TermOfUseActivity.class);
         startActivity(intent);
+        finish();
     }
 
     //============== inner classes =================================================================
