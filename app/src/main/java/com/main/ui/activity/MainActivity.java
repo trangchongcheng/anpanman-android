@@ -70,26 +70,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switchTab(MainTabs.News, false);
         setDisplayBottomNav();
-
-
-
-        String HOST_URL = "https://script.mb.api.cloud.nifty.com/2015-09-01/script/init.js";
-        String applcationKey = "053783832795fdd71457a12a03ac4e2815b5d91f9a8a78335162e38e67ff044d";
-        String clientKey = "ce128960dd747c968359493771eb18c4cd368d9e41e88e5091e3f043711d094d";
-        try {
-            URI uri = new URL(HOST_URL).toURI();
-            String hash = getSignature("POST", uri, applcationKey, clientKey);
-
-            AppLog.log("Signature: " + hash);
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -281,36 +261,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void openSettingDialog(){
         SettingFragment fragment = new SettingFragment();
         fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
-    }
-
-
-    private String getSignature(String requestMethod, URI uri, String applicationKey, String clientKey) throws Exception{
-        //タイムスタンプを取得
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Calendar calobj = Calendar.getInstance();
-        String _timestamp = df.format(calobj.getTime());
-
-        AppLog.log("_timestamp: " + _timestamp);
-
-        //SignatureMethod,SignatureVersion,X-NCMB-Application-Key,X-NCMB-Timestampをパラメータに追加
-        StringBuilder stringBuilder = new StringBuilder(256);
-        stringBuilder.append("SignatureMethod").append("=").append("HmacSHA256").append("&")
-                .append("SignatureVersion").append("=").append("2").append("&")
-                .append("X-NCMB-Application-Key").append("=").append(applicationKey).append("&")
-                .append("X-NCMB-Timestamp").append("=").append(_timestamp);
-
-        //署名用文字列を生成
-        String sign = requestMethod.toUpperCase() + '\n' +
-                uri.getHost() + '\n' +
-                uri.getRawPath() + '\n' +
-                stringBuilder;
-
-        //シグネチャを生成
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(new SecretKeySpec(clientKey.getBytes("UTF-8"), "HmacSHA256"));
-        return Base64.encodeToString(mac.doFinal(sign.getBytes("UTF-8")), Base64.NO_WRAP);
     }
 
     //=============== inner classes ================================================================
