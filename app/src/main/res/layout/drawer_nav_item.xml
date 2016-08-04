@@ -20,9 +20,10 @@
             android:layout_marginLeft="@dimen/positive_16dp"
             android:layout_marginStart="@dimen/positive_16dp"
             android:layout_marginTop="@dimen/positive_8dp"
-            android:src="@drawable/icon_item_drawer_nav_circle" />
+            android:src="@drawable/group_symbol" />
 
         <TextView
+            android:textColor="@color/colorBackground"
             android:id="@+id/txt_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

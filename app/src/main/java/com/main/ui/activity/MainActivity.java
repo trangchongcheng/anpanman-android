@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -46,7 +48,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private DrawerLayout drawerLayout;
     private ListView lvDrawerNav;
     private NavigationView navigationView;
-
     //== bottom nav
     private ImageButton btnNewsTab;
     private ImageButton btnCouponTab;
@@ -56,6 +57,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     public static MainTabs currentTab;
 
+    public static int iGroup = 0, iItem = 0;
+    public static ArrayList<String> arrGroup = new ArrayList<>();
+    public static ArrayList<String> arrItem = new ArrayList<>();
 
     //=============== constructors =================================================================
 
@@ -71,9 +75,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switchTab(MainTabs.News, false);
         setDisplayBottomNav();
 
-
-
-        String HOST_URL = "https://script.mb.api.cloud.nifty.com/2015-09-01/script/init.js";
+        for (int j = 0; j < getResources().getStringArray(R.array.group).length; j++) {
+            arrGroup.add(getResources().getStringArray(R.array.group)[j]);
+        }
+        for (int j = 0; j < getResources().getStringArray(R.array.item).length; j++) {
+            arrItem.add(getResources().getStringArray(R.array.item)[j]);
+        }
+         String HOST_URL = "https://script.mb.api.cloud.nifty.com/2015-09-01/script/init.js";
         String applcationKey = "053783832795fdd71457a12a03ac4e2815b5d91f9a8a78335162e38e67ff044d";
         String clientKey = "ce128960dd747c968359493771eb18c4cd368d9e41e88e5091e3f043711d094d";
         try {
@@ -130,7 +138,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //=============== implemented methods ==========================================================
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_img_hamburger:
                 Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 drawerLayout.openDrawer(navigationView);
@@ -167,7 +175,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner methods ================================================================
-    private void setDrawerNavigation(){
+    private void setDrawerNavigation() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(R.layout.drawer_nav_footer, null, false);
@@ -179,13 +187,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav.setAdapter(drawerAdapter);
     }
 
-    public void switchTab(MainTabs newTab, boolean isAnimation){
+    public void switchTab(MainTabs newTab, boolean isAnimation) {
 
-        if (newTab == currentTab){
+        if (newTab == currentTab) {
             return;
         }
 
-        switch (newTab){
+        switch (newTab) {
             case News:
                 openNewsFragment(isAnimation);
                 break;
@@ -210,8 +218,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
     }
 
-    private void setDisplayBottomNav(){
-        switch (currentTab){
+    private void setDisplayBottomNav() {
+        switch (currentTab) {
             case News:
                 btnNewsTab.setSelected(true);
                 btnCouponTab.setSelected(false);
@@ -255,7 +263,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void openNewsFragment(boolean isAnimation){
+    private void openNewsFragment(boolean isAnimation) {
         FragmentTransitionInfo transition = null;
         if (isAnimation) {
             transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
@@ -263,28 +271,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         replaceFragment(R.id.fl_main_content, NewFragment.class.getName(), false, null, transition);
     }
 
-    private void openCouponFragment(){
+    private void openCouponFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(R.id.fl_main_content, CouponFragment.class.getName(), false, null, transition);
     }
 
-    private void openPresentFragment(){
+    private void openPresentFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(R.id.fl_main_content, PresentFragment.class.getName(), false, null, transition);
     }
 
-    private void openMyPageFragment(){
+    private void openMyPageFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(R.id.fl_main_content, MyPageFragment.class.getName(), false, null, transition);
     }
 
-    private void openSettingDialog(){
+    private void openSettingDialog() {
         SettingFragment fragment = new SettingFragment();
         fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
     }
 
 
-    private String getSignature(String requestMethod, URI uri, String applicationKey, String clientKey) throws Exception{
+    private String getSignature(String requestMethod, URI uri, String applicationKey, String clientKey) throws Exception {
         //タイムスタンプを取得
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -314,7 +322,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner classes ================================================================
-    private static class DrawerAdapter extends BaseAdapter{
+    private static class DrawerAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -339,7 +347,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             //== inflate views
-            switch (getItemType(i)){
+            switch (getItemType(i)) {
                 case Group:
                     if (view == null || !(view.getTag() instanceof GroupItemHolder)) {
                         view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_nav_item_group, viewGroup, false);
@@ -356,17 +364,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     }
                     break;
             }
+            Log.d("hihi", "getView: "+iGroup +"-"+ iItem);
 
             //== setup data to views
-            switch (getItemType(i)){
+            switch (getItemType(i)) {
                 case Group:
                     GroupItemHolder holder = (GroupItemHolder) view.getTag();
-                    holder.txtTitle.setText("Group Title");
+                    //holder.txtTitle.setText("Group Title");
+                        holder.txtTitle.setText(arrGroup.get((iGroup)));
+                    iGroup++;
                     break;
 
                 default:
                     NormalItemHolder h = (NormalItemHolder) view.getTag();
-                    h.txtTitle.setText("Item Title");
+                    //h.txtTitle.setText("Item Title");
+                        h.txtTitle.setText(arrItem.get(iItem));
+                    iItem++;
                     break;
             }
 
@@ -374,8 +387,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         //===========
-        private ItemType getItemType(int position){
-            switch (position){
+        private ItemType getItemType(int position) {
+            switch (position) {
                 case 0:
                 case 3:
                     return ItemType.Group;
@@ -386,20 +399,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         //==========
-        enum ItemType{
+        enum ItemType {
             Group, Normal
         }
 
         //===========
-        private static class NormalItemHolder{
+        private static class NormalItemHolder {
             TextView txtTitle;
 
             public NormalItemHolder(View root) {
                 txtTitle = (TextView) root.findViewById(R.id.txt_item_title);
             }
         }
+
         //===========
-        private static class GroupItemHolder{
+        private static class GroupItemHolder {
             TextView txtTitle;
 
             public GroupItemHolder(View root) {
@@ -408,7 +422,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    enum MainTabs{
+    enum MainTabs {
         News, Coupon, Present, MyPage, Setting
     }
 }

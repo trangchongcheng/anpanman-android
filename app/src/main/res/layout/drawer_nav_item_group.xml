@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:textColor="@color/colorBackground"
         android:id="@+id/txt_group_tile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

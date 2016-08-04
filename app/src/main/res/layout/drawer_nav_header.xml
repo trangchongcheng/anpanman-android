@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/positive_20dp"
         android:layout_marginBottom="@dimen/positive_10dp"
         app:civ_border_width="@dimen/positive_2dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/avator_none"
         app:civ_border_color="#fff"
         app:civ_fill_color="#fff"/>
 </LinearLayout>

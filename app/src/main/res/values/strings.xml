@@ -19,4 +19,22 @@
     <string name="xlistview_header_last_time"></string>
     <string name="xlistview_footer_hint_normal"></string>
     <string name="xlistview_footer_hint_ready"></string>
+
+    <!--Text Navigation Item-->
+    <string-array name="group">
+        <item>ダウンロード</item>
+        <item>その他</item>
+    </string-array>
+
+    <string-array name="item">
+        <item>壁紙</item>
+        <item>グリーディング</item>
+        <item>アンパンマンポータルサイト</item>
+        <item>利用規約</item>
+        <item>プライバシーポリシー</item>
+        <item>お問い合わせ</item>
+    </string-array>
+    <string name="drawer_nav_footer_text">(C)やなせたかし／フレーベル館・ＴＭＳ・ＮＴＶ \n \t \t \t \t
+(C)アンパンマンデジタルＬＬＰ</string>
+
 </resources>
