@@ -2,7 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.main">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- For accessing Internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- For checking current network state -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- For waking device from sleep for showing notification -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- For vibrating device -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- For receiving GCM messages -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- For protecting GCM messages so that only your app can receive them -->
+    <permission
+        android:name="jp.anpanman.fanclub.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="jp.anpanman.fanclub.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,8 +43,26 @@
 
         <activity android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
-
         </activity>
+
+
+        <!-- For receiving GCM message and registration success -->
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="jp.anpanman.fanclub" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".gcm.GcmIntentService" />
+        <!-- make sure to add google-play-services_lib from  project properties->android->library-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

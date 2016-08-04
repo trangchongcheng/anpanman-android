@@ -2,6 +2,8 @@
     <string name="app_name">Anpanman</string>
 
 
+    <!--common-->
+    <string name="no_internet">通信状況を確かめのうえ、再度お試しください。</string>
 
     <!-- XView -->
     <string name="pull_to_refresh_pull_label">下に引っ張る事で更新する</string>
