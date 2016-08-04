@@ -21,7 +21,6 @@
     <string name="xlistview_header_last_time"></string>
     <string name="xlistview_footer_hint_normal"></string>
     <string name="xlistview_footer_hint_ready"></string>
-    <string name="test"></string>
 
     <!--Text Navigation Item-->
     <string-array name="group">
