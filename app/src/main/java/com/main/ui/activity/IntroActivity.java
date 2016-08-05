@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.framework.phvtActivity.BaseActivity;
+import com.framework.phvtUtils.SharedPreferencesUtil;
 import com.main.R;
 
 /**
  * Created by linhphan on 7/25/16.
  */
 public class IntroActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+
+    public static String PREF_INTRO_HAS_SHOWED = "PREF_INTRO_HAS_SHOWED";
 
     private Button btnSkip;
     private View viewIndicator0;
@@ -59,6 +62,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_skip:
+                SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
                 gotoTermsOfUseScreen();
                 break;
 

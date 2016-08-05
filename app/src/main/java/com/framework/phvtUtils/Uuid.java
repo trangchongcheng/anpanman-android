@@ -21,9 +21,9 @@ public class Uuid {
     public static String getUniqueDeviceId(Context context) {
 
         if (context == null) return null;
-        String uuid = sharedPreferencesUtil.getStringFromPreference(context, PREFERENCE_KEY_UUID, null);
+        String uuid = SharedPreferencesUtil.getString(context, PREFERENCE_KEY_UUID, null);
         if (!TextUtils.isEmpty(uuid)){
-            sharedPreferencesUtil.putStringToPreference(context, PREFERENCE_KEY_UUID, uuid);
+            SharedPreferencesUtil.putString(context, PREFERENCE_KEY_UUID, uuid);
             return uuid;
         }
 

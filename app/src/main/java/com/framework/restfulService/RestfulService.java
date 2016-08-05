@@ -49,12 +49,13 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
 
     protected Method mType = Method.GET;//the method of request whether POST or GET, default value is GET
     protected Map<String, String> mParams;
+    protected Map<String, String> mHeader;
     protected Map<String, String> mFileList;
     protected IParser mParser;
 
-    private DownloadCallback mCallback;
-    private int mRequestCode = DownloadCallback.UNKNOWN_CODE;
-    protected int mResponseCode = DownloadCallback.UNKNOWN_CODE;
+    private Callback mCallback;
+    private int mRequestCode = Callback.UNKNOWN_CODE;
+    protected int mResponseCode = Callback.UNKNOWN_CODE;
 
     //progress dialog
     protected ProgressDialog mProgressbar;
@@ -71,7 +72,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
      * @param isShowDialog if this argument is set true, then a dialog will be showed when this download worker is working.
      * @param mCallback    a callback which do something after the download worker is finish or error.
      */
-    public RestfulService(Context context, boolean isShowDialog, DownloadCallback mCallback) {
+    public RestfulService(Context context, boolean isShowDialog, Callback mCallback) {
         this.mContext = new WeakReference<>(context);
         this.mCallback = mCallback;
         this.isShowDialog = isShowDialog;
@@ -91,6 +92,10 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     public RestfulService setParams(Map<String, String> params) {
         this.mParams = params;
         return this;
+    }
+
+    public void setHeader(Map<String, String> header) {
+        this.mHeader = header;
     }
 
     public RestfulService setFileUpload(Map<String, String> files) {
@@ -138,12 +143,12 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         String data = null;
         try {
             if (mType == Method.POST) {
-                data = sendPost(url, mParams);
+                data = sendPost(url, mParams, mHeader);
             } else if (mType == Method.MULTIPART) {
                 data = sendPostMultipart(url, mFileList, mParams);
             } else {
                 try {
-                    data = sendGet(url, mParams);
+                    data = sendGet(url, mParams, mHeader);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (CertificateException e) {
@@ -275,24 +280,33 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
      * @return data from server which is presented by a string
      * @throws IOException
      */
-    protected String sendGet(String path, Map<String, String> params) throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, KeyManagementException {
-        String query = null;
+    protected String sendGet(String path, Map<String, String> params, Map<String, String> header) throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, KeyManagementException {
+        String query = "";
         if (params != null)
             query = encodeQueryString(params);
-        if (query != null && !query.isEmpty())
+        if (!query.isEmpty()) {
             query = "?" + query;
+        }
         URL url = new URL(path + query);
 
         String result = null;
 
         if (path.startsWith("https:")) {
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+
+            //== add header
             httpsURLConnection.setRequestMethod("GET");
+            if (header != null && !header.isEmpty()){
+                for (String key : header.keySet()){
+                    httpsURLConnection.setRequestProperty(key, header.get(key));
+                }
+            }
 
             int responseCode = httpsURLConnection.getResponseCode();
 
-            AppLog.log(getClass().getName(), "sending GET  request to URL: " + path);
-            AppLog.log(getClass().getName(), "get parameters: " + url);
+            AppLog.log(getClass().getName(), "sending GET  request to URL: " + url.toString());
+            AppLog.log(getClass().getName(), "get parameters: " + params);
+            AppLog.log(getClass().getName(), "header parameters: " + header);
             AppLog.log(getClass().getName(), "HTTP code: " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -303,7 +317,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             InputStream in = new BufferedInputStream(httpsURLConnection.getInputStream());
             InputStreamReader inputStreamReader = new InputStreamReader(in, Charset.forName("UTF-8"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            result = readXMLBuffer(bufferedReader);
+            result = readBufferByLine(bufferedReader);
 
             bufferedReader.close();
             inputStreamReader.close();
@@ -311,10 +325,20 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             httpsURLConnection.disconnect();
         } else if(path.startsWith("http:")) {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+            //== add header
+            httpURLConnection.setRequestMethod("GET");
+            if (header != null && !header.isEmpty()){
+                for (String key : header.keySet()){
+                    httpURLConnection.setRequestProperty(key, header.get(key));
+                }
+            }
+
             int responseCode = httpURLConnection.getResponseCode();
 
-            AppLog.log(getClass().getName(), "sending GET  request to URL: " + path);
+            AppLog.log(getClass().getName(), "sending GET  request to URL: " + url.toString());
             AppLog.log(getClass().getName(), "get parameters: " + query);
+            AppLog.log(getClass().getName(), "header parameters: " + header);
             AppLog.log(getClass().getName(), "HTTP code: " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -345,18 +369,35 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
      * @return data from server which is presented by a string
      * @throws IOException
      */
-    protected String sendPost(String path, Map<String, String> params) throws IOException {
+    protected String sendPost(String path, Map<String, String> params, Map<String, String> header) throws IOException {
         URL url = new URL(path);
         String result = null;
         if (path.startsWith("https:")) {
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+            String query = encodeQueryString(params);
+
+            //== add header
             httpsURLConnection.setDoOutput(true);
             httpsURLConnection.setRequestMethod("POST");
+            httpsURLConnection.setRequestProperty("Content-Length", "" + Integer.toString(query.getBytes().length));
+            if (header != null && !header.isEmpty()){
+                for (String key : header.keySet()){
+                    httpsURLConnection.setRequestProperty(key, header.get(key));
+                }
+            }
+
+            //== set post request
+            httpsURLConnection.setDoOutput(true);
+            DataOutputStream dataOutputStream = new DataOutputStream(httpsURLConnection.getOutputStream());
+            dataOutputStream.writeBytes(query);
+            dataOutputStream.flush();
+            dataOutputStream.close();
 
             int responseCode = httpsURLConnection.getResponseCode();
 
             AppLog.log(getClass().getName(), "sending POST  request to URL: " + path);
-            AppLog.log(getClass().getName(), "post parameters: " + url);
+            AppLog.log(getClass().getName(), "post parameters: " + params);
+            AppLog.log(getClass().getName(), "header parameters: " + header);
             AppLog.log(getClass().getName(), "HTTP code: " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -367,7 +408,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             InputStream in = new BufferedInputStream(httpsURLConnection.getInputStream());
             InputStreamReader inputStreamReader = new InputStreamReader(in, Charset.forName("UTF-8"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            result = readXMLBuffer(bufferedReader);
+            result = readBufferByLine(bufferedReader);
 
             bufferedReader.close();
             inputStreamReader.close();
@@ -380,6 +421,11 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             //== add header
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setRequestProperty("Content-Length", "" + Integer.toString(query.getBytes().length));
+            if (header != null && !header.isEmpty()){
+                for (String key : header.keySet()){
+                    httpURLConnection.setRequestProperty(key, header.get(key));
+                }
+            }
 
             //== set post request
             httpURLConnection.setDoOutput(true);
@@ -391,6 +437,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             int responseCode = httpURLConnection.getResponseCode();
             AppLog.log(getClass().getName(), "sending POST  request to URL: " + path);
             AppLog.log(getClass().getName(), "post parameters: " + params);
+            AppLog.log(getClass().getName(), "header parameters: " + header);
             AppLog.log(getClass().getName(), "HTTP code: " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -570,7 +617,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
      * @return data which is presented by a string
      * @throws IOException
      */
-    private String readXMLBuffer(BufferedReader reader) throws IOException {
+    private String readBufferByLine(BufferedReader reader) throws IOException {
         if (reader == null) return null;
         StringBuilder builder = new StringBuilder();
         String tamp;
@@ -653,7 +700,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         GET, POST, MULTIPART
     }
 
-    public interface DownloadCallback {
+    public interface Callback {
         int UNKNOWN_CODE = 1000;
         int RESPONSE_CODE_SUCCESSFULLY = 10000;
         int RESPONSE_CODE_NOT_FOUND = 11000;
