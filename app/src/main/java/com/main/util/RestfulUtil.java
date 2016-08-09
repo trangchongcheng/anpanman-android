@@ -29,6 +29,7 @@ public class RestfulUtil {
             header.put("X-NCMB-Application-Key", RestfulUrl.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
+            header.put("x-anp-request", "true");
 //            header.put("X-NCMB-Apps-Session-Token");
 
             RestfulService service = new RestfulService(context, false, callback);
@@ -53,6 +54,7 @@ public class RestfulUtil {
             header.put("X-NCMB-Application-Key", RestfulUrl.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
+            header.put("x-anp-request", "true");
 
             RestfulService service = new RestfulService(context, false, callback);
             service.setType(RestfulService.Method.GET);
