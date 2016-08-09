@@ -85,8 +85,8 @@ public class SplashScreenActivity extends BaseActivity{
             String gcmRegId = SharedPreferencesUtil.getString(this, PREF_GCM_REG_ID, "");
             Log.e(getClass().getName(), "registration id: "+ gcmRegId);
 
-            if (!TextUtils.isEmpty("677556565612")){//677556565612 // TODO: 8/5/16 this id must be replaced by gcm registration id
-                signup("677556565612");
+            if (!TextUtils.isEmpty("1")){//677556565612 // TODO: 8/5/16 this id must be replaced by gcm registration id
+                signup("67755656561232411");
 
             }else if (isGooglePlayInstalled()) {// Check device for Play Services APK.
                 new GCMRegistrationTask().execute();

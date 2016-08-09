@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,14 @@ import android.widget.Toast;
 import com.framework.phvtActivity.BaseActivity;
 import com.framework.phvtCommon.FragmentTransitionInfo;
 import com.framework.phvtUtils.AppLog;
+import com.framework.phvtUtils.Common;
 import com.main.R;
 import com.main.ui.fragment.SettingFragment;
 import com.main.ui.fragment.CouponFragment;
 import com.main.ui.fragment.MyPageFragment;
 import com.main.ui.fragment.PresentFragment;
 import com.main.ui.fragment.NewFragment;
+import com.main.util.RestfulUrl;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -323,6 +326,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 case Group:
                     GroupItemHolder holder = (GroupItemHolder) view.getTag();
                     holder.txtTitle.setText(arrGroup.get((iGroup)));
+                    iGroup++;
                     break;
 
                 default:

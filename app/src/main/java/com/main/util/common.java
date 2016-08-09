@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.http.SslError;
 import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
@@ -78,7 +79,6 @@ public class Common {
                 uri.getHost() + '\n' +
                 uri.getRawPath() + '\n' +
                 stringBuilder;
-
         //シグネチャを生成
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(new SecretKeySpec(clientKey.getBytes("UTF-8"), "HmacSHA256"));
