@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -58,11 +59,6 @@ public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     private final int DELAYED_TIME_SPLASH_SCREEN = 3000;
 
-    // Resgistration Id from GCM
-    private static final String PREF_GCM_REG_ID = "PREF_GCM_REG_ID";
-    private static final String PREF_USER_INFO = "PREF_USER_INFO";
-    private static final String GCM_SENDER_ID = "866234032360";//project number
-
     private boolean isShouldLeaveThisScreen = false;
     static Boolean TestCompletion = false;
 
@@ -70,7 +66,6 @@ public class SplashScreenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //== delay this screen a particular time
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -81,12 +76,11 @@ public class SplashScreenActivity extends BaseActivity {
         }, DELAYED_TIME_SPLASH_SCREEN);
 
         //InitializeI NCMB
-        NCMB.initialize(this,
-                "2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a",
-                "06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9");
+        NCMB.initialize(this,Constant.NOTIFY_APPLICATION_KEY,
+                Constant.NOTIFY_CLIENT_KEY);
 
         //== check to get user info or sign up an new account
-        String json = SharedPreferencesUtil.getString(this, PREF_USER_INFO, "");
+        String json = SharedPreferencesUtil.getString(this, Constant.PREF_USER_INFO, "");
         UserInfo oldUserInfo = UserInfo.fromJson(json, UserInfo.class);
         boolean isNetWorkAvailable = NetworkUtil.isOnline(this);
 
@@ -142,7 +136,7 @@ public class SplashScreenActivity extends BaseActivity {
                 // TODO: 8/5/16 this must be
                 // TODO: 8/5/16 what should we do if the registration is duplicated many times
                 UserInfo newUserInfo = (UserInfo) data;
-                SharedPreferencesUtil.putString(getBaseContext(), PREF_USER_INFO, newUserInfo.toJson());
+                SharedPreferencesUtil.putString(getBaseContext(), Constant.PREF_USER_INFO, newUserInfo.toJson());
                 registerDeviceToken(deviceToken, newUserInfo.getObjectId());
             }
 
@@ -158,7 +152,7 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 gotoNextScreen();
-                Log.d("TAG", "onDownloadSuccessfully: "+data);
+                AppLog.log(data.toString());
             }
 
             @Override
@@ -172,7 +166,7 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 UserInfo newUserInfo = (UserInfo) data;
-                SharedPreferencesUtil.putString(getBaseContext(), PREF_USER_INFO, newUserInfo.toJson());
+                SharedPreferencesUtil.putString(getBaseContext(), Constant.PREF_USER_INFO, newUserInfo.toJson());
                 gotoNextScreen();
             }
 
@@ -187,7 +181,8 @@ public class SplashScreenActivity extends BaseActivity {
         //installationの作成
         //GCMからRegistrationIdを取得
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
-        installation.getRegistrationIdInBackground("87274862508", new DoneCallback() {
+        installation.getRegistrationIdInBackground(Constant.GCM_SENDER_ID
+                , new DoneCallback() {
             @Override
             public void done(NCMBException e) {
                 if (e == null) {
@@ -195,7 +190,7 @@ public class SplashScreenActivity extends BaseActivity {
                     try {
                         //mBaaSに端末情報を保存
                         installation.save();
-                        initService();
+                        getDeviceTokenToSignup();
                     } catch (NCMBException saveError) {
                         //保存失敗
                         saveError.printStackTrace();
@@ -209,13 +204,12 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     // 登録端末のdeviceTokenを取得する
-    public void initService() {
+    public void getDeviceTokenToSignup() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void[] params) {
                 String deviceToken = null;
                 try {
-                    //.  NCMBInstallation currentInstallation = NCMBInstallation.getCurrentInstallation();
                     NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
                     deviceToken = installation.getDeviceToken();
                 } catch (Exception e) {
@@ -228,9 +222,8 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             protected void onPostExecute(String deviceToken) {
                 if (deviceToken != null) {
-                    Toast.makeText(getApplicationContext(), "registered with GCM", Toast.LENGTH_LONG).show();
-                    SharedPreferencesUtil.putString(getBaseContext(), PREF_GCM_REG_ID, deviceToken);
-                    Log.e(getClass().getName(), "registration id: " + deviceToken);
+                    SharedPreferencesUtil.putString(getBaseContext(), Constant.GCM_SENDER_ID, deviceToken);
+                    AppLog.log(deviceToken);
                     signup(deviceToken);
                 }
             }
