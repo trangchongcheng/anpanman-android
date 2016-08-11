@@ -28,6 +28,14 @@ import com.main.util.Constant;
 import com.main.util.DialogFactory;
 import com.main.util.RestfulUrl;
 import com.main.util.RestfulUtil;
+import com.nifty.cloud.mb.core.DoneCallback;
+import com.nifty.cloud.mb.core.NCMB;
+import com.nifty.cloud.mb.core.NCMBException;
+import com.nifty.cloud.mb.core.NCMBInstallation;
+import com.nifty.cloud.mb.core.NCMBRequest;
+
+
+import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -46,7 +54,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by linhphan on 7/25/16.
  */
-public class SplashScreenActivity extends BaseActivity{
+public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     private final int DELAYED_TIME_SPLASH_SCREEN = 3000;
 
@@ -56,6 +64,7 @@ public class SplashScreenActivity extends BaseActivity{
     private static final String GCM_SENDER_ID = "866234032360";//project number
 
     private boolean isShouldLeaveThisScreen = false;
+    static Boolean TestCompletion = false;
 
     //=========== inherited methods ================================================================
     @Override
@@ -71,31 +80,27 @@ public class SplashScreenActivity extends BaseActivity{
             }
         }, DELAYED_TIME_SPLASH_SCREEN);
 
+        //InitializeI NCMB
+        NCMB.initialize(this,
+                "2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a",
+                "06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9");
 
         //== check to get user info or sign up an new account
         String json = SharedPreferencesUtil.getString(this, PREF_USER_INFO, "");
         UserInfo oldUserInfo = UserInfo.fromJson(json, UserInfo.class);
         boolean isNetWorkAvailable = NetworkUtil.isOnline(this);
 
-        if (oldUserInfo == null && !isNetWorkAvailable){
+        if (oldUserInfo == null && !isNetWorkAvailable) {
             DialogFactory.showMessage(SplashScreenActivity.this, getString(R.string.no_internet));
 
-        }else if (oldUserInfo == null){//== oldUserInfo == null && isNetWorkAvailable
+        } else if (oldUserInfo == null) {//== oldUserInfo == null && isNetWorkAvailable
             // Read the saved gcm registration id from shared preferences.
-            String gcmRegId = SharedPreferencesUtil.getString(this, PREF_GCM_REG_ID, "");
-            Log.e(getClass().getName(), "registration id: "+ gcmRegId);
+            registrationId();
 
-            if (!TextUtils.isEmpty("1")){//677556565612 // TODO: 8/5/16 this id must be replaced by gcm registration id
-                signup("67755656561232411");
-
-            }else if (isGooglePlayInstalled()) {// Check device for Play Services APK.
-                new GCMRegistrationTask().execute();
-            }
-
-        }else if (isNetWorkAvailable){//== oldUserInfo != null && isNetWorkAvailable
+        } else if (isNetWorkAvailable) {//== oldUserInfo != null && isNetWorkAvailable
             getUserInfo(oldUserInfo.getObjectId());
 
-        }else{ //== oldUserInfo != null && !isNetWorkAvailable
+        } else { //== oldUserInfo != null && !isNetWorkAvailable
             gotoNextScreen();
         }
     }
@@ -117,10 +122,10 @@ public class SplashScreenActivity extends BaseActivity{
 
     private boolean isGooglePlayInstalled() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS){
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this, ACTION_PLAY_SERVICES_DIALOG);
-            }else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Google Play Service is not installed", Toast.LENGTH_SHORT).show();
             }
             return false;
@@ -128,15 +133,17 @@ public class SplashScreenActivity extends BaseActivity{
         return true;
     }
 
-    private void signup(String gcmRegId){
-        RestfulUtil.signup(this, gcmRegId, new RestfulService.Callback() {
+    private void signup(final String deviceToken) {
+        //RegisterID Push
+        Log.d("TAG", "signup: " + deviceToken);
+        RestfulUtil.signup(this, deviceToken, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 // TODO: 8/5/16 this must be
                 // TODO: 8/5/16 what should we do if the registration is duplicated many times
                 UserInfo newUserInfo = (UserInfo) data;
                 SharedPreferencesUtil.putString(getBaseContext(), PREF_USER_INFO, newUserInfo.toJson());
-                gotoNextScreen();
+                registerDeviceToken(deviceToken, newUserInfo.getObjectId());
             }
 
             @Override
@@ -145,7 +152,22 @@ public class SplashScreenActivity extends BaseActivity{
         });
     }
 
-    private void getUserInfo(String objectId){
+    private void registerDeviceToken(String gcmRegId, String objectId) {
+        //RegisterID Push
+        RestfulUtil.registerDeviceToken(this, gcmRegId, objectId, new RestfulService.Callback() {
+            @Override
+            public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
+                gotoNextScreen();
+                Log.d("TAG", "onDownloadSuccessfully: "+data);
+            }
+
+            @Override
+            public void onDownloadFailed(Exception e, int requestCode, int responseCode) {
+            }
+        });
+    }
+
+    private void getUserInfo(String objectId) {
         RestfulUtil.getUserInfo(this, objectId, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
@@ -161,27 +183,81 @@ public class SplashScreenActivity extends BaseActivity{
         });
     }
 
-    private void gotoNextScreen(){
-        if (!isShouldLeaveThisScreen){
+    public void registrationId() {
+        //installationの作成
+        //GCMからRegistrationIdを取得
+        final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+        installation.getRegistrationIdInBackground("87274862508", new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                if (e == null) {
+                    //成功
+                    try {
+                        //mBaaSに端末情報を保存
+                        installation.save();
+                        initService();
+                    } catch (NCMBException saveError) {
+                        //保存失敗
+                        saveError.printStackTrace();
+                    }
+                } else {
+                    //ID取得失敗
+                }
+                TestCompletion = true;
+            }
+        });
+    }
+
+    // 登録端末のdeviceTokenを取得する
+    public void initService() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void[] params) {
+                String deviceToken = null;
+                try {
+                    //.  NCMBInstallation currentInstallation = NCMBInstallation.getCurrentInstallation();
+                    NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+                    deviceToken = installation.getDeviceToken();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                TestCompletion = true;
+                return deviceToken;
+            }
+
+            @Override
+            protected void onPostExecute(String deviceToken) {
+                if (deviceToken != null) {
+                    Toast.makeText(getApplicationContext(), "registered with GCM", Toast.LENGTH_LONG).show();
+                    SharedPreferencesUtil.putString(getBaseContext(), PREF_GCM_REG_ID, deviceToken);
+                    Log.e(getClass().getName(), "registration id: " + deviceToken);
+                    signup(deviceToken);
+                }
+            }
+        }.execute(null, null, null);
+    }
+
+    private void gotoNextScreen() {
+        if (!isShouldLeaveThisScreen) {
             isShouldLeaveThisScreen = true;
             return;
         }
 
         boolean isIntroHasShowed = SharedPreferencesUtil.getBoolean(this, IntroActivity.PREF_INTRO_HAS_SHOWED, false);
-        if (isIntroHasShowed){
+        if (isIntroHasShowed) {
             gotoIntroScreen();
-        }else{
+        } else {
             gotoTopScreen();
         }
         finish();
     }
 
-    private void gotoIntroScreen(){
+    private void gotoIntroScreen() {
         Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
     }
 
-    private void gotoTopScreen(){
+    private void gotoTopScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -190,34 +266,4 @@ public class SplashScreenActivity extends BaseActivity{
     /**
      * registering sender id to GCM server.
      */
-    private class GCMRegistrationTask extends AsyncTask<Void, Void, String> {
-        private IOException ioException;
-        @Override
-        protected String doInBackground(Void... params) {
-            String gcmRegId = null;
-            try {
-                if (isGooglePlayInstalled()) {
-                    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    gcmRegId = gcm.register(GCM_SENDER_ID);
-                }
-
-            } catch (IOException e) {
-                ioException = e;
-                e.printStackTrace();
-            }
-
-            return gcmRegId;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (s != null){
-                Toast.makeText(getApplicationContext(), "registered with GCM", Toast.LENGTH_LONG).show();
-                SharedPreferencesUtil.putString(getBaseContext(), PREF_GCM_REG_ID, s);
-                Log.e(getClass().getName(), "registration id: "+ s);
-
-                signup(s);
-            }
-        }
-    }
 }
