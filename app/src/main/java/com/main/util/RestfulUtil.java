@@ -19,7 +19,7 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_SIGNUP);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("POST", uri, RestfulUrl.NOTIFY_APPLICATION_KEY, RestfulUrl.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("POST", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> params = new HashMap<>();
             params.put("appVersion", "1.0.0");
@@ -27,7 +27,7 @@ public class RestfulUtil {
             params.put("deviceToken", gcmRegId);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", RestfulUrl.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
@@ -49,7 +49,7 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_REGISTER_DEVICE_TOKEN);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("POST", uri, RestfulUrl.NOTIFY_APPLICATION_KEY, RestfulUrl.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("POST", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> params = new HashMap<>();
             params.put("appVersion", "1.0.0");
@@ -58,7 +58,7 @@ public class RestfulUtil {
             params.put("objectId", objectId);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", RestfulUrl.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
@@ -80,10 +80,10 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_GET_USER_INFO + objectId);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("GET", uri, RestfulUrl.NOTIFY_APPLICATION_KEY, RestfulUrl.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("GET", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", RestfulUrl.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
