@@ -198,6 +198,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnPresentTab.setSelected(false);
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
+
+                ((ViewGroup)btnNewsTab.getParent()).setSelected(true);
+                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Coupon:
@@ -206,6 +212,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnPresentTab.setSelected(false);
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
+
+                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup)btnCouponTab.getParent()).setSelected(true);
+                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Present:
@@ -214,6 +226,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnPresentTab.setSelected(true);
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
+
+                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup)btnPresentTab.getParent()).setSelected(true);
+                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case MyPage:
@@ -222,6 +240,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnPresentTab.setSelected(false);
                 btnMyPageTab.setSelected(true);
                 btnSettingTab.setSelected(false);
+
+                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup)btnMyPageTab.getParent()).setSelected(true);
+                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Setting:

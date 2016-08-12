@@ -20,23 +20,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_press_states"
-                android:src="@drawable/combined_shape"
+                android:layout_marginLeft="@dimen/positive_16dp"
                 android:layout_marginStart="@dimen/positive_16dp"
-                android:layout_marginLeft="@dimen/positive_16dp"/>
+                android:background="@drawable/bg_press_states"
+                android:src="@drawable/combined_shape" />
 
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/logo_orange"/>
+                android:src="@drawable/logo_orange" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorDivider"/>
+                android:background="@color/colorDivider" />
         </RelativeLayout>
 
         <LinearLayout
@@ -52,60 +52,140 @@
             android:paddingRight="@dimen/positive_16dp"
             android:paddingStart="@dimen/positive_16dp">
 
-            <ImageButton
-                android:id="@+id/btn_img_tab_news"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/bg_state_anpanman" />
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_img_tab_news"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/bg_state_anpanman" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:duplicateParentState="true"
+                    android:textColor="@color/text_bottom_nav_color_state"
+                    android:text="@string/tab_news" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/btn_img_tab_coupon"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/bg_state_coupon" />
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_img_tab_coupon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/bg_state_coupon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:duplicateParentState="true"
+                    android:textColor="@color/text_bottom_nav_color_state"
+                    android:text="@string/tab_coupon" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/btn_img_tab_present"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/bg_state_present" />
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_img_tab_present"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/bg_state_present" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:duplicateParentState="true"
+                    android:textColor="@color/text_bottom_nav_color_state"
+                    android:text="@string/tab_present" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/btn_img_tab_my_page"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/bg_state_my_page" />
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_img_tab_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/bg_state_my_page" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:duplicateParentState="true"
+                    android:textColor="@color/text_bottom_nav_color_state"
+                    android:text="@string/tab_my_page" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/btn_img_tab_setting"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/bg_state_other" />
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_img_tab_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/bg_state_other" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textColor="@color/text_bottom_nav_color_state"
+                    android:text="@string/tab_setting" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -124,15 +204,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/drawer_background"
-        >
+        android:background="@color/drawer_background">
 
         <ListView
             android:id="@+id/lv_drawer_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            />
+            android:dividerHeight="0dp" />
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

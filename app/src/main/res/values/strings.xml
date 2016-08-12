@@ -39,4 +39,11 @@
     <string name="drawer_nav_footer_text">(C)やなせたかし／フレーベル館・ＴＭＳ・ＮＴＶ \n \t \t \t \t \t \t \t
 (C)アンパンマンデジタルＬＬＰ</string>
 
+
+    <!--bottom nav-->
+    <string name="tab_news">新着</string>
+    <string name="tab_coupon">おトク</string>
+    <string name="tab_present">プレゼント</string>
+    <string name="tab_my_page">マイページ</string>
+    <string name="tab_setting">その他</string>
 </resources>

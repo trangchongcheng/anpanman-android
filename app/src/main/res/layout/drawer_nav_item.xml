@@ -20,7 +20,7 @@
             android:layout_marginLeft="@dimen/positive_16dp"
             android:layout_marginStart="@dimen/positive_16dp"
             android:layout_marginTop="@dimen/positive_8dp"
-            android:src="@drawable/group_symbol" />
+            android:src="@drawable/icon_circle" />
 
         <TextView
             android:textColor="@color/colorBackground"
