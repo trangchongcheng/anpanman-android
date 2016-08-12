@@ -14,9 +14,12 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!-- For protecting GCM messages so that only your app can receive them -->
     <permission
-        android:name="jp.anpanman.fanclub.permission.C2D_MESSAGE"
+        android:name="jp.jp.anpanman.jp.anpanman.fanclub.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="jp.anpanman.fanclub.permission.C2D_MESSAGE" />
+    <uses-permission android:name="jp.anpanman.jp.anpanman.fanclub.permission.C2D_MESSAGE" />
+
+    <!-- push通知タップ時に遷移するActivity -->
+
 
     <application
         android:allowBackup="true"
@@ -24,10 +27,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.SampleActivity"
+
+        <meta-data android:name="openPushStartActivity" android:value=".main.ui.activity.MainActivity"/>
+        <!-- 通知エリアに表示されるアイコン -->
+        <meta-data android:name="smallIcon" android:resource="@drawable/icon_anpan_active"/>
+        <!-- 通知の複数表示　0:複数表示しない , 1:複数表示する-->
+        <meta-data android:name="notificationOverlap" android:value="0"/>
+        <!-- ダイアログプッシュの背景画像 -->
+        <meta-data android:name="dialogPushBackgroundImage" android:resource="@drawable/icon_anpan_active"/>
+
+        <activity android:name="jp.anpanman.fanclub.main.ui.activity.SampleActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.activity.SplashScreenActivity"
+        <activity android:name="jp.anpanman.fanclub.main.ui.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,34 +47,73 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.IntroActivity"
+        <activity android:name="jp.anpanman.fanclub.main.ui.activity.IntroActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.activity.TermOfUseActivity"
+        <activity android:name="jp.anpanman.fanclub.main.ui.activity.TermOfUseActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.activity.MainActivity"
+        <activity android:name="jp.anpanman.fanclub.main.ui.activity.MainActivity"
             android:screenOrientation="portrait">
         </activity>
 
 
         <!-- For receiving GCM message and registration success -->
         <receiver
-            android:name=".gcm.GcmBroadcastReceiver"
+            android:name="jp.anpanman.fanclub.main.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="jp.anpanman.fanclub" />
+                <category android:name="jp.anpanman.jp.anpanman.fanclub" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="jp.anpanman.jp.anpanman.fanclub"/>
+            </intent-filter>
+        </receiver>
+        <service android:name="jp.anpanman.fanclub.main.gcm.GcmIntentService" />
+        <!-- make sure to add google-play-services_lib from  project properties->android->library-->
+        <receiver
+            android:name="com.nifty.cloud.mb.core.NCMBGcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="jp.anpanman.jp.anpanman.fanclub"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".gcm.GcmIntentService" />
-        <!-- make sure to add google-play-services_lib from  project properties->android->library-->
+        <service
+            android:name="jp.anpanman.fanclub.main.ncmb.NCMBService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <!-- 受信クラス設定
+     カスタム   : android:name="パッケージ名.MyCustomService"
+     デフォルト : android:name="com.nifty.cloud.mb.core.NCMBGcmListenerService" -->
+
+        <!-- ダイアログPush通知設定-->
+        <activity
+            android:name="com.nifty.cloud.mb.core.NCMBDialogActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar">
+        </activity>
+        <!-- プッシュ通知タップ時に起動するActivityの設定 -->
     </application>
 
 </manifest>
