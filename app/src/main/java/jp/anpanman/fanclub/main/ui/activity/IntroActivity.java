@@ -14,7 +14,6 @@ import android.widget.Button;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
-import jp.anpanman.fanclub.main.ui.fragment.TermOfUseActivity;
 
 import com.main.R;
 
