@@ -1,5 +1,6 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -158,6 +159,18 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     public void registrationId() {
+
+        if (!isGooglePlayInstalled()){
+            DialogFactory.showMessage(SplashScreenActivity.this, "you must have google play store to continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            return;
+        }
+
+
         //installationの作成
         //GCMからRegistrationIdを取得
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();

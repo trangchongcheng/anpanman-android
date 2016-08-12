@@ -37,4 +37,32 @@ public class DialogFactory {
             alertDialog.show();
         }
     }
+
+    public static void showMessage(Context context, String message, final DialogInterface.OnClickListener okCallback) {
+        if (context == null) {
+            return;
+        }
+
+        /**
+         * if alert dialog hasn't created
+         * or if was host by another context
+         * then create new one
+         */
+        if (alertDialog == null || ((ContextThemeWrapper) alertDialog.getContext()).getBaseContext() != context) {
+            AlertDialog.Builder aBuilder = new AlertDialog.Builder(context);
+            alertDialog = aBuilder.create();
+
+        }
+        alertDialog.setMessage(message);
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                okCallback.onClick(dialog, which);
+            }
+        });
+        if (!alertDialog.isShowing()) {
+            alertDialog.show();
+        }
+    }
 }
