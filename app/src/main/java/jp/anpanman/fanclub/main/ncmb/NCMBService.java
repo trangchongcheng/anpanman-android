@@ -1,8 +1,16 @@
 package jp.anpanman.fanclub.main.ncmb;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.widget.Toast;
 
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+import jp.anpanman.fanclub.main.ui.activity.MainActivity;
+import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
+
 import com.nifty.cloud.mb.core.NCMBDialogPushConfiguration;
 import com.nifty.cloud.mb.core.NCMBGcmListenerService;
 import com.nifty.cloud.mb.core.NCMBPush;
@@ -16,9 +24,6 @@ import java.util.Iterator;
  * 独自受信クラス
  */
 public class NCMBService extends NCMBGcmListenerService {
-    //NCMBDialogPushConfigurationクラスのインスタンスを作成
-    static NCMBDialogPushConfiguration dialogPushConfiguration = new NCMBDialogPushConfiguration();
-
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String action = data.getString("action");
@@ -39,10 +44,8 @@ public class NCMBService extends NCMBGcmListenerService {
                 //エラー処理
             }
         }
-        dialogPushConfiguration.setDisplayType(NCMBDialogPushConfiguration.DIALOG_DISPLAY_DIALOG);
-        NCMBPush.dialogPushHandler(this, data, dialogPushConfiguration);
-
-        //デフォルトの通知を実行
+        Intent i = new Intent("com.hmkcode.android.USER_ACTION");
+        sendBroadcast(i);
         super.onMessageReceived(from, data);
     }
 }

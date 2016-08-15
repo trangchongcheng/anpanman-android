@@ -46,4 +46,7 @@
     <string name="tab_present">プレゼント</string>
     <string name="tab_my_page">マイページ</string>
     <string name="tab_setting">その他</string>
+
+    <!--dialog coupon-->
+    <string name="button_ok">ダウンロード</string>
 </resources>
