@@ -160,6 +160,12 @@ public class SplashScreenActivity extends BaseActivity {
 
     public void registrationId() {
 
+        //DEBUG FOR PASSING GCM check
+        if( Constant.Apanman_Debug.contains(Constant.DebugFlags.DEBUG_PASS_GCM_INSTALLED)){
+            gotoNextScreen();
+            return;
+        }
+
         if (!isGooglePlayInstalled()){
             DialogFactory.showMessage(SplashScreenActivity.this, "you must have google play store to continue", new DialogInterface.OnClickListener() {
                 @Override

@@ -58,7 +58,7 @@ public class GcmIntentService extends IntentService{
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Urgent")
+                .setContentTitle("Anpanman")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
         builder.setContentIntent(pendingIntent);
