@@ -1,6 +1,7 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +26,7 @@ import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
 import jp.anpanman.fanclub.main.ui.fragment.PresentFragment;
 import jp.anpanman.fanclub.main.ui.fragment.SettingFragment;
+import jp.anpanman.fanclub.main.util.PushNotifyListenReceiver;
 
 /**
  * Created by linhphan on 7/15/16.
@@ -49,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static int iGroup = 0, iItem = 0;
     public static ArrayList<String> arrGroup = new ArrayList<>();
     public static ArrayList<String> arrItem = new ArrayList<>();
+    private PushNotifyListenReceiver pushNotifyListenReceiver;
 
     //=============== constructors =================================================================
 
@@ -70,6 +73,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         for (int j = 0; j < getResources().getStringArray(R.array.item).length; j++) {
             arrItem.add(getResources().getStringArray(R.array.item)[j]);
         }
+        pushNotifyListenReceiver = new PushNotifyListenReceiver();
     }
 
     @Override
@@ -110,7 +114,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //=============== implemented methods ==========================================================
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case com.main.R.id.btn_img_hamburger:
                 Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 drawerLayout.openDrawer(navigationView);
@@ -147,7 +151,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner methods ================================================================
-    private void setDrawerNavigation(){
+    private void setDrawerNavigation() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(com.main.R.layout.drawer_nav_footer, null, false);
@@ -159,13 +163,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav.setAdapter(drawerAdapter);
     }
 
-    public void switchTab(MainTabs newTab, boolean isAnimation){
+    public void switchTab(MainTabs newTab, boolean isAnimation) {
 
-        if (newTab == currentTab){
+        if (newTab == currentTab) {
             return;
         }
 
-        switch (newTab){
+        switch (newTab) {
             case News:
                 openNewsFragment(isAnimation);
                 break;
@@ -190,8 +194,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
     }
 
-    private void setDisplayBottomNav(){
-        switch (currentTab){
+    private void setDisplayBottomNav() {
+        switch (currentTab) {
             case News:
                 btnNewsTab.setSelected(true);
                 btnCouponTab.setSelected(false);
@@ -199,11 +203,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
 
-                ((ViewGroup)btnNewsTab.getParent()).setSelected(true);
-                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
-                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
-                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
-                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
+                ((ViewGroup) btnNewsTab.getParent()).setSelected(true);
+                ((ViewGroup) btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup) btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup) btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup) btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Coupon:
@@ -213,11 +217,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
 
-                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
-                ((ViewGroup)btnCouponTab.getParent()).setSelected(true);
-                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
-                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
-                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
+                ((ViewGroup) btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup) btnCouponTab.getParent()).setSelected(true);
+                ((ViewGroup) btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup) btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup) btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Present:
@@ -227,11 +231,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnMyPageTab.setSelected(false);
                 btnSettingTab.setSelected(false);
 
-                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
-                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
-                ((ViewGroup)btnPresentTab.getParent()).setSelected(true);
-                ((ViewGroup)btnMyPageTab.getParent()).setSelected(false);
-                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
+                ((ViewGroup) btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup) btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup) btnPresentTab.getParent()).setSelected(true);
+                ((ViewGroup) btnMyPageTab.getParent()).setSelected(false);
+                ((ViewGroup) btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case MyPage:
@@ -241,11 +245,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 btnMyPageTab.setSelected(true);
                 btnSettingTab.setSelected(false);
 
-                ((ViewGroup)btnNewsTab.getParent()).setSelected(false);
-                ((ViewGroup)btnCouponTab.getParent()).setSelected(false);
-                ((ViewGroup)btnPresentTab.getParent()).setSelected(false);
-                ((ViewGroup)btnMyPageTab.getParent()).setSelected(true);
-                ((ViewGroup)btnSettingTab.getParent()).setSelected(false);
+                ((ViewGroup) btnNewsTab.getParent()).setSelected(false);
+                ((ViewGroup) btnCouponTab.getParent()).setSelected(false);
+                ((ViewGroup) btnPresentTab.getParent()).setSelected(false);
+                ((ViewGroup) btnMyPageTab.getParent()).setSelected(true);
+                ((ViewGroup) btnSettingTab.getParent()).setSelected(false);
                 break;
 
             case Setting:
@@ -259,7 +263,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void openNewsFragment(boolean isAnimation){
+    private void openNewsFragment(boolean isAnimation) {
         FragmentTransitionInfo transition = null;
         if (isAnimation) {
             transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
@@ -267,28 +271,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         replaceFragment(com.main.R.id.fl_main_content, NewFragment.class.getName(), false, null, transition);
     }
 
-    private void openCouponFragment(){
+    private void openCouponFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(com.main.R.id.fl_main_content, CouponFragment.class.getName(), false, null, transition);
     }
 
-    private void openPresentFragment(){
+    private void openPresentFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(com.main.R.id.fl_main_content, PresentFragment.class.getName(), false, null, transition);
     }
 
-    private void openMyPageFragment(){
+    private void openMyPageFragment() {
         FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
         replaceFragment(com.main.R.id.fl_main_content, MyPageFragment.class.getName(), false, null, transition);
     }
 
-    private void openSettingDialog(){
-       SettingFragment fragment = new SettingFragment();
+    private void openSettingDialog() {
+        SettingFragment fragment = new SettingFragment();
         fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(pushNotifyListenReceiver,
+                new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(pushNotifyListenReceiver);
+    }
+
     //=============== inner classes ================================================================
-    private static class DrawerAdapter extends BaseAdapter{
+    private static class DrawerAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -313,7 +330,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             //== inflate views
-            switch (getItemType(i)){
+            switch (getItemType(i)) {
                 case Group:
                     if (view == null || !(view.getTag() instanceof GroupItemHolder)) {
                         view = LayoutInflater.from(viewGroup.getContext()).inflate(com.main.R.layout.drawer_nav_item_group, viewGroup, false);
@@ -332,7 +349,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
 
             //== setup data to views
-            switch (getItemType(i)){
+            switch (getItemType(i)) {
                 case Group:
                     GroupItemHolder holder = (GroupItemHolder) view.getTag();
                     holder.txtTitle.setText(arrGroup.get((iGroup)));
@@ -342,7 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 default:
                     NormalItemHolder h = (NormalItemHolder) view.getTag();
                     //h.txtTitle.setText("Item Title");
-                        h.txtTitle.setText(arrItem.get(iItem));
+                    h.txtTitle.setText(arrItem.get(iItem));
                     iItem++;
                     break;
             }
@@ -363,20 +380,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         //==========
-        enum ItemType{
+        enum ItemType {
             Group, Normal
         }
 
         //===========
-        private static class NormalItemHolder{
+        private static class NormalItemHolder {
             TextView txtTitle;
 
             public NormalItemHolder(View root) {
                 txtTitle = (TextView) root.findViewById(com.main.R.id.txt_item_title);
             }
         }
+
         //===========
-        private static class GroupItemHolder{
+        private static class GroupItemHolder {
             TextView txtTitle;
 
             public GroupItemHolder(View root) {
@@ -385,7 +403,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    enum MainTabs{
+    enum MainTabs {
         News, Coupon, Present, MyPage, Setting
     }
 }
