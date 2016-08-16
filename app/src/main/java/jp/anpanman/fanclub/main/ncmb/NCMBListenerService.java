@@ -16,13 +16,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat.Builder;
-import android.util.Log;
-
 import com.google.android.gms.gcm.GcmListenerService;
 import java.io.File;
 import java.util.Random;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import jp.anpanman.fanclub.main.gcm.*;
 
 public class NCMBListenerService extends GcmListenerService {
     static final String OPEN_PUSH_START_ACTIVITY_KEY = "openPushStartActivity";
@@ -70,8 +70,7 @@ public class NCMBListenerService extends GcmListenerService {
         try {
             appInfo = this.getPackageManager().getApplicationInfo(this.getPackageName(), 128);
             applicationName = this.getPackageManager().getApplicationLabel(this.getPackageManager().getApplicationInfo(this.getPackageName(), 0)).toString();
-            activityName = "com.main.ui.activity"+ appInfo.metaData.getString("openPushStartActivity");
-            Log.d("classcheng", activityName);
+            activityName = appInfo.packageName + appInfo.metaData.getString("openPushStartActivity");
             packageName = appInfo.packageName;
             String intent = pushData.getString("com.nifty.Channel");
             if(intent != null) {

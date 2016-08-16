@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static int iGroup = 0, iItem = 0;
     public static ArrayList<String> arrGroup = new ArrayList<>();
     public static ArrayList<String> arrItem = new ArrayList<>();
+    private PushNotifyListenReceiver pushNotifyListenReceiver;
 
     //=============== constructors =================================================================
 
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         for (int j = 0; j < getResources().getStringArray(R.array.item).length; j++) {
             arrItem.add(getResources().getStringArray(R.array.item)[j]);
         }
+        pushNotifyListenReceiver = new PushNotifyListenReceiver();
     }
 
     @Override
@@ -292,8 +294,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(new PushNotifyListenReceiver(),
-                new IntentFilter("com.hmkcode.android.USER_ACTION"));
+        registerReceiver(pushNotifyListenReceiver,
+                new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(pushNotifyListenReceiver);
     }
 
     //=============== inner classes ================================================================
