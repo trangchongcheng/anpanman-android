@@ -1,6 +1,9 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -26,12 +29,17 @@ import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
 import jp.anpanman.fanclub.main.ui.fragment.PresentFragment;
 import jp.anpanman.fanclub.main.ui.fragment.SettingFragment;
-import jp.anpanman.fanclub.main.util.PushNotifyListenReceiver;
+import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
 
 /**
  * Created by linhphan on 7/15/16.
  */
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+    public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
+    public static final String ARG_PUSH_DATA = "ARG_PUSH_DATA";
+    public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
+    public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
 
     //=============== properties ===================================================================
     private ImageButton btnHamburgerMenu;
@@ -52,7 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static ArrayList<String> arrGroup = new ArrayList<>();
     public static ArrayList<String> arrItem = new ArrayList<>();
     private PushNotifyListenReceiver pushNotifyListenReceiver;
-
+    private CustomDialogCoupon customDialogCoupon;
     //=============== constructors =================================================================
 
 
@@ -74,6 +82,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             arrItem.add(getResources().getStringArray(R.array.item)[j]);
         }
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
+            String title = bundle.getString(ARG_PUSH_TITLE);
+            String message = bundle.getString(ARG_PUSH_MESSEAGE);
+            showPushDialog(title,message);
+        }
     }
 
     @Override
@@ -258,7 +272,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                btnPresentTab.setSelected(false);
 //                btnMyPageTab.setSelected(false);
 //                btnSettingTab.setSelected(false);
-                currentTab = MainTabs.News;
+                currentTab = MainTabs.Setting;
                 break;
         }
     }
@@ -288,6 +302,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void openSettingDialog() {
         SettingFragment fragment = new SettingFragment();
+        fragment.setCallback(new SettingFragment.DismissCallback() {
+            @Override
+            public void onDismiss() {
+                currentTab = MainTabs.News;
+                setDisplayBottomNav();
+            }
+        });
         fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
     }
 
@@ -304,7 +325,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         unregisterReceiver(pushNotifyListenReceiver);
     }
 
+    private void showPushDialog(String title, String message){
+        if (customDialogCoupon == null) {
+            customDialogCoupon = new CustomDialogCoupon(MainActivity.this);
+        }
+        customDialogCoupon.show();
+    }
     //=============== inner classes ================================================================
+    public class PushNotifyListenReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            showPushDialog(null,null);
+        }
+
+    }
+
     private static class DrawerAdapter extends BaseAdapter {
 
         @Override

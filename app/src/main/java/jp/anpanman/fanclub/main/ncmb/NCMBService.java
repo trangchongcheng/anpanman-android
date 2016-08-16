@@ -31,8 +31,6 @@ public class NCMBService extends NCMBListenerService {
     }
 
     public static boolean isAppRunning(Context context) {
-
-
         ActivityManager activityManager = (ActivityManager)
                 context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> services =

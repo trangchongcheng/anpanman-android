@@ -16,7 +16,7 @@ public class Constant {
     public static String NOTIFY_APPLICATION_KEY_NCMB = "2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a";
    public static String NOTIFY_CLIENT_KEY_NCMB= "06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9";
 
-
+    public static final String PUSH_ACTION = "jp.anpanman.fanclub.pushing";
 
     // DEBUG Interface
     // How to use :

@@ -1,5 +1,6 @@
 package jp.anpanman.fanclub.main.util;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -16,11 +17,11 @@ import com.main.R;
 
 public class CustomDialogCoupon extends Dialog implements
         android.view.View.OnClickListener {
-    public Context context;
+    public Activity activity;
 
-    public CustomDialogCoupon(Context context) {
+    public CustomDialogCoupon(Activity context) {
         super(context);
-        this.context=context;
+        this.activity=context;
     }
 
 
@@ -29,7 +30,6 @@ public class CustomDialogCoupon extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         setContentView(R.layout.dialog_coupon);
         ImageView imgClose = (ImageView) findViewById(R.id.imgClose);
         Button btnOk = (Button) findViewById(R.id.btnOk);
@@ -45,7 +45,7 @@ public class CustomDialogCoupon extends Dialog implements
                 dismiss();
                 break;
             case R.id.btnOk:
-                Toast.makeText(context, "CLICKED", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "CLICKED", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
