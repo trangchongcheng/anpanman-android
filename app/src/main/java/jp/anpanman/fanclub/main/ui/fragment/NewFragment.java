@@ -42,23 +42,33 @@ public class NewFragment extends BaseFragment {
 
     //============= inner methods ==================================================================
     private void setupWebView(){
-            webView.getSettings().setLoadsImagesAutomatically(true);
-            webView.getSettings().setJavaScriptEnabled(true);
-            webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-            webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    if (progress.getVisibility() == View.VISIBLE) {
-                        progress.setVisibility(View.GONE);
-                    }
-                }
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-                @Override
-                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                    Common.onSslError(getActivity(), view, handler, error);
+        //set responsive
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+
+        //set zoomable
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (progress.getVisibility() == View.VISIBLE) {
+                    progress.setVisibility(View.GONE);
                 }
-            });
-            webView.loadUrl(RestfulUrl.URL_NEWS);
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                Common.onSslError(getActivity(), view, handler, error);
+            }
+        });
+        webView.loadUrl(RestfulUrl.URL_NEWS);
     }
 }

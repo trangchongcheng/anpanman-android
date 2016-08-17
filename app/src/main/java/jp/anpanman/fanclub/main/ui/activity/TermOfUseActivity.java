@@ -66,6 +66,16 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
             mWebView.getSettings().setLoadsImagesAutomatically(true);
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+            //set responsive
+            mWebView.getSettings().setUseWideViewPort(true);
+            mWebView.getSettings().setLoadWithOverviewMode(true);
+
+            //set zoomable
+            mWebView.getSettings().setSupportZoom(true);
+            mWebView.getSettings().setBuiltInZoomControls(true);
+            mWebView.getSettings().setDisplayZoomControls(false);
+
             mWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
