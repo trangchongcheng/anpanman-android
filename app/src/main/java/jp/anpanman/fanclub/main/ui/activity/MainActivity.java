@@ -1,10 +1,15 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
+import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +31,20 @@ import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
 import jp.anpanman.fanclub.main.ui.fragment.PresentFragment;
 import jp.anpanman.fanclub.main.ui.fragment.SettingFragment;
-import jp.anpanman.fanclub.main.util.PushNotifyListenReceiver;
+import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
+import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
+import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
  * Created by linhphan on 7/15/16.
  */
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+    public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
+    public static final String ARG_PUSH_DATA = "ARG_PUSH_DATA";
+    public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
+    public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
+    public static final String ARG_URL = "ARG_URL";
 
     //=============== properties ===================================================================
     private ImageButton btnHamburgerMenu;
@@ -52,7 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static ArrayList<String> arrGroup = new ArrayList<>();
     public static ArrayList<String> arrItem = new ArrayList<>();
     private PushNotifyListenReceiver pushNotifyListenReceiver;
-
+    private CustomDialogCoupon customDialogCoupon;
     //=============== constructors =================================================================
 
 
@@ -74,6 +87,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             arrItem.add(getResources().getStringArray(R.array.item)[j]);
         }
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
+            String title = bundle.getString(ARG_PUSH_TITLE);
+            String message = bundle.getString(ARG_PUSH_MESSEAGE);
+            showPushDialog(title, message);
+        }
     }
 
     @Override
@@ -147,10 +166,46 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        switchTab(MainTabs.Setting, true);
+        switch (i) {
+            case 0:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 1:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 2:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 3:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 4:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 5:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 6:
+                Log.d("cheng", "onItemClick: "+i);
+                break;
+            case 7:
+                openWebView(RestfulUrl.URL_POLICY,getString(R.string.title_policy));
+                break;
+            case 8:
+                openWebView(RestfulUrl.URL_CONTACT,getString(R.string.title_contact));
+                break;
+            default:
+                break;
+
+        }
+        //switchTab(MainTabs.Setting, true);
     }
 
     //=============== inner methods ================================================================
+    public void openWebView(String url,String title) {
+        DialogFragment fragment = WebViewFragment.newInstance(url,title);
+        fragment.show(getFragmentManager(),SettingFragment.class.getName());
+    }
     private void setDrawerNavigation() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
@@ -258,7 +313,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                btnPresentTab.setSelected(false);
 //                btnMyPageTab.setSelected(false);
 //                btnSettingTab.setSelected(false);
-                currentTab = MainTabs.News;
+                currentTab = MainTabs.Setting;
                 break;
         }
     }
@@ -288,6 +343,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void openSettingDialog() {
         SettingFragment fragment = new SettingFragment();
+        fragment.setCallback(new SettingFragment.DismissCallback() {
+            @Override
+            public void onDismiss() {
+                currentTab = MainTabs.News;
+                setDisplayBottomNav();
+            }
+        });
         fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
     }
 
@@ -304,7 +366,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         unregisterReceiver(pushNotifyListenReceiver);
     }
 
+    private void showPushDialog(String title, String message) {
+        if (customDialogCoupon == null) {
+            customDialogCoupon = new CustomDialogCoupon(MainActivity.this);
+        }
+        customDialogCoupon.show();
+    }
+
     //=============== inner classes ================================================================
+    public class PushNotifyListenReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            showPushDialog(null, null);
+        }
+
+    }
+
     private static class DrawerAdapter extends BaseAdapter {
 
         @Override

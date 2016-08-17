@@ -1,6 +1,7 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,13 @@ import com.main.R;
  * Created by linhphan on 7/19/16.
  */
 public class SettingFragment extends DialogFragment{
+
+    private DismissCallback callback;
+
+    public void setCallback(DismissCallback callback) {
+        this.callback = callback;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,5 +45,15 @@ public class SettingFragment extends DialogFragment{
 
 
         return root;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        callback.onDismiss();
+    }
+
+    public interface DismissCallback{
+        void onDismiss();
     }
 }

@@ -11,6 +11,7 @@
     <color name="divider_color">#acacac</color>
     <color name="text_bottom_nav_inactive">#D8D8D8</color>
     <color name="text_bottom_nav_activated">#EE8247</color>
+    <color name="progress">#edad89</color>
 
 
     <!--drawer navigation-->

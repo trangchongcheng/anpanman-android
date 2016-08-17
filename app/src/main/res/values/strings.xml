@@ -49,4 +49,7 @@
 
     <!--dialog coupon-->
     <string name="button_ok">ダウンロード</string>
+    <string name="title_policy">プライバシーポリシー</string>
+    <string name="title_contact">お問い合わせ</string>
+    <string name="terms_of_use">利用規約</string>
 </resources>

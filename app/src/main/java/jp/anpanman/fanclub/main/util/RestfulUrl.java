@@ -9,7 +9,6 @@ public class RestfulUrl {
     public final static String NOTIFY_HOST_REGISTER_DEVICE_TOKEN = "https://script.mb.api.cloud.nifty.com/2015-09-01/script/device.js";
     public final static String NOTIFY_HOST_GET_USER_INFO = "https://mb.api.cloud.nifty.com/2013-09-01/classes/User/";
 
-
     //== web view urls
     public final static String WEB_VIEW_DOMAIN_PRODUCT_MODE = "http://fcapp.anpanman.jp/";
     public final static String WEB_VIEW_DOMAIN_STAGING_MODE = "http://stg-fcapp.anpanman.jp/";

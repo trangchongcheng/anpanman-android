@@ -283,6 +283,14 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void gotoTopScreen() {
         Intent intent = new Intent(this, MainActivity.class);
+        if (Constant.PUSH_ACTION.equals(getIntent().getAction()) && getIntent().getExtras() != null){
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(MainActivity.ARG_SHOULD_SHOW_PUSH_DIALOG, true);
+            bundle.putString(MainActivity.ARG_PUSH_MESSEAGE,getIntent().getExtras().getString("message"));
+            bundle.putString(MainActivity.ARG_PUSH_TITLE,getIntent().getExtras().getString("title"));
+
+            intent.putExtras(bundle);
+        }
         startActivity(intent);
     }
 

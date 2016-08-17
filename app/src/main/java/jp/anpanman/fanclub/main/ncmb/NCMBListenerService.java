@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import jp.anpanman.fanclub.main.gcm.*;
+import jp.anpanman.fanclub.main.util.Constant;
 
 public class NCMBListenerService extends GcmListenerService {
     static final String OPEN_PUSH_START_ACTIVITY_KEY = "openPushStartActivity";
@@ -102,6 +103,7 @@ public class NCMBListenerService extends GcmListenerService {
         ComponentName componentName1 = new ComponentName(packageName, activityName);
         intent1.setComponent(componentName1);
         intent1.putExtras(pushData);
+        intent1.setAction(Constant.PUSH_ACTION);
         PendingIntent pendingIntent1 = PendingIntent.getActivity(this, (new Random()).nextInt(), intent1, 268435456);
         String message1 = "";
         String title = "";
