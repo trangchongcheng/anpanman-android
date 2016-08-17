@@ -61,9 +61,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     public static MainTabs currentTab;
 
-    public static int iGroup = 0, iItem = 0;
-    public static ArrayList<String> arrGroup = new ArrayList<>();
-    public static ArrayList<String> arrItem = new ArrayList<>();
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
     //=============== constructors =================================================================
@@ -80,12 +77,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switchTab(MainTabs.News, false);
         setDisplayBottomNav();
 
-        for (int j = 0; j < getResources().getStringArray(R.array.group).length; j++) {
-            arrGroup.add(getResources().getStringArray(R.array.group)[j]);
-        }
-        for (int j = 0; j < getResources().getStringArray(R.array.item).length; j++) {
-            arrItem.add(getResources().getStringArray(R.array.item)[j]);
-        }
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
@@ -214,7 +205,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
 
-        DrawerAdapter drawerAdapter = new DrawerAdapter();
+        DrawerAdapter drawerAdapter = new DrawerAdapter(this);
         lvDrawerNav.setAdapter(drawerAdapter);
     }
 
@@ -384,6 +375,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private static class DrawerAdapter extends BaseAdapter {
 
+        private int iGroup, iItem;
+        private ArrayList<String> arrGroup = new ArrayList<>();
+        private ArrayList<String> arrItem = new ArrayList<>();
+
+        public DrawerAdapter(Context context) {
+            iGroup = 0;
+            iItem = 0;
+
+            for (int j = 0; j < context.getResources().getStringArray(R.array.group).length; j++) {
+                arrGroup.add(context.getResources().getStringArray(R.array.group)[j]);
+            }
+            for (int j = 0; j < context.getResources().getStringArray(R.array.item).length; j++) {
+                arrItem.add(context.getResources().getStringArray(R.array.item)[j]);
+            }
+        }
+
         @Override
         public int getCount() {
             return 8;
@@ -431,6 +438,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     GroupItemHolder holder = (GroupItemHolder) view.getTag();
                     holder.txtTitle.setText(arrGroup.get((iGroup)));
                     iGroup++;
+                    iGroup = iGroup % arrGroup.size();
                     break;
 
                 default:
@@ -438,6 +446,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     //h.txtTitle.setText("Item Title");
                     h.txtTitle.setText(arrItem.get(iItem));
                     iItem++;
+                    iItem = iItem % arrItem.size();
                     break;
             }
 
