@@ -1,9 +1,12 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -20,7 +23,7 @@ import com.main.R;
 public class NewFragment extends BaseFragment {
 
     private WebView webView;
-    private ProgressBar progress;
+    private ProgressBar horizontalProgress;
 
     //============= inherited methods ==============================================================
     @Override
@@ -31,7 +34,7 @@ public class NewFragment extends BaseFragment {
     @Override
     protected void getMandatoryViews(View root, Bundle savedInstanceState) {
         webView = (WebView) root.findViewById(R.id.web_view);
-        progress = (ProgressBar) root.findViewById(R.id.progressBar);
+        horizontalProgress = (ProgressBar) root.findViewById(R.id.progressBar2);
         setupWebView();
     }
 
@@ -57,16 +60,31 @@ public class NewFragment extends BaseFragment {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (progress.getVisibility() == View.VISIBLE) {
-                    progress.setVisibility(View.GONE);
-                }
             }
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 Common.onSslError(getActivity(), view, handler, error);
+            }
+        });
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (newProgress == 100){
+                    horizontalProgress.setVisibility(View.GONE);
+                }else{
+                    horizontalProgress.setProgress(newProgress);
+                    horizontalProgress.setVisibility(View.VISIBLE);
+                }
             }
         });
         webView.loadUrl(RestfulUrl.URL_NEWS);
