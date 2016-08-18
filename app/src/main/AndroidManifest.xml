@@ -70,7 +70,7 @@
 
         <activity
             android:name="jp.anpanman.fanclub.main.ui.activity.MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"/>
 
 

@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +57,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private DrawerLayout drawerLayout;
     private ListView lvDrawerNav;
     private NavigationView navigationView;
+    private RelativeLayout rl_top_nav;
+    private LinearLayout rl_bottom_nav;
 
     //== bottom nav
     private ImageButton btnNewsTab;
@@ -77,10 +82,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
             switchTab(currentTab, false);
-        }else{
+        } else {
             switchTab(MainTabs.News, false);
         }
 
@@ -100,7 +105,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onResume();
         registerReceiver(pushNotifyListenReceiver,
                 new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
+
+        int ot = getResources().getConfiguration().orientation;
+        switch (ot) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                hideMenu();
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                showMenu();
+                break;
+        }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -119,6 +135,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         return com.main.R.layout.activity_main;
     }
 
+
     @Override
     protected void getMandatoryViews(Bundle savedInstanceState) {
         //== bottom nav
@@ -127,6 +144,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btnPresentTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_present);
         btnMyPageTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_my_page);
         btnSettingTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_setting);
+
+        rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
+        rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(com.main.R.id.drawer);
@@ -187,31 +207,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         switch (i) {
             case 0:
-                AppLog.log("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 1:
-                AppLog.log("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 2:
-                openWebView(RestfulUrl.URL_WALL,getString(R.string.wall_paper));
+                openWebView(RestfulUrl.URL_WALL, getString(R.string.wall_paper));
                 break;
             case 3:
-                openWebView(RestfulUrl.URL_GURIDINGU,getString(R.string.guiridingu));
+                openWebView(RestfulUrl.URL_GURIDINGU, getString(R.string.guiridingu));
                 break;
             case 4:
-                AppLog.log("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                openWebView(RestfulUrl.URL_TERMS,getString(R.string.terms_of_use));
+                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));
                 break;
             case 6:
-                openWebView(RestfulUrl.URL_TERMS,getString(R.string.terms_of_use));
+                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));
                 break;
             case 7:
-                openWebView(RestfulUrl.URL_POLICY,getString(R.string.title_policy));
+                openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy));
                 break;
             case 8:
-                openWebView(RestfulUrl.URL_CONTACT,getString(R.string.title_contact));
+                openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact));
                 break;
             default:
                 break;
@@ -221,10 +241,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner methods ================================================================
-    public void openWebView(String url,String title) {
-        DialogFragment fragment = WebViewFragment.newInstance(url,title);
-        fragment.show(getFragmentManager(),WebViewFragment.class.getName());
+    public void openWebView(String url, String title) {
+        DialogFragment fragment = WebViewFragment.newInstance(url, title);
+        fragment.show(getFragmentManager(), WebViewFragment.class.getName());
     }
+
+    public void hideMenu() {
+        rl_bottom_nav.setVisibility(View.GONE);
+        rl_top_nav.setVisibility(View.GONE);
+    }
+
+    public void showMenu() {
+        rl_bottom_nav.setVisibility(View.VISIBLE);
+        rl_top_nav.setVisibility(View.VISIBLE);
+    }
+
     private void setDrawerNavigation() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
@@ -507,9 +538,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     enum MainTabs {
         News, Coupon, Present, MyPage, Setting;
 
-        public static MainTabs get(int ordinal){
+        public static MainTabs get(int ordinal) {
             MainTabs tab = News;
-            switch (ordinal){
+            switch (ordinal) {
                 case 0:
                     tab = News;
                     break;
