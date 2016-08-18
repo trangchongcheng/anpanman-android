@@ -3,6 +3,7 @@ package jp.anpanman.fanclub.main.ui.fragment;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,12 @@ public class WebViewFragment extends DialogFragment {
     private String mUrl, mTitle;
     private static final String URL = "url";
     private static final String TITLE = "title";
+
+    private DismissCallback callback;
+
+    public void setCallback(DismissCallback callback) {
+        this.callback = callback;
+    }
 
     public static WebViewFragment newInstance(String url,String title) {
         WebViewFragment f = new WebViewFragment();
@@ -131,6 +138,16 @@ public class WebViewFragment extends DialogFragment {
             mWebView.loadUrl(mUrl);
         }
 
+    }
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(callback!=null){
+            callback.onDismiss();
+        }
+    }
+    public interface DismissCallback{
+        void onDismiss();
     }
 
 }
