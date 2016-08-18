@@ -27,14 +27,11 @@ public class MyPageFragment extends BaseFragment {
     //============= inherited methods ==============================================================
     @Override
     public int getRootLayoutId() {
-        return R.layout.fragment_news;
+        return R.layout.fragment_mypage;
     }
 
     @Override
     protected void getMandatoryViews(View root, Bundle savedInstanceState) {
-        webView = (WebView) root.findViewById(R.id.web_view);
-        horizontalProgress = (ProgressBar) root.findViewById(R.id.progressBar2);
-        setupWebView();
     }
 
     @Override
@@ -50,43 +47,5 @@ public class MyPageFragment extends BaseFragment {
     }
 
     //============= inner methods ==================================================================
-    private void setupWebView(){
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        //set responsive
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-
-        //set zoomable
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                Common.onSslError(getActivity(), view, handler, error);
-            }
-        });
-        webView.setWebChromeClient(new WebChromeClient(){
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100){
-                    horizontalProgress.setVisibility(View.GONE);
-                }else{
-                    horizontalProgress.setProgress(newProgress);
-                    horizontalProgress.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        webView.loadUrl(RestfulUrl.URL_WALL);
-    }
 }

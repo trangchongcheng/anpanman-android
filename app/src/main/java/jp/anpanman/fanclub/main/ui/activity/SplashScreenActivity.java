@@ -55,7 +55,6 @@ public class SplashScreenActivity extends BaseActivity {
             }
         }, DELAYED_TIME_SPLASH_SCREEN);
 
-        Log.d("ahihi", "onCreate: "+getApplicationContext().getPackageName());
         //InitializeI NCMB
         NCMB.initialize(this, Constant.NOTIFY_APPLICATION_KEY_NCMB,
                 Constant.NOTIFY_CLIENT_KEY_NCMB);

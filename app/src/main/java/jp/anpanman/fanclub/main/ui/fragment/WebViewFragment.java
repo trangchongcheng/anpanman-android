@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -33,12 +34,11 @@ public class WebViewFragment extends DialogFragment {
     private WebView mWebView;
     private ImageView imgClose;
     private TextView tvTitle;
-    private ProgressBar mProgress;
     private LinearLayout ll;
     private String mUrl, mTitle;
     private static final String URL = "url";
     private static final String TITLE = "title";
-
+    private ProgressBar horizontalProgress;
     private DismissCallback callback;
 
     public void setCallback(DismissCallback callback) {
@@ -84,7 +84,8 @@ public class WebViewFragment extends DialogFragment {
         imgClose = (ImageView) root.findViewById(R.id.imgClose);
         imgClose.setVisibility(View.VISIBLE);
         tvTitle = (TextView) root.findViewById(R.id.tvTitle);
-        mProgress = (ProgressBar) root.findViewById(R.id.progressBar);
+        horizontalProgress = (ProgressBar) root.findViewById(R.id.progressBar2);
+
         setValue();
         setEvent();
         setupWebView();
@@ -125,14 +126,23 @@ public class WebViewFragment extends DialogFragment {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
-                    if (mProgress.getVisibility() == View.VISIBLE) {
-                        mProgress.setVisibility(View.GONE);
-                    }
                 }
 
                 @Override
                 public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                     Common.onSslError(getActivity(), view, handler, error);
+                }
+            });
+            mWebView.setWebChromeClient(new WebChromeClient(){
+                @Override
+                public void onProgressChanged(WebView view, int newProgress) {
+                    super.onProgressChanged(view, newProgress);
+                    if (newProgress == 100){
+                        horizontalProgress.setVisibility(View.GONE);
+                    }else{
+                        horizontalProgress.setProgress(newProgress);
+                        horizontalProgress.setVisibility(View.VISIBLE);
+                    }
                 }
             });
             mWebView.loadUrl(mUrl);

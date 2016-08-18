@@ -77,13 +77,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currentTab = MainTabs.News;
         if (savedInstanceState != null){
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
-            Log.e("**current tab**", currentTab.toString());
+            switchTab(currentTab, false);
+        }else{
+            switchTab(MainTabs.News, false);
         }
 
-        switchTab(currentTab, false);
         setDisplayBottomNav();
 
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
