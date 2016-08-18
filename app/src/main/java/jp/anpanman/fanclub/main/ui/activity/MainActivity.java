@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.main.R;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
@@ -42,6 +43,7 @@ import jp.anpanman.fanclub.main.util.RestfulUrl;
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
+    public static final String ARG_CURRENT_TAB = "ARG_CURRENT_TAB";
     public static final String ARG_PUSH_DATA = "ARG_PUSH_DATA";
     public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
     public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
@@ -75,7 +77,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        switchTab(MainTabs.News, false);
+        currentTab = MainTabs.News;
+        if (savedInstanceState != null){
+            currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
+            Log.e("**current tab**", currentTab.toString());
+        }
+
+        switchTab(currentTab, false);
         setDisplayBottomNav();
 
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
@@ -85,6 +93,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             String message = bundle.getString(ARG_PUSH_MESSEAGE);
             showPushDialog(title, message);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(pushNotifyListenReceiver,
+                new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(pushNotifyListenReceiver);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -345,19 +372,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(pushNotifyListenReceiver,
-                new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(pushNotifyListenReceiver);
-    }
-
     private void showPushDialog(String title, String message) {
         if (customDialogCoupon == null) {
             customDialogCoupon = new CustomDialogCoupon(MainActivity.this);
@@ -491,6 +505,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     enum MainTabs {
-        News, Coupon, Present, MyPage, Setting
+        News, Coupon, Present, MyPage, Setting;
+
+        public static MainTabs get(int ordinal){
+            MainTabs tab = News;
+            switch (ordinal){
+                case 0:
+                    tab = News;
+                    break;
+                case 1:
+                    tab = Coupon;
+                    break;
+                case 2:
+                    tab = Present;
+                    break;
+                case 3:
+                    tab = MyPage;
+                    break;
+                case 4:
+                    tab = Setting;
+                    break;
+            }
+
+            return tab;
+        }
     }
 }

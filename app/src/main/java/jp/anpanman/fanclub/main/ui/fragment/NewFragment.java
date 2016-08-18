@@ -1,5 +1,7 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -41,6 +43,13 @@ public class NewFragment extends BaseFragment {
     @Override
     protected void registerEventHandlers() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Activity a = getActivity();
+        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     //============= inner methods ==================================================================

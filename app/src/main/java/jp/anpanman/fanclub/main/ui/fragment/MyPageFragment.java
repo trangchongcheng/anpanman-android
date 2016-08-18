@@ -1,5 +1,7 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +40,13 @@ public class MyPageFragment extends BaseFragment {
     @Override
     protected void registerEventHandlers() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Activity a = getActivity();
+        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     //============= inner methods ==================================================================
