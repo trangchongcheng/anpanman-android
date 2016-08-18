@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.ui.fragment.CouponFragment;
 import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
@@ -159,25 +160,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         switch (i) {
             case 0:
-                Log.d("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: "+i);
                 break;
             case 1:
-                Log.d("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: "+i);
                 break;
             case 2:
-                Log.d("cheng", "onItemClick: "+i);
+                openWebView(RestfulUrl.URL_WALL,getString(R.string.wall_paper));
                 break;
             case 3:
-                Log.d("cheng", "onItemClick: "+i);
+                openWebView(RestfulUrl.URL_GURIDINGU,getString(R.string.guiridingu));
                 break;
             case 4:
-                Log.d("cheng", "onItemClick: "+i);
+                AppLog.log("cheng", "onItemClick: "+i);
                 break;
             case 5:
-                Log.d("cheng", "onItemClick: "+i);
+                openWebView(RestfulUrl.URL_TERMS,getString(R.string.terms_of_use));
                 break;
             case 6:
-                Log.d("cheng", "onItemClick: "+i);
+                openWebView(RestfulUrl.URL_TERMS,getString(R.string.terms_of_use));
                 break;
             case 7:
                 openWebView(RestfulUrl.URL_POLICY,getString(R.string.title_policy));
@@ -195,7 +196,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //=============== inner methods ================================================================
     public void openWebView(String url,String title) {
         DialogFragment fragment = WebViewFragment.newInstance(url,title);
-        fragment.show(getFragmentManager(),SettingFragment.class.getName());
+        fragment.show(getFragmentManager(),WebViewFragment.class.getName());
     }
     private void setDrawerNavigation() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -333,15 +334,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void openSettingDialog() {
-        SettingFragment fragment = new SettingFragment();
-        fragment.setCallback(new SettingFragment.DismissCallback() {
+        WebViewFragment fragment = new WebViewFragment();
+        fragment.setCallback(new WebViewFragment.DismissCallback() {
             @Override
             public void onDismiss() {
                 currentTab = MainTabs.News;
                 setDisplayBottomNav();
             }
         });
-        fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
+        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other));
     }
 
     @Override
