@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.Toast;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
@@ -39,7 +38,7 @@ public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     private final int DELAYED_TIME_SPLASH_SCREEN = 3000;
 
-    private boolean isShouldLeaveThisScreen = false;
+    private boolean shouldLeaveThisScreen = false;
     static Boolean TestCompletion = false;
 
     //=========== inherited methods ================================================================
@@ -261,13 +260,13 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void gotoNextScreen() {
-        if (!isShouldLeaveThisScreen) {
-            isShouldLeaveThisScreen = true;
+        if (!shouldLeaveThisScreen) {
+            shouldLeaveThisScreen = true;
             return;
         }
 
         boolean isIntroHasShowed = SharedPreferencesUtil.getBoolean(this, IntroActivity.PREF_INTRO_HAS_SHOWED, false);
-        if (isIntroHasShowed) {
+        if (!isIntroHasShowed) {
             gotoIntroScreen();
         } else {
             gotoTopScreen();
