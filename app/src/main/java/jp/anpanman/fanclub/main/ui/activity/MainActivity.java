@@ -334,15 +334,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void openSettingDialog() {
-        SettingFragment fragment = new SettingFragment();
-        fragment.setCallback(new SettingFragment.DismissCallback() {
+        WebViewFragment fragment = new WebViewFragment();
+        fragment.setCallback(new WebViewFragment.DismissCallback() {
             @Override
             public void onDismiss() {
                 currentTab = MainTabs.News;
                 setDisplayBottomNav();
             }
         });
-        fragment.show(getSupportFragmentManager(), SettingFragment.class.getName());
+        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other));
     }
 
     @Override
