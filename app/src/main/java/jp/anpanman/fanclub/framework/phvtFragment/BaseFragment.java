@@ -202,7 +202,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * Get owner class which is holding this fragment
      *
-     * @return SampleActivity instance or null if activity of fragment is not an instance of SampleActivity
+     * @return BaseActivity instance or null if activity of fragment is not an instance of SampleActivity
      */
     @SuppressWarnings("unchecked")
     public <T extends BaseActivity>T getOwnerActivity() {

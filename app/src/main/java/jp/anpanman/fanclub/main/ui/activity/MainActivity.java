@@ -269,8 +269,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     public void switchTab(MainTabs newTab, boolean isAnimation) {
-        AppLog.log(newTab +"");
-
+        Log.e("**current tab**", (currentTab == null) ? "" : currentTab.toString());
+        Log.e("**new tab**", newTab.toString());
         if (newTab == currentTab) {
             return;
         }
@@ -364,7 +364,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                btnPresentTab.setSelected(false);
 //                btnMyPageTab.setSelected(false);
 //                btnSettingTab.setSelected(false);
-//                currentTab = MainTabs.News;
+                currentTab = MainTabs.Setting;
                 break;
         }
     }

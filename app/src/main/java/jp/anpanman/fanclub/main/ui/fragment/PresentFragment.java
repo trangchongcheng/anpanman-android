@@ -13,6 +13,9 @@ import android.widget.ProgressBar;
 
 import com.main.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
@@ -87,6 +90,8 @@ public class PresentFragment extends BaseFragment {
                 }
             }
         });
-        webView.loadUrl(RestfulUrl.URL_PRESENTS);
+        Map<String, String> extraHeaders = new HashMap<>();
+        extraHeaders.put("x-anp-request","true");
+        webView.loadUrl(RestfulUrl.URL_PRESENTS, extraHeaders);
     }
 }
