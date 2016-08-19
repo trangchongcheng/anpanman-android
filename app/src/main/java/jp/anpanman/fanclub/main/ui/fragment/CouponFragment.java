@@ -92,6 +92,6 @@ public class CouponFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request","true");
-        webView.loadUrl(RestfulUrl.URL_PRESENTS, extraHeaders);
+        webView.loadUrl(RestfulUrl.URL_COUPON, extraHeaders);
     }
 }

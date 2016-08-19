@@ -16,6 +16,7 @@ public class RestfulUrl {
 
     public final static String URL_NEWS = WEB_VIEW_DOMAIN+ "new/";
     public final static String URL_PRESENTS = WEB_VIEW_DOMAIN+ "present/";
+    public final static String URL_COUPON = WEB_VIEW_DOMAIN+ "otoku/";
     public final static String URL_ACCOUNT_SETTING = WEB_VIEW_DOMAIN+ "account/";
     public final static String URL_TERMS = WEB_VIEW_DOMAIN+ "terms/";
     public final static String URL_POLICY = WEB_VIEW_DOMAIN+ "privacy_policy/";
