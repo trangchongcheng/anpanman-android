@@ -15,8 +15,12 @@ import android.widget.ProgressBar;
 
 import com.main.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 
 /**
@@ -101,7 +105,9 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             });
-            mWebView.loadUrl(mUrl);
+            Map<String, String> extraHeaders = new HashMap<>();
+            extraHeaders.put("x-anp-request","true");
+            mWebView.loadUrl(RestfulUrl.URL_TERMS, extraHeaders);
         }
     }
 

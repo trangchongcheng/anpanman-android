@@ -24,6 +24,9 @@ import android.widget.Toolbar;
 
 import com.main.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.main.util.Common;
 
@@ -145,7 +148,9 @@ public class WebViewFragment extends DialogFragment {
                     }
                 }
             });
-            mWebView.loadUrl(mUrl);
+            Map<String, String> extraHeaders = new HashMap<>();
+            extraHeaders.put("x-anp-request","true");
+            mWebView.loadUrl(mUrl, extraHeaders);
         }
 
     }

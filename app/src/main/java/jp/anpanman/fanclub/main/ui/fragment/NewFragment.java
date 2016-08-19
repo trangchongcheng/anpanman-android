@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -18,6 +20,13 @@ import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by linhphan on 7/19/16.
@@ -69,6 +78,11 @@ public class NewFragment extends BaseFragment {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
 
@@ -96,6 +110,8 @@ public class NewFragment extends BaseFragment {
                 }
             }
         });
-        webView.loadUrl(RestfulUrl.URL_NEWS);
+        Map<String, String> extraHeaders = new HashMap<>();
+        extraHeaders.put("x-anp-request","true");
+        webView.loadUrl(RestfulUrl.URL_NEWS, extraHeaders);
     }
 }

@@ -17,6 +17,9 @@ import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by linhphan on 7/19/16.
  */
@@ -87,6 +90,8 @@ public class CouponFragment extends BaseFragment {
                 }
             }
         });
-        webView.loadUrl(RestfulUrl.URL_PRESENTS);
+        Map<String, String> extraHeaders = new HashMap<>();
+        extraHeaders.put("x-anp-request","true");
+        webView.loadUrl(RestfulUrl.URL_PRESENTS, extraHeaders);
     }
 }

@@ -292,8 +292,8 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         String result = null;
 
         if (path.startsWith("https:")) {
-            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             //== add header
             httpsURLConnection.setRequestMethod("GET");
             if (header != null && !header.isEmpty()){

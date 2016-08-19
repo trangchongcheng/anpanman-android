@@ -48,10 +48,6 @@
             android:resource="@drawable/icon_anpan_active" />
 
         <activity
-            android:name="jp.anpanman.fanclub.main.ui.activity.SampleActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="jp.anpanman.fanclub.main.ui.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>

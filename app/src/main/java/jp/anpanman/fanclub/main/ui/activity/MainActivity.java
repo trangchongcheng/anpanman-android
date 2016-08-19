@@ -238,7 +238,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     public void switchTab(MainTabs newTab, boolean isAnimation) {
-
+        Log.e("**current tab**", (currentTab == null) ? "" : currentTab.toString());
+        Log.e("**new tab**", newTab.toString());
         if (newTab == currentTab) {
             return;
         }
