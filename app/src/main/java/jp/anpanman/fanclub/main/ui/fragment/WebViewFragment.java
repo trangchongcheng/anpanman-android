@@ -1,9 +1,11 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -66,6 +68,13 @@ public class WebViewFragment extends DialogFragment {
         setStyle(STYLE_NO_FRAME, android.R.style.Theme_Holo_Light);
         mUrl = getArguments().getString(URL);
         mTitle = getArguments().getString(TITLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Activity a = getActivity();
+        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @NonNull
