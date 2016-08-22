@@ -52,7 +52,10 @@
             android:layout_alignParentTop="true"
             android:background="@color/colorDivider" />
     </RelativeLayout>
-
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -67,17 +70,26 @@
     </FrameLayout>
 
     <LinearLayout
+        android:background="@color/text_bottom_nav_inactive"
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/positive_50dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="visible">
 
         <Button
             android:id="@+id/btn_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:text="@string/button_term_user"
+            android:textSize="@dimen/text_size_18sp"
+            android:textColor="@color/color_white"
+            android:background="@drawable/button_coupon_state"
+            android:layout_marginLeft="@dimen/positive_30dp"
+            android:layout_marginRight="@dimen/positive_30dp"
+            android:layout_marginTop="@dimen/positive_10dp"
+            android:layout_marginBottom="@dimen/positive_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/positive_60dp" />
     </LinearLayout>
+</LinearLayout>
 
 </LinearLayout>

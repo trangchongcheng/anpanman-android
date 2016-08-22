@@ -1,65 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="bottom|center_horizontal">
-            <View
-                android:id="@+id/indicator_0"
-                android:layout_width="@dimen/positive_10dp"
-                android:layout_height="@dimen/positive_10dp"
-                android:background="@drawable/bg_view_pager_indicator"/>
-            <View
-                android:id="@+id/indicator_1"
-                android:layout_width="@dimen/positive_10dp"
-                android:layout_height="@dimen/positive_10dp"
-                android:layout_marginLeft="@dimen/positive_10dp"
-                android:layout_marginStart="@dimen/positive_10dp"
-                android:background="@drawable/bg_view_pager_indicator"/>
-            <View
-                android:id="@+id/indicator_2"
-                android:layout_width="@dimen/positive_10dp"
-                android:layout_height="@dimen/positive_10dp"
-                android:layout_marginLeft="@dimen/positive_10dp"
-                android:layout_marginStart="@dimen/positive_10dp"
-                android:background="@drawable/bg_view_pager_indicator"/>
-
-            <View
-                android:id="@+id/indicator_3"
-                android:layout_width="@dimen/positive_10dp"
-                android:layout_height="@dimen/positive_10dp"
-                android:layout_marginLeft="@dimen/positive_10dp"
-                android:layout_marginStart="@dimen/positive_10dp"
-                android:background="@drawable/bg_view_pager_indicator"/>
-        </LinearLayout>
-    </FrameLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_skip"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center">
+
+                <View
+                    android:id="@+id/indicator_0"
+                    android:layout_width="@dimen/positive_10dp"
+                    android:layout_height="@dimen/positive_10dp"
+                    android:background="@drawable/bg_view_pager_indicator" />
+
+                <View
+                    android:id="@+id/indicator_1"
+                    android:layout_width="@dimen/positive_10dp"
+                    android:layout_height="@dimen/positive_10dp"
+                    android:layout_marginLeft="@dimen/positive_10dp"
+                    android:layout_marginStart="@dimen/positive_10dp"
+                    android:background="@drawable/bg_view_pager_indicator" />
+
+                <View
+                    android:id="@+id/indicator_2"
+                    android:layout_width="@dimen/positive_10dp"
+                    android:layout_height="@dimen/positive_10dp"
+                    android:layout_marginLeft="@dimen/positive_10dp"
+                    android:layout_marginStart="@dimen/positive_10dp"
+                    android:background="@drawable/bg_view_pager_indicator" />
+
+                <View
+                    android:id="@+id/indicator_3"
+                    android:layout_width="@dimen/positive_10dp"
+                    android:layout_height="@dimen/positive_10dp"
+                    android:layout_marginLeft="@dimen/positive_10dp"
+                    android:layout_marginStart="@dimen/positive_10dp"
+                    android:background="@drawable/bg_view_pager_indicator" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:background="@color/text_bottom_nav_inactive"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skip"/>
+            android:gravity="center">
 
+            <Button
+                android:id="@+id/btn_skip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/positive_60dp"
+                android:layout_marginBottom="@dimen/positive_10dp"
+                android:layout_marginLeft="@dimen/positive_30dp"
+                android:layout_marginRight="@dimen/positive_30dp"
+                android:layout_marginTop="@dimen/positive_10dp"
+                android:background="@drawable/button_coupon_state"
+                android:text="@string/button_term_user"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_18sp" />
+
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

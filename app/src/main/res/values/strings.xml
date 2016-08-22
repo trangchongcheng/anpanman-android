@@ -56,4 +56,7 @@
     <string name="guiridingu">グリーディング</string>
     <string name="other">その他</string>
     <string name="badge">獲得バッジ</string>
+
+    <string name="button_term_user">同意する</string>
+    <string name="button_tutorial">スキップ</string>
 </resources>
