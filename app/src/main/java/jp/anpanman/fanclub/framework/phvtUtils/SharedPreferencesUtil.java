@@ -56,7 +56,7 @@ public class SharedPreferencesUtil {
         return preference.getString(key, defaultValue);
     }
 
-    public static void putString(Context context, String key, String value) {
+    public static synchronized void putString(Context context, String key, String value) {
         SharedPreferences preference = context.getSharedPreferences(PREFERENCE_FILE_NAME, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preference.edit();
         editor.putString(key, value);

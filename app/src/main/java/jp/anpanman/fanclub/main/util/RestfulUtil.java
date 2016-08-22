@@ -5,6 +5,7 @@ import android.content.Context;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.parser.DeviceTokenParser;
 import jp.anpanman.fanclub.main.parser.SignupParser;
+import jp.anpanman.fanclub.main.parser.UpdatedTimeParser;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -97,5 +98,12 @@ public class RestfulUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void getUpdatedTime(Context context, RestfulService.Callback callback){
+        RestfulService service = new RestfulService(context, false, callback);
+        service.setType(RestfulService.Method.GET);
+        service.setParser(new UpdatedTimeParser());
+        service.execute(RestfulUrl.API_UPDATED_TIME);
     }
 }

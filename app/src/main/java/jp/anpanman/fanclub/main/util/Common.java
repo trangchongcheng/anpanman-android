@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -85,5 +86,23 @@ public class Common {
         AppLog.log("Signature: " + signature);
 
         return signature;
+    }
+
+    public static boolean compareTimeGreater(String time1, String time2){
+        String pattern = ""; // 2016-07-14T11:45:12+09:00
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.JAPAN);
+        try {
+            sdf.parse(time1);
+            Calendar cal1 = sdf.getCalendar();
+            sdf.parse(time2);
+            Calendar cal2 = sdf.getCalendar();
+
+            if (cal1.getTimeInMillis() > cal2.getTimeInMillis()){
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
