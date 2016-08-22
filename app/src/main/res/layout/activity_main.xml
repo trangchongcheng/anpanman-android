@@ -46,90 +46,124 @@
             android:layout_alignParentBottom="true"
             android:background="@color/bottom_nav_background"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingEnd="@dimen/positive_16dp"
-            android:paddingLeft="@dimen/positive_16dp"
-            android:paddingRight="@dimen/positive_16dp"
-            android:paddingStart="@dimen/positive_16dp">
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical">
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_news"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@null"
                     android:src="@drawable/bg_state_anpanman" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_img_tab_news"
+                    android:layout_centerHorizontal="true"
                     android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_news" />
-            </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_news_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btn_img_tab_news"
+                    android:layout_toEndOf="@id/btn_img_tab_news"
+                    android:src="@drawable/icon_new"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical">
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@null"
                     android:src="@drawable/bg_state_coupon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_img_tab_coupon"
+                    android:layout_centerHorizontal="true"
                     android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_coupon" />
-            </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_coupon_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btn_img_tab_coupon"
+                    android:layout_toEndOf="@id/btn_img_tab_coupon"
+                    android:src="@drawable/icon_new"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical">
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_present"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@null"
                     android:src="@drawable/bg_state_present" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_img_tab_present"
+                    android:layout_centerHorizontal="true"
                     android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_present" />
-            </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_present_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btn_img_tab_present"
+                    android:layout_toEndOf="@id/btn_img_tab_present"
+                    android:src="@drawable/icon_new"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
@@ -186,6 +220,11 @@
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_setting" />
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
         </LinearLayout>
 

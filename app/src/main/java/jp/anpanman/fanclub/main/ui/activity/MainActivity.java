@@ -2,7 +2,6 @@ package jp.anpanman.fanclub.main.ui.activity;
 
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,6 +9,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -26,25 +27,29 @@ import android.widget.Toast;
 import com.main.R;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
+import jp.anpanman.fanclub.framework.restfulService.RestfulService;
+import jp.anpanman.fanclub.main.model.UpdatedTime;
 import jp.anpanman.fanclub.main.ui.fragment.CouponFragment;
 import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
 import jp.anpanman.fanclub.main.ui.fragment.PresentFragment;
-import jp.anpanman.fanclub.main.ui.fragment.SettingFragment;
 import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
+import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
+import jp.anpanman.fanclub.main.util.RestfulUtil;
 
 /**
  * Created by linhphan on 7/15/16.
  */
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final String ARG_LASTEST_UPDATED_TIME = "ARG_LASTEST_UPDATED_TIME";
     public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
     public static final String ARG_CURRENT_TAB = "ARG_CURRENT_TAB";
     public static final String ARG_PUSH_DATA = "ARG_PUSH_DATA";
@@ -67,7 +72,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageButton btnMyPageTab;
     private ImageButton btnSettingTab;
 
+    private ImageView imgNewsNew;
+    private ImageView imgCouponNew;
+    private ImageView imgPresentNew;
+
     public static MainTabs currentTab;
+    private UpdatedTime currentSync;
 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
@@ -90,6 +100,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         setDisplayBottomNav();
+        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
+        if (!TextUtils.isEmpty(lastTime)){
+            currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
+        }
 
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
         Bundle bundle = getIntent().getExtras();
@@ -144,6 +158,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btnPresentTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_present);
         btnMyPageTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_my_page);
         btnSettingTab = (ImageButton) findViewById(com.main.R.id.btn_img_tab_setting);
+
+        imgNewsNew = (ImageView) findViewById(R.id.img_news_new);
+        imgCouponNew = (ImageView) findViewById(R.id.img_coupon_new);
+        imgPresentNew = (ImageView) findViewById(R.id.img_present_new);
 
         rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
@@ -298,6 +316,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         currentTab = newTab;
         setDisplayBottomNav();
+        syncUpdateTimeOfServer();
     }
 
     private void setDisplayBottomNav() {
@@ -367,6 +386,94 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                currentTab = MainTabs.Setting;
                 break;
         }
+    }
+
+    private void displayNewIcons(UpdatedTime newSync){
+
+        if (newSync == null || currentSync == null){
+            imgNewsNew.setVisibility(View.INVISIBLE);
+            imgCouponNew.setVisibility(View.INVISIBLE);
+            imgPresentNew.setVisibility(View.INVISIBLE);
+
+        }else {
+            switch (currentTab) {
+                case News:
+                    imgNewsNew.setVisibility(View.INVISIBLE);
+
+                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                        imgCouponNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgCouponNew.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                        imgPresentNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgPresentNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+
+                case Coupon:
+                    imgCouponNew.setVisibility(View.INVISIBLE);
+
+                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                        imgNewsNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgNewsNew.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                        imgPresentNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgPresentNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+
+                case Present:
+                    imgPresentNew.setVisibility(View.INVISIBLE);
+
+                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                        imgNewsNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgNewsNew.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                        imgCouponNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgCouponNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+
+                default:
+                    imgNewsNew.setVisibility(View.INVISIBLE);
+                    imgCouponNew.setVisibility(View.INVISIBLE);
+                    imgPresentNew.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * try to retrieve the last time of data has updated on remote server
+     */
+    private void syncUpdateTimeOfServer(){
+        RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
+            @Override
+            public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
+                UpdatedTime newSync = null;
+                if (data != null){
+                    newSync = ((UpdatedTime)data);
+                    SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
+                }
+                displayNewIcons(newSync);
+            }
+
+            @Override
+            public void onDownloadFailed(Exception e, int requestCode, int responseCode) {
+
+            }
+        });
     }
 
     private void openNewsFragment(boolean isAnimation) {
