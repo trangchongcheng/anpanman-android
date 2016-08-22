@@ -389,60 +389,68 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void displayNewIcons(UpdatedTime newSync){
-        switch (currentTab) {
-            case News:
-                imgNewsNew.setVisibility(View.INVISIBLE);
 
-                if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())){
-                    imgCouponNew.setVisibility(View.VISIBLE);
-                }else{
-                    imgCouponNew.setVisibility(View.INVISIBLE);
-                }
+        if (newSync == null || currentSync == null){
+            imgNewsNew.setVisibility(View.INVISIBLE);
+            imgCouponNew.setVisibility(View.INVISIBLE);
+            imgPresentNew.setVisibility(View.INVISIBLE);
 
-                if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())){
-                    imgPresentNew.setVisibility(View.VISIBLE);
-                }else{
-                    imgPresentNew.setVisibility(View.INVISIBLE);
-                }
-                break;
-
-            case Coupon:
-                imgCouponNew.setVisibility(View.INVISIBLE);
-
-                if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())){
-                    imgNewsNew.setVisibility(View.VISIBLE);
-                }else{
+        }else {
+            switch (currentTab) {
+                case News:
                     imgNewsNew.setVisibility(View.INVISIBLE);
-                }
 
-                if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())){
-                    imgPresentNew.setVisibility(View.VISIBLE);
-                }else{
-                    imgPresentNew.setVisibility(View.INVISIBLE);
-                }
-                break;
+                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                        imgCouponNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgCouponNew.setVisibility(View.INVISIBLE);
+                    }
 
-            case Present:
-                imgPresentNew.setVisibility(View.INVISIBLE);
+                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                        imgPresentNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgPresentNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
 
-                if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())){
-                    imgNewsNew.setVisibility(View.VISIBLE);
-                }else{
-                    imgNewsNew.setVisibility(View.INVISIBLE);
-                }
-
-                if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())){
-                    imgCouponNew.setVisibility(View.VISIBLE);
-                }else{
+                case Coupon:
                     imgCouponNew.setVisibility(View.INVISIBLE);
-                }
-                break;
 
-            default:
-                imgNewsNew.setVisibility(View.INVISIBLE);
-                imgCouponNew.setVisibility(View.INVISIBLE);
-                imgPresentNew.setVisibility(View.INVISIBLE);
-                break;
+                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                        imgNewsNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgNewsNew.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                        imgPresentNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgPresentNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+
+                case Present:
+                    imgPresentNew.setVisibility(View.INVISIBLE);
+
+                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                        imgNewsNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgNewsNew.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                        imgCouponNew.setVisibility(View.VISIBLE);
+                    } else {
+                        imgCouponNew.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+
+                default:
+                    imgNewsNew.setVisibility(View.INVISIBLE);
+                    imgCouponNew.setVisibility(View.INVISIBLE);
+                    imgPresentNew.setVisibility(View.INVISIBLE);
+                    break;
+            }
         }
     }
 

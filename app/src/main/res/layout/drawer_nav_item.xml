@@ -7,6 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/positive_1dp"
+        android:paddingTop="@dimen/positive_4dp"
+        android:paddingBottom="@dimen/positive_4dp"
         android:background="@drawable/drawer_nav_item_state">
 
         <ImageView
