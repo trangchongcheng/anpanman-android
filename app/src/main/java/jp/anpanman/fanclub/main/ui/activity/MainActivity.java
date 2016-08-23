@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.main.R;
+import com.nifty.cloud.mb.core.NCMBPush;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final String ARG_PUSH_DATA = "ARG_PUSH_DATA";
     public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
     public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
-    public static final String ARG_URL = "ARG_URL";
+    public static final String ARG_PUSH_URL = "com.nifty.RichUrl";
 
     //=============== properties ===================================================================
     private ImageButton btnHamburgerMenu;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         setDisplayBottomNav();
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
-        if (!TextUtils.isEmpty(lastTime)){
+        if (!TextUtils.isEmpty(lastTime)) {
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
 
@@ -110,7 +111,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
             String title = bundle.getString(ARG_PUSH_TITLE);
             String message = bundle.getString(ARG_PUSH_MESSEAGE);
-            showPushDialog(title, message);
+            String url = bundle.getString(ARG_PUSH_URL);
+            if (url != null) {
+                AppLog.log("URL"+url);
+                NCMBPush.richPushHandler(this, getIntent());
+                //リッチプッシュを再表示させたくない場合はintentからURLを削除します
+             //`   getIntent().removeExtra("com.nifty.RichUrl");
+            } else {
+                showPushDialog(title, message);
+
+            }
         }
     }
 
@@ -388,14 +398,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void displayNewIcons(UpdatedTime newSync){
+    private void displayNewIcons(UpdatedTime newSync) {
 
-        if (newSync == null || currentSync == null){
+        if (newSync == null || currentSync == null) {
             imgNewsNew.setVisibility(View.INVISIBLE);
             imgCouponNew.setVisibility(View.INVISIBLE);
             imgPresentNew.setVisibility(View.INVISIBLE);
 
-        }else {
+        } else {
             switch (currentTab) {
                 case News:
                     imgNewsNew.setVisibility(View.INVISIBLE);
@@ -457,13 +467,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * try to retrieve the last time of data has updated on remote server
      */
-    private void syncUpdateTimeOfServer(){
+    private void syncUpdateTimeOfServer() {
         RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 UpdatedTime newSync = null;
-                if (data != null){
-                    newSync = ((UpdatedTime)data);
+                if (data != null) {
+                    newSync = ((UpdatedTime) data);
                     SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
                 }
                 displayNewIcons(newSync);

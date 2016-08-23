@@ -25,13 +25,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/positive_16dp"
-            android:text="title title title"
-            android:textSize="@dimen/text_size_16sp" />
+            android:text="チュートリアル01"
+            android:textSize="@dimen/text_size_22sp" />
 
         <TextView
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/positive_30dp"
+            android:layout_marginRight="@dimen/positive_30dp"
+            android:textSize="@dimen/text_size_14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="some text here" />
+            android:text="チュートリアル説明 チュートリアル説明" />
 
     </LinearLayout>
 

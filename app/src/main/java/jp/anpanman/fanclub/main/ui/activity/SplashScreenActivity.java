@@ -26,6 +26,7 @@ import com.nifty.cloud.mb.core.FindCallback;
 import com.nifty.cloud.mb.core.NCMB;
 import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBInstallation;
+import com.nifty.cloud.mb.core.NCMBPush;
 import com.nifty.cloud.mb.core.NCMBQuery;
 
 
@@ -286,6 +287,7 @@ public class SplashScreenActivity extends BaseActivity {
             bundle.putBoolean(MainActivity.ARG_SHOULD_SHOW_PUSH_DIALOG, true);
             bundle.putString(MainActivity.ARG_PUSH_MESSEAGE,getIntent().getExtras().getString("message"));
             bundle.putString(MainActivity.ARG_PUSH_TITLE,getIntent().getExtras().getString("title"));
+            bundle.putString(MainActivity.ARG_PUSH_URL,getIntent().getExtras().getString("com.nifty.RichUrl"));
 
             intent.putExtras(bundle);
         }
