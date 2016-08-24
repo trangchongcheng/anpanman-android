@@ -77,7 +77,7 @@ public class RestfulUtil {
         }
     }
 
-    public static void getUserInfo(Context context,String objectId, RestfulService.Callback callback) {
+    public static void getUserInfo(Context context, String objectId, RestfulService.Callback callback) {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_GET_USER_INFO + objectId);
             String timestamp = Common.getTimeStamp();
@@ -100,10 +100,25 @@ public class RestfulUtil {
         }
     }
 
-    public static void getUpdatedTime(Context context, RestfulService.Callback callback){
-        RestfulService service = new RestfulService(context, false, callback);
-        service.setType(RestfulService.Method.GET);
-        service.setParser(new UpdatedTimeParser());
-        service.execute(RestfulUrl.API_UPDATED_TIME);
+    public static void getUpdatedTime(Context context, RestfulService.Callback callback) {
+        try {
+            URI uri = URI.create(RestfulUrl.API_UPDATED_TIME);
+            String timestamp = Common.getTimeStamp();
+            String signature = Common.getSignature("GET", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
+
+            Map<String, String> header = new HashMap<>();
+            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Signature", signature);
+            header.put("X-NCMB-Timestamp", timestamp);
+            header.put("x-anp-request", "true");
+
+            RestfulService service = new RestfulService(context, false, callback);
+            service.setType(RestfulService.Method.GET);
+            service.setHeader(header);
+            service.setParser(new UpdatedTimeParser());
+            service.execute(RestfulUrl.API_UPDATED_TIME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
