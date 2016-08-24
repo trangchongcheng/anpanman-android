@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.main.R;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
@@ -45,7 +46,8 @@ public class MyPageFragment extends BaseFragment {
         super.onResume();
         Activity a = getActivity();
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-        
+
+
     }
 
     //============= inner methods ==================================================================
