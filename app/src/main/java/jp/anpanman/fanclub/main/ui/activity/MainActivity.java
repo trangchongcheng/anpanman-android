@@ -410,13 +410,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 case News:
                     imgNewsNew.setVisibility(View.INVISIBLE);
 
-                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                    if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
                         imgCouponNew.setVisibility(View.INVISIBLE);
                     }
 
-                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                    if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
                         imgPresentNew.setVisibility(View.INVISIBLE);
@@ -426,13 +426,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 case Coupon:
                     imgCouponNew.setVisibility(View.INVISIBLE);
 
-                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                    if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
                         imgNewsNew.setVisibility(View.INVISIBLE);
                     }
 
-                    if (Common.compareTimeGreater(newSync.getPresent(), currentSync.getPresent())) {
+                    if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
                         imgPresentNew.setVisibility(View.INVISIBLE);
@@ -442,13 +442,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 case Present:
                     imgPresentNew.setVisibility(View.INVISIBLE);
 
-                    if (Common.compareTimeGreater(newSync.getNews(), currentSync.getNews())) {
+                    if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
                         imgNewsNew.setVisibility(View.INVISIBLE);
                     }
 
-                    if (Common.compareTimeGreater(newSync.getCoupon(), currentSync.getCoupon())) {
+                    if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
                         imgCouponNew.setVisibility(View.INVISIBLE);
@@ -461,6 +461,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     imgPresentNew.setVisibility(View.INVISIBLE);
                     break;
             }
+
+            SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
+            currentSync = newSync;
         }
     }
 
@@ -471,12 +474,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
-                UpdatedTime newSync = null;
-                if (data != null) {
-                    newSync = ((UpdatedTime) data);
-                    SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
-                }
-                displayNewIcons(newSync);
+                displayNewIcons((UpdatedTime) data);
             }
 
             @Override

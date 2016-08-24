@@ -24,5 +24,5 @@ public class RestfulUrl {
     public final static String URL_GURIDINGU = WEB_VIEW_DOMAIN+ "greeting/";
     public final static String URL_WALL = WEB_VIEW_DOMAIN+ "wallpaper/";
 
-    public final static String API_UPDATED_TIME =  "http://www.anpanman.jp/apps/funclub/json/setting.json";
+    public final static String API_UPDATED_TIME =  WEB_VIEW_DOMAIN + "json/setting.json";
 }

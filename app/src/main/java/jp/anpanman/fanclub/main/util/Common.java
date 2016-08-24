@@ -89,7 +89,7 @@ public class Common {
     }
 
     public static boolean compareTimeGreater(String time1, String time2){
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"; // 2016-07-14T11:45:12+09:00
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ"; // 2016-07-14T11:45:12+09:00
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.JAPAN);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {

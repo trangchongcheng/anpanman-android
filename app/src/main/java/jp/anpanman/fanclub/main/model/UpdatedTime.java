@@ -6,36 +6,49 @@ import com.google.gson.annotations.SerializedName;
  * Created by linhphan on 8/22/16.
  */
 public class UpdatedTime extends BaseModel {
-    @SerializedName("newarrival")
-    private String news;
+    @SerializedName("new")
+    private UpdatedTimeModel news;
 
-    @SerializedName("profit")
-    private String coupon;
+    @SerializedName("otoku")
+    private UpdatedTimeModel coupon;
 
     @SerializedName("present")
-    private String present;
+    private UpdatedTimeModel present;
 
-    public String getNews() {
+    public UpdatedTimeModel getNews() {
         return news;
     }
 
-    public void setNews(String news) {
+    public void setNews(UpdatedTimeModel news) {
         this.news = news;
     }
 
-    public String getCoupon() {
+    public UpdatedTimeModel getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(String coupon) {
+    public void setCoupon(UpdatedTimeModel coupon) {
         this.coupon = coupon;
     }
 
-    public String getPresent() {
+    public UpdatedTimeModel getPresent() {
         return present;
     }
 
-    public void setPresent(String present) {
+    public void setPresent(UpdatedTimeModel present) {
         this.present = present;
+    }
+
+    public static class UpdatedTimeModel{
+        @SerializedName("updatetime")
+        private String updatedTime;
+
+        public String getUpdatedTime() {
+            return updatedTime;
+        }
+
+        public void setUpdatedTime(String updatedTime) {
+            this.updatedTime = updatedTime;
+        }
     }
 }
