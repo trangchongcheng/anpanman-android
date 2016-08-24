@@ -33,7 +33,7 @@
             android:text="@string/button_ok"
             android:textSize="@dimen/text_size_18sp"
             android:textColor="@color/color_white"
-            android:background="@drawable/button_coupon_state"
+            android:background="@drawable/button_term_use"
             android:layout_marginLeft="@dimen/positive_20dp"
             android:layout_marginRight="@dimen/positive_20dp"
             android:layout_marginTop="@dimen/positive_20dp"
