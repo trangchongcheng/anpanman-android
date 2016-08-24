@@ -74,6 +74,7 @@
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/positive_8dp"
         android:gravity="center"
         android:visibility="visible">
 
@@ -82,13 +83,9 @@
             android:text="@string/button_term_user"
             android:textSize="@dimen/text_size_18sp"
             android:textColor="@color/color_white"
-            android:background="@drawable/button_coupon_state"
-            android:layout_marginLeft="@dimen/positive_30dp"
-            android:layout_marginRight="@dimen/positive_30dp"
-            android:layout_marginTop="@dimen/positive_10dp"
-            android:layout_marginBottom="@dimen/positive_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/positive_60dp" />
+            android:background="@drawable/button_term_use"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>
 

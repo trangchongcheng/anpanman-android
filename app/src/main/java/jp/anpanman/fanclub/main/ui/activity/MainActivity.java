@@ -324,7 +324,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 openSettingDialog();
                 break;
         }
-        currentTab = newTab;
+        if(newTab!=MainTabs.Setting){
+            currentTab = newTab;
+        }
         setDisplayBottomNav();
         syncUpdateTimeOfServer();
     }
@@ -512,7 +514,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         fragment.setCallback(new WebViewFragment.DismissCallback() {
             @Override
             public void onDismiss() {
-                currentTab = MainTabs.News;
+//                currentTab = MainTabs.News;
                 setDisplayBottomNav();
             }
         });

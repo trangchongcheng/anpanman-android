@@ -18,6 +18,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,7 +40,7 @@ public class WebViewFragment extends DialogFragment {
     private WebView mWebView;
     private ImageView imgClose;
     private TextView tvTitle;
-    private LinearLayout ll;
+    private Button btnOk;
     private String mUrl, mTitle;
     private static final String URL = "url";
     private static final String TITLE = "title";
@@ -90,8 +91,8 @@ public class WebViewFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_term_use, container, false);
-        ll = (LinearLayout) root.findViewById(R.id.ll);
-        ll.setVisibility(View.GONE);
+        btnOk = (Button) root.findViewById(R.id.btn_ok);
+        btnOk.setVisibility(View.GONE);
         mWebView = (WebView) root.findViewById(R.id.web_view);
         imgClose = (ImageView) root.findViewById(R.id.imgClose);
         imgClose.setVisibility(View.VISIBLE);
