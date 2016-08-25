@@ -25,11 +25,12 @@ public class Constant {
 
     public enum DebugFlags {
         DEBUG_NONE,
+        DEBUG_MYPAGE_BACKGROUND,
         DEBUG_PASS_GCM_INSTALLED;
         public static final EnumSet<DebugFlags> ALL_OPT_DEBUG = EnumSet.allOf(DebugFlags.class);
 
     }
 
-    public static EnumSet<DebugFlags> Apanman_Debug = EnumSet.of(DebugFlags.DEBUG_NONE);
+    public static EnumSet<DebugFlags> Apanman_Debug = EnumSet.of(DebugFlags.DEBUG_MYPAGE_BACKGROUND);
 
 }

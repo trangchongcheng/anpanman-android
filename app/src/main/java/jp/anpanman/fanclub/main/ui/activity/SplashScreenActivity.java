@@ -1,5 +1,6 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.DialogFactory;
@@ -116,6 +118,7 @@ public class SplashScreenActivity extends BaseActivity {
                 // TODO: 8/5/16 this must be
                 // TODO: 8/5/16 what should we do if the registration is duplicated many times
                 UserInfo newUserInfo = (UserInfo) data;
+                ((AnpanmanApp)(getApplication())).setUserInfo(newUserInfo);
                 SharedPreferencesUtil.putString(getBaseContext(), Constant.PREF_USER_INFO, newUserInfo.toJson());
                 registerDeviceToken(deviceToken, newUserInfo.getObjectId());
             }
@@ -146,6 +149,7 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 UserInfo newUserInfo = (UserInfo) data;
+                ((AnpanmanApp)(getApplication())).setUserInfo(newUserInfo);
                 SharedPreferencesUtil.putString(getBaseContext(), Constant.PREF_USER_INFO, newUserInfo.toJson());
                 gotoNextScreen();
             }

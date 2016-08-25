@@ -20,6 +20,9 @@ public class UserInfo extends BaseModel{
     @SerializedName("deviceInfo")
     private String deviceInfo;
 
+    @SerializedName("favorite_character_code")
+    private String favorite_character_code;
+
     @SerializedName("createDate")
     private String createdDate;
 
@@ -58,6 +61,14 @@ public class UserInfo extends BaseModel{
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getFavorite_character_code() {
+        return favorite_character_code;
+    }
+
+    public void setFavorite_character_code(String favorite_character_code) {
+        this.favorite_character_code = favorite_character_code;
     }
 
     public Map<String, String> getBadges() {

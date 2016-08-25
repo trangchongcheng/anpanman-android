@@ -59,4 +59,84 @@
 
     <string name="button_term_user">同意する</string>
     <string name="button_tutorial">スキップ</string>
+
+
+    <!-- character code-->
+    <string-array name="name_character">
+        <item>アンパンマン</item>
+        <item>ばいきんまん</item>
+        <item>ドキンちゃん</item>
+        <item>コキンちゃん</item>
+        <item>しょくぱんまん</item>
+
+        <item>カレーパンマン</item>
+        <item>メロンパンナちゃん</item>
+        <item>クリームパンダ</item>
+        <item>ホラーマン</item>
+        <item>ジャムおじさん</item>
+
+        <item>バタコさん</item>
+        <item>めいけんチーズ</item>
+        <item>ロールパンナ</item>
+        <item>てんどんまん</item>
+        <item>かまめしどん</item>
+
+        <item>カツドンマン</item>
+        <item>あかちゃんまん</item>
+        <item>みみせんせい</item>
+        <item>カバお</item>
+        <item>ちびぞう</item>
+    </string-array>
+
+    <string-array name="bgResource">
+        <item>@drawable/img_orange_background</item>
+        <item>@drawable/img_blue_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_orange_background</item>
+        <item>@drawable/img_green_background</item>
+
+        <item>@drawable/img_orange_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_blue_background</item>
+        <item>@drawable/img_green_background</item>
+
+        <item>@drawable/img_blue_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_orange_background</item>
+        <item>@drawable/img_blue_background</item>
+        <item>@drawable/img_green_background</item>
+
+        <item>@drawable/img_orange_background</item>
+        <item>@drawable/img_blue_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_green_background</item>
+        <item>@drawable/img_green_background</item>
+    </string-array>
+
+    <string-array name="iconResource">
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_anpan</item>
+    </string-array>
 </resources>
