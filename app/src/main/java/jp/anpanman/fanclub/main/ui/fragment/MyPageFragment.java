@@ -3,7 +3,6 @@ package jp.anpanman.fanclub.main.ui.fragment;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -51,8 +50,9 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-        userCharacter = UserCharacter.getUserCharacter(getActivity(), 2);
+        userInfo = ((AnpanmanApp)(getActivity().getApplication())).getUserInfo();
+//        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
     }
 
     @Override
@@ -63,31 +63,58 @@ public class MyPageFragment extends BaseFragment {
     @Override
     protected void getMandatoryViews(View root, Bundle savedInstanceState) {
         tvUserID = (TextView) root.findViewById(R.id.tv_user_id);
-        tvUserName = (TextView) root.findViewById(R.id.tv_user_name);
+        tvUserName= (TextView) root.findViewById(R.id.tv_user_name);
         imgUserIcon = (ImageView) root.findViewById(R.id.img_user_icon);
         llBage = (LinearLayout) root.findViewById(R.id.ll_bage);
         btnRegister = (Button) root.findViewById(R.id.btn_register);
         imgNickName = (ImageView) root.findViewById(R.id.img_nick_name);
+
+        //unregistered
+        //landscape mode
         if (!userInfo.getNickName().equals("")) {
             if ("mypage_landscape".equals(root.getTag())) {
                 llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
                 llMypageBgLand.setBackgroundResource(R.drawable.img_orange_background);
                 imgNickName.setVisibility(View.VISIBLE);
                 tvUserName.setVisibility(View.GONE);
+
+             //portrait mode
             } else {
                 changeLayout();
             }
+
+        //registered
         }else {
+            //landscape mode
             if ("mypage_landscape".equals(root.getTag())) {
                 llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
                 llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
+
+            //portrait mode
+            }else{
+                //==display badges
+                for (String key : userInfo.getBadges().keySet()){
+                    if ("1".equals(key)){
+                        root.findViewById(R.id.badge1).setVisibility(View.VISIBLE);
+                    }else if ("2".equals(key)){
+                        root.findViewById(R.id.badge2).setVisibility(View.VISIBLE);
+                    }else if ("3".equals(key)){
+                        root.findViewById(R.id.badge3).setVisibility(View.VISIBLE);
+                    }else if ("4".equals(key)){
+                        root.findViewById(R.id.badge4).setVisibility(View.VISIBLE);
+                    }else if ("5".equals(key)){
+                        root.findViewById(R.id.badge5).setVisibility(View.VISIBLE);
+                    }else if ("6".equals(key)){
+                        root.findViewById(R.id.badge6).setVisibility(View.VISIBLE);
+                    }else if ("7".equals(key)){
+                        root.findViewById(R.id.badge7).setVisibility(View.VISIBLE);
+                    }
+                }
             }
             tvUserID.setText("ID:" + userInfo.getId());
             tvUserName.setText(userCharacter.getName());
             imgUserIcon.setImageResource(userCharacter.getIconResource());
         }
-
-
     }
 
     @Override
@@ -99,17 +126,15 @@ public class MyPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Activity a = getActivity();
-        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 
     }
 
     //============= inner methods ==================================================================
-
     public void changeLayout() {
         tvUserName.setVisibility(View.GONE);
         llBage.setVisibility(View.GONE);
         btnRegister.setVisibility(View.VISIBLE);
         imgNickName.setVisibility(View.VISIBLE);
     }
-
 }

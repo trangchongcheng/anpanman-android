@@ -27,7 +27,7 @@ public class UserInfo extends BaseModel{
     private String createdDate;
 
     @SerializedName("badges")
-    private Map<String, String> badges;
+    private Map<String, String> badges;//<id, name>
 
     public UserInfo() {
     }

@@ -12,7 +12,6 @@ import jp.anpanman.fanclub.main.model.UpdatedTime;
 public class UpdatedTimeParser implements IParser{
     @Override
     public Object parse(Context context, String data) {
-        Log.e("**&&**", "here");
         return UpdatedTime.fromJson(data, UpdatedTime.class);
     }
 }
