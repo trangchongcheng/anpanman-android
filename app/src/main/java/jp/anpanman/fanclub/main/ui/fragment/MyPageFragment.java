@@ -61,13 +61,37 @@ public class MyPageFragment extends BaseFragment {
         tvUserID = (TextView) root.findViewById(R.id.tv_user_id);
         tvUserName= (TextView) root.findViewById(R.id.tv_user_name);
         imgUserIcon = (ImageView) root.findViewById(R.id.img_user_icon);
-        if ("mypage_landscape".equals(root.getTag())){
-            llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
-            llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
-        }
+
         tvUserID.setText("ID:"+userInfo.getId());
         tvUserName.setText(userCharacter.getName());
         imgUserIcon.setImageResource(userCharacter.getIconResource());
+
+        //landscape mode
+        if ("mypage_landscape".equals(root.getTag())){
+            llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
+            llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
+
+        //portrait mode
+        }else{
+            //==display badges
+            for (String key : userInfo.getBadges().keySet()){
+                if ("1".equals(key)){
+                    root.findViewById(R.id.badge1).setVisibility(View.VISIBLE);
+                }else if ("2".equals(key)){
+                    root.findViewById(R.id.badge2).setVisibility(View.VISIBLE);
+                }else if ("3".equals(key)){
+                    root.findViewById(R.id.badge3).setVisibility(View.VISIBLE);
+                }else if ("4".equals(key)){
+                    root.findViewById(R.id.badge4).setVisibility(View.VISIBLE);
+                }else if ("5".equals(key)){
+                    root.findViewById(R.id.badge5).setVisibility(View.VISIBLE);
+                }else if ("6".equals(key)){
+                    root.findViewById(R.id.badge6).setVisibility(View.VISIBLE);
+                }else if ("7".equals(key)){
+                    root.findViewById(R.id.badge7).setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     @Override

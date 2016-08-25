@@ -54,42 +54,58 @@
             android:layout_margin="@dimen/positive_20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
             <ImageView
+                android:id="@+id/badge1"
                 android:layout_weight="1"
                 android:src="@drawable/badge_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge2"
                 android:layout_weight="1"
                 android:src="@drawable/badge_2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge3"
                 android:layout_weight="1"
                 android:src="@drawable/badge_3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge4"
                 android:layout_weight="1"
                 android:src="@drawable/badge_4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge5"
                 android:layout_weight="1"
                 android:src="@drawable/badge_5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge6"
                 android:layout_weight="1"
                 android:src="@drawable/badge_6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
             <ImageView
+                android:id="@+id/badge7"
                 android:layout_weight="1"
                 android:src="@drawable/badge_7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
