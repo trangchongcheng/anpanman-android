@@ -9,7 +9,7 @@
     <!--Common-->
     <color name="color_white">#fff</color>
     <color name="divider_color">#acacac</color>
-    <color name="text_bottom_nav_inactive">#f6f6f6</color>
+    <color name="text_bottom_nav_inactive">#acacac</color>
     <color name="text_bottom_nav_activated">#EE8247</color>
     <color name="progress">#edad89</color>
 
