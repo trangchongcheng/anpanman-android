@@ -59,6 +59,7 @@
 
     <string name="button_term_user">同意する</string>
     <string name="button_tutorial">スキップ</string>
+    <string name="button_register">マイページの登録はこちら</string>
 
 
     <!-- character code-->
@@ -115,28 +116,28 @@
     </string-array>
 
     <string-array name="iconResource">
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_user_anpan_1</item>
+        <item>@drawable/ic_user_baikin_2</item>
+        <item>@drawable/ic_user_dokin_3</item>
+        <item>@drawable/ic_user_kokin_4</item>
+        <item>@drawable/ic_user_syokupan_5</item>
 
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_user_currypan_6</item>
+        <item>@drawable/ic_user_melonpan_7</item>
+        <item>@drawable/ic_user_creampan_8</item>
+        <item>@drawable/ic_user_horro_9</item>
+        <item>@drawable/ic_user_jam_10</item>
 
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_user_butter_11</item>
+        <item>@drawable/ic_user_cheese_12</item>
+        <item>@drawable/ic_user_roll_13</item>
+        <item>@drawable/ic_user_tendo_14</item>
+        <item>@drawable/ic_user_kamameshi_15</item>
 
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
-        <item>@drawable/ic_anpan</item>
+        <item>@drawable/ic_user_katsudon_16</item>
+        <item>@drawable/ic_user_aka_17</item>
+        <item>@drawable/ic_user_mimiko_18</item>
+        <item>@drawable/ic_user_kabao_19</item>
+        <item>@drawable/ic_user_chibizo_20</item>
     </string-array>
 </resources>

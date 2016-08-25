@@ -3,6 +3,7 @@ package jp.anpanman.fanclub.main.ui.fragment;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -40,15 +42,17 @@ public class MyPageFragment extends BaseFragment {
     private ImageView imgUserIcon;
     private TextView tvUserName;
     private TextView tvUserID;
-
+    private LinearLayout llBage;
+    private Button btnRegister;
+    private ImageView imgNickName;
     //============= inherited methods ==============================================================
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = ((AnpanmanApp)(getActivity().getApplication())).getUserInfo();
-        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), 2);
     }
 
     @Override
@@ -59,15 +63,31 @@ public class MyPageFragment extends BaseFragment {
     @Override
     protected void getMandatoryViews(View root, Bundle savedInstanceState) {
         tvUserID = (TextView) root.findViewById(R.id.tv_user_id);
-        tvUserName= (TextView) root.findViewById(R.id.tv_user_name);
+        tvUserName = (TextView) root.findViewById(R.id.tv_user_name);
         imgUserIcon = (ImageView) root.findViewById(R.id.img_user_icon);
-        if ("mypage_landscape".equals(root.getTag())){
-            llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
-            llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
+        llBage = (LinearLayout) root.findViewById(R.id.ll_bage);
+        btnRegister = (Button) root.findViewById(R.id.btn_register);
+        imgNickName = (ImageView) root.findViewById(R.id.img_nick_name);
+        if (!userInfo.getNickName().equals("")) {
+            if ("mypage_landscape".equals(root.getTag())) {
+                llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
+                llMypageBgLand.setBackgroundResource(R.drawable.img_orange_background);
+                imgNickName.setVisibility(View.VISIBLE);
+                tvUserName.setVisibility(View.GONE);
+            } else {
+                changeLayout();
+            }
+        }else {
+            if ("mypage_landscape".equals(root.getTag())) {
+                llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
+                llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
+            }
+            tvUserID.setText("ID:" + userInfo.getId());
+            tvUserName.setText(userCharacter.getName());
+            imgUserIcon.setImageResource(userCharacter.getIconResource());
         }
-        tvUserID.setText("ID:"+userInfo.getId());
-        tvUserName.setText(userCharacter.getName());
-        imgUserIcon.setImageResource(userCharacter.getIconResource());
+
+
     }
 
     @Override
@@ -79,10 +99,17 @@ public class MyPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Activity a = getActivity();
-        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 
     }
 
     //============= inner methods ==================================================================
+
+    public void changeLayout() {
+        tvUserName.setVisibility(View.GONE);
+        llBage.setVisibility(View.GONE);
+        btnRegister.setVisibility(View.VISIBLE);
+        imgNickName.setVisibility(View.VISIBLE);
+    }
 
 }
