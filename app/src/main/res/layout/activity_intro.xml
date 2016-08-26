@@ -22,7 +22,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/positive_30dp"
+                android:layout_marginBottom="@dimen/positive_20dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:gravity="center">
 
@@ -70,9 +70,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_term_use"
-                android:text="@string/button_term_user"
+                android:text="@string/button_tutorial"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_18sp" />
+                android:textSize="@dimen/text_size_16sp" />
 
         </LinearLayout>
     </LinearLayout>
