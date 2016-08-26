@@ -114,12 +114,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             String url = bundle.getString(ARG_PUSH_URL);
             if (url != null) {
                 AppLog.log("URL"+url);
-                NCMBPush.richPushHandler(this, getIntent());
-                //リッチプッシュを再表示させたくない場合はintentからURLを削除します
-             //`   getIntent().removeExtra("com.nifty.RichUrl");
+                showPushDialog(url, message,"");
             } else {
-                showPushDialog(title, message);
-
+                showPushDialog("", message,"");
             }
         }
     }
@@ -521,9 +518,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other));
     }
 
-    private void showPushDialog(String title, String message) {
+    private void showPushDialog(String url,String title, String message) {
         if (customDialogCoupon == null) {
-            customDialogCoupon = new CustomDialogCoupon(MainActivity.this);
+            customDialogCoupon = new CustomDialogCoupon(MainActivity.this,url,title,message);
         }
         customDialogCoupon.show();
     }
@@ -532,7 +529,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            showPushDialog(null, null);
+            String urlPush = intent.getStringExtra("url");
+            showPushDialog(urlPush, null,"");
         }
 
     }
