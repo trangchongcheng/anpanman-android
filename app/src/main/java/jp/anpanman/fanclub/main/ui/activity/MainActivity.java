@@ -653,7 +653,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    enum MainTabs {
+    public enum MainTabs {
         News, Coupon, Present, MyPage, Setting;
 
         public static MainTabs get(int ordinal) {
