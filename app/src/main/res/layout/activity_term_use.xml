@@ -81,7 +81,7 @@
         <Button
             android:id="@+id/btn_ok"
             android:text="@string/button_term_user"
-            android:textSize="@dimen/text_size_18sp"
+            android:textSize="@dimen/text_size_16sp"
             android:textColor="@color/color_white"
             android:background="@drawable/button_term_use"
             android:layout_width="wrap_content"
