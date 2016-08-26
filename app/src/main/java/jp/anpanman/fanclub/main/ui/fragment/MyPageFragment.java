@@ -1,10 +1,12 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -51,8 +53,8 @@ public class MyPageFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userInfo = ((AnpanmanApp)(getActivity().getApplication())).getUserInfo();
-//        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
-        userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+      //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
     }
 
     @Override
@@ -71,16 +73,22 @@ public class MyPageFragment extends BaseFragment {
 
         //unregistered
         //landscape mode
-        if (!userInfo.getNickName().equals("")) {
+        AppLog.log(userInfo.getNickName());
+        if (TextUtils.isEmpty(userInfo.getNickName())) {
             if ("mypage_landscape".equals(root.getTag())) {
                 llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
                 llMypageBgLand.setBackgroundResource(R.drawable.img_orange_background);
                 imgNickName.setVisibility(View.VISIBLE);
                 tvUserName.setVisibility(View.GONE);
-
              //portrait mode
             } else {
                 changeLayout();
+                btnRegister.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openWebView(RestfulUrl.URL_REGISTER_MYPAGE,"Register Account");
+                    }
+                });
             }
 
         //registered
@@ -125,8 +133,19 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        AppLog.log("onResume: ");
         Activity a = getActivity();
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+//            Activity a = getActivity();
+//            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        Log.d("cheng", "setUserVisibleHint: "+isVisibleToUser);
 
     }
 
@@ -136,5 +155,9 @@ public class MyPageFragment extends BaseFragment {
         llBage.setVisibility(View.GONE);
         btnRegister.setVisibility(View.VISIBLE);
         imgNickName.setVisibility(View.VISIBLE);
+    }
+    public void openWebView(String url, String title) {
+        DialogFragment fragment = WebViewFragment.newInstance(url, title);
+        fragment.show(getActivity().getFragmentManager(), WebViewFragment.class.getName());
     }
 }
