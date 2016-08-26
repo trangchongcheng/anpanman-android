@@ -16,6 +16,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
@@ -112,6 +114,8 @@ public class NewFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request","true");
-        webView.loadUrl(RestfulUrl.URL_NEWS, extraHeaders);
+        String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
+        AppLog.log( "setupWebView: "+RestfulUrl.URL_NEWS+objectId);
+        webView.loadUrl(RestfulUrl.URL_NEWS+objectId, extraHeaders);
     }
 }

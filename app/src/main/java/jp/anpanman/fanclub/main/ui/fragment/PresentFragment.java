@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
@@ -92,6 +93,7 @@ public class PresentFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request","true");
-        webView.loadUrl(RestfulUrl.URL_PRESENTS, extraHeaders);
+        String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
+        webView.loadUrl(RestfulUrl.URL_PRESENTS+objectId, extraHeaders);
     }
 }

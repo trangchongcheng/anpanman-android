@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
 
@@ -171,7 +173,9 @@ public class WebViewFragment extends DialogFragment {
             });
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request","true");
-            mWebView.loadUrl(mUrl, extraHeaders);
+            String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
+            AppLog.log( "setupWebView: "+mUrl+objectId);
+            mWebView.loadUrl(mUrl+objectId, extraHeaders);
         }
 
     }
