@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onClick(View view) {
         switch (view.getId()) {
             case com.main.R.id.btn_img_hamburger:
-                Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 drawerLayout.openDrawer(navigationView);
                 break;
 
