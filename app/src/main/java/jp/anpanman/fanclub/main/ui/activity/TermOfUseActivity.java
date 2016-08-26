@@ -18,6 +18,7 @@ import com.main.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
@@ -27,6 +28,7 @@ import jp.anpanman.fanclub.main.util.RestfulUrl;
  * Created by linhphan on 7/25/16.
  */
 public class TermOfUseActivity extends AppCompatActivity implements View.OnClickListener {
+    public final static String PREF_TERMS_HAS_ACCEPTED = "PREF_TERMS_HAS_ACCEPTED";
 
     private WebView mWebView;
     private ProgressBar horizontalProgress;
@@ -49,6 +51,7 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_ok:
+                SharedPreferencesUtil.putBoolean(this, PREF_TERMS_HAS_ACCEPTED, true);
                 gotoTopScreen();
                 break;
         }
