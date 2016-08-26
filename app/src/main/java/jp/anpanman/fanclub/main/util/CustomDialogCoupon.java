@@ -62,6 +62,7 @@ public class CustomDialogCoupon extends Dialog implements
         if (!TextUtils.isEmpty(url)) {
             Glide.with(activity)
                     .load(url)
+                    .centerCrop()
                     .placeholder(R.drawable.bitmap)
                     .into(imgCoupon);
         }
