@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
 
 /**
@@ -79,6 +80,14 @@ public class WebViewFragment extends DialogFragment {
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Activity a = getActivity();
+        if (MainActivity.currentTab == MainActivity.MainTabs.MyPage){
+            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        }
+    }
 
     @NonNull
     @Override

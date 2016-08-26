@@ -271,9 +271,12 @@ public class SplashScreenActivity extends BaseActivity {
         }
 
         boolean isIntroHasShowed = SharedPreferencesUtil.getBoolean(this, IntroActivity.PREF_INTRO_HAS_SHOWED, false);
+        boolean isTermsAccepted = SharedPreferencesUtil.getBoolean(this, TermOfUseActivity.PREF_TERMS_HAS_ACCEPTED, false);
         if (!isIntroHasShowed) {
             gotoIntroScreen();
-        } else {
+        } else if (!isTermsAccepted){
+            gotoTermsOfUseScreen();
+        }else{
             gotoTopScreen();
         }
         finish();
@@ -282,6 +285,12 @@ public class SplashScreenActivity extends BaseActivity {
     private void gotoIntroScreen() {
         Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
+    }
+
+    private void gotoTermsOfUseScreen(){
+        Intent intent = new Intent(this, TermOfUseActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void gotoTopScreen() {
