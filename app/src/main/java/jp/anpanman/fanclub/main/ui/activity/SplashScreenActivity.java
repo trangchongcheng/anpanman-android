@@ -183,35 +183,63 @@ public class SplashScreenActivity extends BaseActivity {
         //installationの作成
         //GCMからRegistrationIdを取得
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
-        installation.getRegistrationIdInBackground(Constant.GCM_SENDER_ID
-                , new DoneCallback() {
-                    @Override
-                    public void done(NCMBException e) {
-                        if (e == null) {
-                            //成功
-                            try {
-                                //mBaaSに端末情報を保存
-                                installation.save();
-                                getDeviceTokenToSignup();
-                            } catch (NCMBException saveError) {
-                                //保存失敗
-                                AppLog.log("Has NCMBException", saveError.toString());
-                                if (NCMBException.DUPLICATE_VALUE.equals(saveError.getCode())) {
-                                    //保存失敗 : registrationID重複
-                                    updateInstallation(installation);
-                                } else {
-                                    //保存失敗 : その他
-                                    saveError.printStackTrace();
-                                    AppLog.log("SplasScreenActivity Error1", saveError.toString());
-                                }
+//        installation.getRegistrationIdInBackground(Constant.GCM_SENDER_ID
+//                , new DoneCallback() {
+//                    @Override
+//                    public void done(NCMBException e) {
+//                        if (e == null) {
+//                            //成功
+//                            try {
+//                                //mBaaSに端末情報を保存
+//                                installation.save();
+//                                getDeviceTokenToSignup();
+//                            } catch (NCMBException saveError) {
+//                                //保存失敗
+//                                AppLog.log("Has NCMBException", saveError.toString());
+//                                if (NCMBException.DUPLICATE_VALUE.equals(saveError.getCode())) {
+//                                    //保存失敗 : registrationID重複
+//                                    updateInstallation(installation);
+//                                } else {
+//                                    //保存失敗 : その他
+//                                    saveError.printStackTrace();
+//                                    AppLog.log("SplasScreenActivity Error1", saveError.toString());
+//                                }
+//                            }
+//                        } else {
+//                            //ID取得失敗
+//                            AppLog.log("SplasScreenActivity Error2", e.toString());
+//                        }
+//                        TestCompletion = true;
+//                    }
+//                });
+
+        installation.getRegistrationIdInBackground(Constant.GCM_SENDER_ID, new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                if (e == null) {
+                    installation.saveInBackground(new DoneCallback() {
+                        @Override
+                        public void done(NCMBException e) {
+                            if(e == null){
+                                //保存成功
+                                    getDeviceTokenToSignup();
+
+                            }else if(NCMBException.DUPLICATE_VALUE.equals(e.getCode())){
+                                //保存失敗 : registrationID重複
+                                updateInstallation(installation);
+                            }else {
+                                //保存失敗 : その他
+                                e.printStackTrace();
+                              AppLog.log("SplasScreenActivity Error1", e.toString());
                             }
-                        } else {
-                            //ID取得失敗
-                            AppLog.log("SplasScreenActivity Error2", e.toString());
                         }
-                        TestCompletion = true;
-                    }
-                });
+                    });
+                } else {
+                    //ID取得失敗
+                    AppLog.log("SplasScreenActivity Error2", e.toString());
+                }
+            }
+        });
     }
 
     //Update Install when user Re-Intalled app

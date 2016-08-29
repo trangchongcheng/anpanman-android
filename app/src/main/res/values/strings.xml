@@ -34,6 +34,7 @@
         <item>アンパンマンポータルサイト</item>
         <item>利用規約</item>
         <item>プライバシーポリシー</item>
+        <item>FAQ</item>
         <item>お問い合わせ</item>
     </string-array>
     <string name="drawer_nav_footer_text">(C)やなせたかし／フレーベル館・ＴＭＳ・ＮＴＶ \n \t \t \t \t \t \t \t
@@ -50,6 +51,8 @@
     <!--dialog coupon-->
     <string name="button_ok">ダウンロード</string>
     <string name="title_policy">プライバシーポリシー</string>
+    <string name="portal_site">アンパンマンポータルサイト</string>
+    <string name="FAQ">FAQ</string>
     <string name="title_contact">お問い合わせ</string>
     <string name="terms_of_use">利用規約</string>
     <string name="wall_paper">壁紙</string>
@@ -59,6 +62,7 @@
 
     <string name="button_term_user">同意する</string>
     <string name="button_tutorial">スキップ</string>
+    <string name="button_close">閉じる</string>
     <string name="button_register">マイページの登録はこちら</string>
     <string name="download_finish">画像を端末に保存しました</string>
 

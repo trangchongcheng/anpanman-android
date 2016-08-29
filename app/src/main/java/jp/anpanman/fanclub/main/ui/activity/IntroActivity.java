@@ -23,6 +23,7 @@ import com.main.R;
 public class IntroActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     public static String PREF_INTRO_HAS_SHOWED = "PREF_INTRO_HAS_SHOWED";
+    public static String IS_FAQ = "is_faq";
 
     private Button btnSkip;
     private View viewIndicator0;
@@ -31,6 +32,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     private View viewIndicator3;
     private ViewPager viewPager;
     private IntroAdapter adapter;
+    private boolean isFAQ = false;
 
     //============== inherited methods =============================================================
     @Override
@@ -48,6 +50,13 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         adapter = new IntroAdapter(getSupportFragmentManager());
+        Intent intent = getIntent();
+        if(intent != null){
+            isFAQ = intent.getBooleanExtra(IS_FAQ,false);
+        }
+        if (isFAQ){
+            btnSkip.setText(getString(R.string.button_close));
+        }
     }
 
     @Override
@@ -63,8 +72,13 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_skip:
-                SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
-                gotoTermsOfUseScreen();
+                if(isFAQ){
+                    finish();
+                }else {
+                    SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
+                    gotoTermsOfUseScreen();
+                }
+
                 break;
 
             default:

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +39,7 @@ import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UpdatedTime;
 import jp.anpanman.fanclub.main.ui.fragment.CouponFragment;
 import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
@@ -269,6 +271,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent browserIntent;
+        String objectId = ((AnpanmanApp)getApplication()).getUserInfo().getObjectId();
         switch (i) {
             case 0:
                 AppLog.log("cheng", "onItemClick: " + i);
@@ -277,16 +281,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 2:
-                openWebView(RestfulUrl.URL_WALL, getString(R.string.wall_paper));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_WALL+objectId));
+                startActivity(browserIntent);
                 break;
             case 3:
-                openWebView(RestfulUrl.URL_GURIDINGU, getString(R.string.guiridingu));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_GURIDINGU+objectId));
+                startActivity(browserIntent);
                 break;
             case 4:
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));
+                openWebView(RestfulUrl.WEB_VIEW_DOMAIN, getString(R.string.terms_of_use));
                 break;
             case 6:
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));
@@ -295,6 +301,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy));
                 break;
             case 8:
+                Intent intent = new Intent(this, IntroActivity.class);
+                intent.putExtra(IntroActivity.IS_FAQ,true);
+                startActivity(intent);
+                break;
+            case 9:
                 openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact));
                 break;
             default:
@@ -594,7 +605,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public int getCount() {
-            return 8;
+            return 9;
         }
 
         @Override
