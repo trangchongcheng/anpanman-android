@@ -292,7 +292,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                openWebView(RestfulUrl.WEB_VIEW_DOMAIN, getString(R.string.terms_of_use));
+                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site));
                 break;
             case 6:
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));

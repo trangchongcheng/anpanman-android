@@ -15,6 +15,7 @@ public class RestfulUrl {
     public final static String WEB_VIEW_DOMAIN = WEB_VIEW_DOMAIN_STAGING_MODE;
 
     public final static String URL_NEWS = WEB_VIEW_DOMAIN+ "new/?id=";
+    public final static String URL_PORTAL_SITE = WEB_VIEW_DOMAIN+ "?id=";
     public final static String URL_PRESENTS = WEB_VIEW_DOMAIN+ "present/?id=";
     public final static String URL_COUPON = WEB_VIEW_DOMAIN+ "otoku/?id=";
     public final static String URL_ACCOUNT_SETTING = WEB_VIEW_DOMAIN+ "account/?id=";
