@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -117,15 +118,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             String url = bundle.getString(ARG_PUSH_URL);
             if (url != null) {
                 AppLog.log("URL"+url);
-                showPushDialog(url, message,"");
+                showPushDialog(url, title,message);
             } else {
-                showPushDialog("", message,"");
+                showPushDialog("", title,message);
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                //Permisson don't granted
+                if (shouldShowRequestPermissionRationale(
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    AppLog.log("Permissions dont denied");
+                }
+                // Permisson don't granted and dont show dialog again.
+                else{
+                    AppLog.log("Permisson don't granted and dont show dialog again");
+                }
+                //Register permission
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
             }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        // Make sure it's our original READ_CONTACTS request
+        if (requestCode == 1) {
+            if (grantResults.length == 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                AppLog.log("Permision Write File is Granted");
+            } else {
+                AppLog.log("Permision Write File is Denied");
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

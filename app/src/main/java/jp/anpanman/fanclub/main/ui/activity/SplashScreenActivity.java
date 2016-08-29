@@ -201,6 +201,7 @@ public class SplashScreenActivity extends BaseActivity {
                                     updateInstallation(installation);
                                 } else {
                                     //保存失敗 : その他
+                                    saveError.printStackTrace();
                                     AppLog.log("SplasScreenActivity Error1", saveError.toString());
                                 }
                             }

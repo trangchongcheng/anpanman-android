@@ -29,6 +29,8 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+
 public class CustomDialogCoupon extends Dialog implements
         android.view.View.OnClickListener {
     public Activity activity;
@@ -134,8 +136,13 @@ public class CustomDialogCoupon extends Dialog implements
                     MediaStore.Images.Media.insertImage(context.get().getContentResolver(), myBitmap, "Anpanman", "Image");
                 }
                 return myBitmap != null;
-            } catch (Exception e) {
+            }catch (SecurityException e){
                 e.printStackTrace();
+                AppLog.log("Permisson wasn't deined");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+
             }
             return null;
         }
