@@ -152,6 +152,7 @@ public class WebViewFragment extends DialogFragment {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
+                    view.clearCache(true);
                 }
 
                 @Override
