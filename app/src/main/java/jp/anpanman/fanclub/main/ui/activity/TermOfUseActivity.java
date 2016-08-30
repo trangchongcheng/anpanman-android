@@ -1,6 +1,7 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.main.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
@@ -41,6 +43,13 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_use);
 
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
+            // Campain
+            String data_campain = uri.getQueryParameter("id");
+            AppLog.log(data_campain);
+        }
         getWidgets();
         setupWebView();
         registerEventhandlers();
@@ -111,6 +120,7 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request","true");
             mWebView.loadUrl(RestfulUrl.URL_TERMS, extraHeaders);
+           // mWebView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
         }
     }
 

@@ -1,8 +1,10 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
@@ -60,11 +63,11 @@ public class NewFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Activity a = getActivity();
-        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     //============= inner methods ==================================================================
-    private void setupWebView(){
+    private void setupWebView() {
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -100,22 +103,67 @@ public class NewFragment extends BaseFragment {
                 Common.onSslError(getActivity(), view, handler, error);
             }
         });
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100){
+                if (newProgress == 100) {
                     horizontalProgress.setVisibility(View.GONE);
-                }else{
+                } else {
                     horizontalProgress.setProgress(newProgress);
                     horizontalProgress.setVisibility(View.VISIBLE);
                 }
             }
         });
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("anpanmanfanclub://")) {
+                    Map<String, String> objectID = getParams(url);
+                    if (objectID.get("id") != null) {
+                        Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
+                    }
+                    if (objectID.get("url") != null) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setData(Uri.parse("https://google.com"));
+                        getActivity().startActivity(i);
+                    }
+                    return true;
+                } else {
+                    view.loadUrl(url);
+                    return true;
+                }
+            }
+        });
         Map<String, String> extraHeaders = new HashMap<>();
-        extraHeaders.put("x-anp-request","true");
-        String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
-        AppLog.log( "setupWebView: "+RestfulUrl.URL_NEWS+objectId);
-        webView.loadUrl(RestfulUrl.URL_NEWS+objectId, extraHeaders);
+        extraHeaders.put("x-anp-request", "true");
+        String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
+
+        AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
+        // webView.loadUrl(RestfulUrl.URL_NEWS+objectId, extraHeaders);
+        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
+    }
+
+    public static Map<String, String> getParams(String url) {
+        HashMap<String, String> result = new HashMap<String, String>();
+        try {
+            if (url.indexOf('?') != -1) {
+                String[] allStrings = url.split("\\?");
+                if (allStrings.length > 1) {
+                    String content = allStrings[1];
+                    String[] contents = content.split("&");
+                    for (String item : contents) {
+                        String[] point = item.split("=");
+                        if (point.length == 2) {
+                            result.put(point[0], point[1]);
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

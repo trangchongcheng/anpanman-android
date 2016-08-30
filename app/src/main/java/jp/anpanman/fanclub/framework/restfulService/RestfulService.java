@@ -13,6 +13,7 @@ import com.main.R;
 import jp.anpanman.fanclub.framework.restfulService.parser.IParser;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.NetworkUtil;
+import jp.anpanman.fanclub.main.util.NoSSLv3Factory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -293,7 +294,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         String result = null;
 
         if (path.startsWith("https:")) {
-
+            HttpsURLConnection.setDefaultSSLSocketFactory(new NoSSLv3Factory());
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             //== add header
             httpsURLConnection.setRequestMethod("GET");
@@ -302,6 +303,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
                     httpsURLConnection.setRequestProperty(key, header.get(key));
                 }
             }
+
 
             int responseCode = httpsURLConnection.getResponseCode();
 

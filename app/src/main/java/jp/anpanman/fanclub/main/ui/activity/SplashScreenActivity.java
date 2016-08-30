@@ -3,6 +3,7 @@ package jp.anpanman.fanclub.main.ui.activity;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,6 +50,7 @@ public class SplashScreenActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //== delay this screen a particular time
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

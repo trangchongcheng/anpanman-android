@@ -575,6 +575,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         customDialogCoupon.show();
     }
 
+    public void openBrower(String url){
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
     //=============== inner classes ================================================================
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override

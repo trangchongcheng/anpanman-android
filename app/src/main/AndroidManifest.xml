@@ -20,8 +20,8 @@
     <uses-permission android:name="jp.anpanman.fanclub.permission.C2D_MESSAGE" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <!-- push通知タップ時に遷移するActivity -->
 
 
@@ -56,6 +56,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="anpanmanfanclub" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -64,12 +72,16 @@
 
         <activity
             android:name="jp.anpanman.fanclub.main.ui.activity.TermOfUseActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
             android:name="jp.anpanman.fanclub.main.ui.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop">
+
+
+        </activity>
 
 
         <!-- For receiving GCM message and registration success -->
@@ -125,7 +137,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/>
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar" />
         <!-- プッシュ通知タップ時に起動するActivityの設定 -->
     </application>
 
