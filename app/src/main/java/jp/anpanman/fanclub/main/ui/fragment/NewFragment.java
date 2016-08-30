@@ -22,6 +22,7 @@ import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
@@ -117,16 +118,21 @@ public class NewFragment extends BaseFragment {
         });
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("anpanmanfanclub://")) {
+
+                //Callback interface Webvie
+                if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
                     Map<String, String> objectID = getParams(url);
-                    if (objectID.get("id") != null) {
-                        Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
+                    // Callback: Update ObjectId
+                    if (objectID.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
+//                         Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
                     }
-                    if (objectID.get("url") != null) {
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setData(Uri.parse("https://google.com"));
-                        getActivity().startActivity(i);
+
+                    // Callback: Open Extend Browser on Device through url string
+                    if (objectID.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
+//                        Intent i = new Intent(Intent.ACTION_VIEW);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        i.setData(Uri.parse("https://google.com"));
+//                        getActivity().startActivity(i);
                     }
                     return true;
                 } else {
@@ -140,8 +146,8 @@ public class NewFragment extends BaseFragment {
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
 
         AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
-        // webView.loadUrl(RestfulUrl.URL_NEWS+objectId, extraHeaders);
-        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
+        webView.loadUrl(RestfulUrl.URL_NEWS + objectId, extraHeaders);
+//        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
     }
 
     public static Map<String, String> getParams(String url) {

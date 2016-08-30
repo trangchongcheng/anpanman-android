@@ -17,6 +17,11 @@ public class Constant {
     public static String NOTIFY_CLIENT_KEY_NCMB = "06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9";
 
     public static final String PUSH_ACTION = "jp.anpanman.fanclub.pushing";
+    public static final String SCHEME_ANPANMANFANCLUB = "anpanmanfanclub://";
+    public static final String HOST_ANPANMANFANCLUB_UPDATE_OBJECT = SCHEME_ANPANMANFANCLUB + "update";
+    public static final String HOST_ANPANMANFANCLUB_OPEN_BROWSER = SCHEME_ANPANMANFANCLUB + "openbrowser";
+    public static final String SCHEME_URL = "url";
+    public static final String SCHEME_ID = "id";
 
     // DEBUG Interface
     // How to use :
