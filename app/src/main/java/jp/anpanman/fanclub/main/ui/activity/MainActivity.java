@@ -102,9 +102,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         if (savedInstanceState != null) {
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
-            switchTab(currentTab, false);
+            switchTab(currentTab, true);
         } else {
-            switchTab(MainTabs.News, false);
+            switchTab(MainTabs.News, true);
         }
 
         setDisplayBottomNav();
@@ -246,23 +246,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case com.main.R.id.btn_img_tab_news:
-                switchTab(MainTabs.News, true);
+                switchTab(MainTabs.News, false);
                 break;
 
             case com.main.R.id.btn_img_tab_coupon:
-                switchTab(MainTabs.Coupon, true);
+                switchTab(MainTabs.Coupon, false);
                 break;
 
             case com.main.R.id.btn_img_tab_present:
-                switchTab(MainTabs.Present, true);
+                switchTab(MainTabs.Present, false);
                 break;
 
             case com.main.R.id.btn_img_tab_my_page:
-                switchTab(MainTabs.MyPage, true);
+                switchTab(MainTabs.MyPage, false);
                 break;
 
             case com.main.R.id.btn_img_tab_setting:
-                switchTab(MainTabs.Setting, true);
+                switchTab(MainTabs.Setting, false);
                 break;
 
             default:
@@ -350,35 +350,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav.setAdapter(drawerAdapter);
     }
 
-    public void switchTab(MainTabs newTab, boolean isAnimation) {
+    public void switchTab(MainTabs newTab, boolean isFirstLaunch) {
         Log.e("**current tab**", (currentTab == null) ? "" : currentTab.toString());
         Log.e("**new tab**", newTab.toString());
-        if (newTab == currentTab) {
-            return;
+
+        FragmentTransitionInfo mTransitionAnimation;
+        if (isFirstLaunch ||
+                (newTab == currentTab)) {
+            mTransitionAnimation = null;
+
+        } else {
+            mTransitionAnimation = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
         }
 
         switch (newTab) {
             case News:
-                openNewsFragment(isAnimation);
+                openNewsFragment(mTransitionAnimation);
                 break;
 
             case Coupon:
-                openCouponFragment();
+                openCouponFragment(mTransitionAnimation);
                 break;
 
             case Present:
-                openPresentFragment();
+                openPresentFragment(mTransitionAnimation);
                 break;
 
             case MyPage:
-                openMyPageFragment();
+                openMyPageFragment(mTransitionAnimation);
                 break;
 
             case Setting:
                 openSettingDialog();
                 break;
         }
-        if(newTab!=MainTabs.Setting){
+
+        if(newTab != MainTabs.Setting) {
             currentTab = newTab;
         }
         setDisplayBottomNav();
@@ -540,27 +547,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });
     }
 
-    private void openNewsFragment(boolean isAnimation) {
-        FragmentTransitionInfo transition = null;
-        if (isAnimation) {
-            transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
-        }
-        replaceFragment(com.main.R.id.fl_main_content, NewFragment.class.getName(), false, null, transition);
+    private void openNewsFragment(FragmentTransitionInfo mTransition) {
+        replaceFragment(com.main.R.id.fl_main_content, NewFragment.class.getName(), false, null, mTransition);
+        Log.e("LOG", "NewsFragment !");
     }
 
-    private void openCouponFragment() {
-        FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(com.main.R.id.fl_main_content, CouponFragment.class.getName(), false, null, transition);
+    private void openCouponFragment(FragmentTransitionInfo mTransition) {
+        replaceFragment(com.main.R.id.fl_main_content, CouponFragment.class.getName(), false, null, mTransition);
     }
 
-    private void openPresentFragment() {
-        FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(com.main.R.id.fl_main_content, PresentFragment.class.getName(), false, null, transition);
+    private void openPresentFragment(FragmentTransitionInfo mTransition) {
+        replaceFragment(com.main.R.id.fl_main_content, PresentFragment.class.getName(), false, null, mTransition);
     }
 
-    private void openMyPageFragment() {
-        FragmentTransitionInfo transition = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
-        replaceFragment(com.main.R.id.fl_main_content, MyPageFragment.class.getName(), false, null, transition);
+    private void openMyPageFragment(FragmentTransitionInfo mTransition) {
+        replaceFragment(com.main.R.id.fl_main_content, MyPageFragment.class.getName(), false, null, mTransition);
     }
 
     private void openSettingDialog() {
