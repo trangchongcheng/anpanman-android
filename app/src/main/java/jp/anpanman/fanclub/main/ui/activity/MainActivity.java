@@ -27,10 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.main.R;
-import com.nifty.cloud.mb.core.NCMBPush;
 
 import java.util.ArrayList;
 
@@ -41,6 +39,8 @@ import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UpdatedTime;
+import jp.anpanman.fanclub.main.model.UserCharacter;
+import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.ui.fragment.CouponFragment;
 import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
@@ -82,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgNewsNew;
     private ImageView imgCouponNew;
     private ImageView imgPresentNew;
+    private ImageView mProfileImage;
 
     public static MainTabs currentTab;
     private UpdatedTime currentSync;
@@ -335,6 +336,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(com.main.R.layout.drawer_nav_footer, null, false);
+
+        // Set favorite character on side menu
+        UserInfo userInfo = ((AnpanmanApp)(this.getApplication())).getUserInfo();
+        UserCharacter userCharacter = UserCharacter.getUserCharacter(this, userInfo.getFavorite_character_code());
+        mProfileImage = (ImageView) navHeaderView.findViewById(R.id.profile_image);
+        mProfileImage.setImageResource(userCharacter.getIconResource());
 
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
