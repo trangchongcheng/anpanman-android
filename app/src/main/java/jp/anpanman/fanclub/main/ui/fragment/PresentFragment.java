@@ -19,6 +19,7 @@ import java.util.Map;
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
@@ -67,19 +68,7 @@ public class PresentFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                view.clearCache(true);
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                Common.onSslError(getActivity(), view, handler, error);
-            }
-        });
+        webView.setWebViewClient(new MyWebViewClient(getActivity()));
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {

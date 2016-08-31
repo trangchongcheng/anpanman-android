@@ -12,8 +12,10 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
@@ -67,18 +69,7 @@ public class CouponFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                view.clearCache(true);
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                Common.onSslError(getActivity(), view, handler, error);
-            }
-        });
+        webView.setWebViewClient(new MyWebViewClient(getActivity()));
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
