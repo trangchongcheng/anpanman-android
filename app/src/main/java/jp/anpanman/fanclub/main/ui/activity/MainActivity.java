@@ -107,7 +107,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         setDisplayBottomNav();
-        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
+        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
+                "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-26T20:38:09+09:00\"}}");
+        AppLog.log("Cheng-last", lastTime+"-hihi");
         if (!TextUtils.isEmpty(lastTime)) {
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
@@ -292,13 +294,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site));
+                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site),false);
                 break;
             case 6:
-                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use));
+                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use),false);
                 break;
             case 7:
-                openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy));
+                openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy),false);
                 break;
             case 8:
                 Intent intent = new Intent(this, IntroActivity.class);
@@ -306,7 +308,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivity(intent);
                 break;
             case 9:
-                openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact));
+                openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact),false);
                 break;
             default:
                 break;
@@ -316,8 +318,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner methods ================================================================
-    public void openWebView(String url, String title) {
-        DialogFragment fragment = WebViewFragment.newInstance(url, title);
+    public void openWebView(String url, String title, boolean isDetails) {
+        DialogFragment fragment = WebViewFragment.newInstance(url, title,isDetails);
         fragment.show(getFragmentManager(), WebViewFragment.class.getName());
     }
 
@@ -524,6 +526,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 displayNewIcons((UpdatedTime) data);
+                AppLog.log("Cheng-Update",data.toString());
+
             }
 
             @Override
@@ -565,7 +569,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 setDisplayBottomNav();
             }
         });
-        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other));
+        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other),false);
     }
 
     private void showPushDialog(String url,String title, String message) {

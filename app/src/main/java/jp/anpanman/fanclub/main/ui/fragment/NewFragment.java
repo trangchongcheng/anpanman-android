@@ -1,6 +1,7 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
+import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
@@ -81,29 +83,62 @@ public class NewFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                return super.shouldInterceptRequest(view, request);
-            }
+        webView.setWebViewClient(new MyWebViewClient(getActivity()));
+        Map<String, String> extraHeaders = new HashMap<>();
+        extraHeaders.put("x-anp-request", "true");
+        String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
 
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                view.clearCache(true);
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                Common.onSslError(getActivity(), view, handler, error);
-            }
-        });
+        AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
+        webView.loadUrl(RestfulUrl.URL_NEWS + objectId, extraHeaders);
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+//                return super.shouldInterceptRequest(view, request);
+//            }
+//
+//            @Override
+//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+//                super.onPageStarted(view, url, favicon);
+//
+//            }
+//
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                super.onPageFinished(view, url);
+//                view.clearCache(true);
+//            }
+//
+//            @Override
+//            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//                Common.onSslError(getActivity(), view, handler, error);
+//            }
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                AppLog.log("Anpanman Url NewFragment",url);
+//                openWebView(url,"Title");
+//                //Callback interface Webvie
+////                if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
+////                    Map<String, String> objectID = getParams(url);
+////                    // Callback: Update ObjectId
+////                    if (objectID.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
+//////                         Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
+////                    }
+////
+////                    // Callback: Open Extend Browser on Device through url string
+////                    if (objectID.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
+//////                        Intent i = new Intent(Intent.ACTION_VIEW);
+//////                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//////                        i.setData(Uri.parse("https://google.com"));
+//////                        getActivity().startActivity(i);
+////                    }
+////                    return true;
+////                } else {
+////                    view.loadUrl(url);
+////                    return true;
+////                }
+//                return true;
+//            }
+//        });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -116,39 +151,11 @@ public class NewFragment extends BaseFragment {
                 }
             }
         });
-        webView.setWebViewClient(new WebViewClient() {
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-                //Callback interface Webvie
-                if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
-                    Map<String, String> objectID = getParams(url);
-                    // Callback: Update ObjectId
-                    if (objectID.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
-//                         Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
-                    }
-
-                    // Callback: Open Extend Browser on Device through url string
-                    if (objectID.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
-//                        Intent i = new Intent(Intent.ACTION_VIEW);
-//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        i.setData(Uri.parse("https://google.com"));
-//                        getActivity().startActivity(i);
-                    }
-                    return true;
-                } else {
-                    view.loadUrl(url);
-                    return true;
-                }
-            }
-        });
-        Map<String, String> extraHeaders = new HashMap<>();
-        extraHeaders.put("x-anp-request", "true");
-        String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
-
-        AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
-        webView.loadUrl(RestfulUrl.URL_NEWS + objectId, extraHeaders);
 //        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
     }
+
+    //Get Params in URL Scheme
 
     public static Map<String, String> getParams(String url) {
         HashMap<String, String> result = new HashMap<String, String>();

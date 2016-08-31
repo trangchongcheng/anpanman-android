@@ -30,6 +30,25 @@
             android:text="@string/terms_of_use"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_18sp" />
+        <ImageView
+            android:id="@+id/imgNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/positive_16dp"
+            android:src="@drawable/ic_next_page"
+            android:visibility="gone" />
+        <ImageView
+            android:id="@+id/imgPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/imgNext"
+            android:padding="@dimen/positive_16dp"
+            android:src="@drawable/ic_previous_page"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -42,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
             android:layout_marginBottom="-10dp"
-            android:layout_marginTop="-10dp"
             android:max="100"
             android:padding="0dp"
             android:progressDrawable="@drawable/progress_horizontal" />

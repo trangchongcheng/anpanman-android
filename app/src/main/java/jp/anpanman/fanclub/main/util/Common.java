@@ -15,6 +15,7 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -93,12 +94,12 @@ public class Common {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.JAPAN);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {
-            sdf.parse(time1);
-            Calendar cal1 = sdf.getCalendar();
-            sdf.parse(time2);
-            Calendar cal2 = sdf.getCalendar();
+            Date cal1 = sdf.parse(time1);
+     //       Calendar cal1 = sdf.getCalendar();
+            Date cal2 = sdf.parse(time2);
+   //         Calendar cal2 = sdf.getCalendar();
 
-            if (cal1.getTimeInMillis() > cal2.getTimeInMillis()){
+            if (cal1.getTime() > cal2.getTime()){
                 return true;
             }
         } catch (ParseException e) {

@@ -157,7 +157,7 @@ public class MyPageFragment extends BaseFragment {
         imgNickName.setVisibility(View.VISIBLE);
     }
     public void openWebView(String url, String title) {
-        DialogFragment fragment = WebViewFragment.newInstance(url, title);
+        DialogFragment fragment = WebViewFragment.newInstance(url, title,false);
         fragment.show(getActivity().getFragmentManager(), WebViewFragment.class.getName());
     }
 }
