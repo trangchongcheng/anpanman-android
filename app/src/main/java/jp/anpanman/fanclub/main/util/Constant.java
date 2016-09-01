@@ -23,6 +23,12 @@ public class Constant {
     public static final String SCHEME_URL = "url";
     public static final String SCHEME_ID = "id";
 
+    public static final int FAVORITE_CHARACTER_CODE_DEFAULT     = 99;
+    public static final int FAVORITE_CHARACTER_CODE_MIN         = 1;
+    public static final int FAVORITE_CHARACTER_CODE_MAX         = 20;
+
+
+
     // DEBUG Interface
     // How to use :
     // 1 param  : EnumSet.of(Flag.A)
