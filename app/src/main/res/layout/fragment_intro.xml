@@ -17,20 +17,20 @@
         android:padding="@dimen/positive_16dp">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/positive_16dp"
             android:text="チュートリアル01"
-            android:textSize="@dimen/text_size_22sp" />
+            android:textSize="@dimen/text_size_18sp" />
 
         <TextView
+            android:id="@+id/tv_description"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/positive_30dp"
-            android:layout_marginRight="@dimen/positive_30dp"
-            android:textSize="@dimen/text_size_14sp"
+            android:textSize="@dimen/text_size_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="チュートリアル説明 チュートリアル説明" />
+            android:text="アンパンマン" />
 
     </LinearLayout>
 

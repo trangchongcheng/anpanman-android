@@ -66,6 +66,33 @@
     <string name="button_register">マイページの登録はこちら</string>
     <string name="download_finish">画像を端末に保存しました</string>
 
+    <!-- Tutorial sceen title-->
+    <string-array name="tutorial_title">
+        <item>アンパンマンファンくらぶが\nアプリになって登場</item>
+        <item>アンパンマンファンくらぶが\n アプリになって登場</item>
+        <item>アンパンマンファンくらぶが\n アプリになって登場</item>
+        <item>アンパンマンファンくらぶが\n アプリになって登場</item>
+    </string-array>
+
+    <!-- Tutorial sceen Decription-->
+    <string-array name="tutorial_description">
+        <item>アンパンマンファンくらぶがパワーアップ！
+これまでの待受画像プレゼントやお誕生日メールに加え
+限定プレゼントやクーポンの配信など
+新しいサービスがスタート！ファン必見のアプリです！</item>
+        <item>アンパンマンファンくらぶがパワーアップ！
+これまでの待受画像プレゼントやお誕生日メールに加え
+限定プレゼントやクーポンの配信など
+新しいサービスがスタート！ファン必見のアプリです！</item>
+        <item>アンパンマンファンくらぶがパワーアップ！
+これまでの待受画像プレゼントやお誕生日メールに加え
+限定プレゼントやクーポンの配信など
+新しいサービスがスタート！ファン必見のアプリです！</item>
+        <item>アンパンマンファンくらぶがパワーアップ！
+これまでの待受画像プレゼントやお誕生日メールに加え
+限定プレゼントやクーポンの配信など
+新しいサービスがスタート！ファン必見のアプリです！</item>
+    </string-array>
 
     <!-- character code-->
     <string-array name="name_character">

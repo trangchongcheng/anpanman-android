@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
@@ -24,6 +25,8 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
 
     public static String PREF_INTRO_HAS_SHOWED = "PREF_INTRO_HAS_SHOWED";
     public static String IS_FAQ = "is_faq";
+    public static final String TITLE = "title";
+    public static final String DESCRIPTION = "description";
 
     private Button btnSkip;
     private View viewIndicator0;
@@ -51,10 +54,10 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
 
         adapter = new IntroAdapter(getSupportFragmentManager());
         Intent intent = getIntent();
-        if(intent != null){
-            isFAQ = intent.getBooleanExtra(IS_FAQ,false);
+        if (intent != null) {
+            isFAQ = intent.getBooleanExtra(IS_FAQ, false);
         }
-        if (isFAQ){
+        if (isFAQ) {
             btnSkip.setText(getString(R.string.button_close));
         }
     }
@@ -70,11 +73,11 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     //============== implemented methods ===========================================================
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_skip:
-                if(isFAQ){
+                if (isFAQ) {
                     finish();
-                }else {
+                } else {
                     SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
                     gotoTermsOfUseScreen();
                 }
@@ -130,7 +133,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     }
 
     //============== inner methods =================================================================
-    private void gotoTermsOfUseScreen(){
+    private void gotoTermsOfUseScreen() {
         Intent intent = new Intent(this, TermOfUseActivity.class);
         startActivity(intent);
         finish();
@@ -139,14 +142,33 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     //============== inner classes =================================================================
     public static class IntroFragment extends Fragment {
 
-        public IntroFragment() {
+        private TextView tvTitle;
+        private TextView tvDescription;
+        private String title;
+        private String description;
+
+
+        public static IntroFragment newInstance(String title, String description) {
+            IntroFragment f = new IntroFragment();
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putString(TITLE, title);
+            args.putString(DESCRIPTION, description);
+            f.setArguments(args);
+
+            return f;
         }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            return inflater.inflate(R.layout.fragment_intro, container, false);
+            View view = inflater.inflate(R.layout.fragment_intro, container, false);
+            tvTitle = (TextView) view.findViewById(R.id.tv_title);
+            tvDescription = (TextView) view.findViewById(R.id.tv_description);
+            tvTitle.setText(getArguments().getString(TITLE));
+            tvDescription.setText(getArguments().getString(DESCRIPTION));
+            return view;
         }
     }
 
@@ -157,9 +179,9 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
 
         @Override
         public Fragment getItem(int position) {
-            return new IntroFragment();
+            return IntroFragment.newInstance(getApplicationContext().getResources().getStringArray(R.array.tutorial_title)[position],
+                    getApplicationContext().getResources().getStringArray(R.array.tutorial_description)[position]);
         }
-
 
 
         @Override
