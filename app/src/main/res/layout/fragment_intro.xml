@@ -17,7 +17,9 @@
         android:padding="@dimen/positive_16dp">
 
         <TextView
+            android:layout_gravity="center_horizontal"
             android:id="@+id/tv_title"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/positive_16dp"
@@ -26,7 +28,7 @@
 
         <TextView
             android:id="@+id/tv_description"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="@dimen/text_size_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
