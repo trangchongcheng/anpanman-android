@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import com.main.R;
 
+import jp.anpanman.fanclub.main.util.Constant;
+
 /**
  * Created by chientruong on 8/25/16.
  */
@@ -83,11 +85,11 @@ public class UserCharacter extends BaseModel {
     public static UserCharacter getUserCharacter(Context context,int id){
         UserCharacter userCharacter = null;
 
-        if (id <= 0 || id > 20){
-            id = 99;
+        if (id < Constant.FAVORITE_CHARACTER_CODE_MIN || id > Constant.FAVORITE_CHARACTER_CODE_MAX){
+            id = Constant.FAVORITE_CHARACTER_CODE_DEFAULT;
         }
 
-        if (id == 99){
+        if (id == Constant.FAVORITE_CHARACTER_CODE_DEFAULT){
             userCharacter = new UserCharacter(id, context.getResources().getStringArray(R.array.name_character)[0],
                     context.getResources().obtainTypedArray(R.array.iconResource).getResourceId(0, 0),
                     context.getResources().obtainTypedArray(R.array.bgResource).getResourceId(0, 0));
