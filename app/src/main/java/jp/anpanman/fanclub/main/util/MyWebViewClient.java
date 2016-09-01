@@ -47,7 +47,7 @@ public class MyWebViewClient extends WebViewClient {
         System.out.println("when you click on any interlink on webview that time you got url : " + url);
         // Open product detail
         if (url.contains("detail.html")) {
-            openWebView(url, "Details", true);
+            openWebView(url, view.getTitle(), true);
             return true;
         }
         //          if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
