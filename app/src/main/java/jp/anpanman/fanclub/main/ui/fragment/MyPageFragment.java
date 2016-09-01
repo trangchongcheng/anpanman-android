@@ -90,7 +90,7 @@ public class MyPageFragment extends BaseFragment {
                 btnRegister.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openWebView(RestfulUrl.URL_REGISTER_MYPAGE,"Register Account");
+                        openWebView(RestfulUrl.URL_REGISTER_MYPAGE,getString(R.string.button_register));
                     }
                 });
             }

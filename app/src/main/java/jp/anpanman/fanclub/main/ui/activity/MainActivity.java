@@ -86,6 +86,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     public static MainTabs currentTab;
     private UpdatedTime currentSync;
+    private boolean isNewSlect = false;
+    private boolean isCouponSlect = false;
+    private boolean isPresentSlect = false;
 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
@@ -110,7 +113,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
                 "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-26T20:38:09+09:00\"}}");
-        AppLog.log("Cheng-last", lastTime+"-hihi");
+        AppLog.log("Cheng-lastime",lastTime);
         if (!TextUtils.isEmpty(lastTime)) {
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
@@ -122,10 +125,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             String message = bundle.getString(ARG_PUSH_MESSEAGE);
             String url = bundle.getString(ARG_PUSH_URL);
             if (url != null) {
-                AppLog.log("URL"+url);
-                showPushDialog(url, title,message);
+                AppLog.log("URL" + url);
+                showPushDialog(url, title, message);
             } else {
-                showPushDialog("", title,message);
+                showPushDialog("", title, message);
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -137,7 +140,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     AppLog.log("Permissions dont denied");
                 }
                 // Permisson don't granted and dont show dialog again.
-                else{
+                else {
                     AppLog.log("Permisson don't granted and dont show dialog again");
                 }
                 //Register permission
@@ -249,14 +252,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             case com.main.R.id.btn_img_tab_news:
                 switchTab(MainTabs.News, false);
+                isNewSlect = true;
                 break;
 
             case com.main.R.id.btn_img_tab_coupon:
                 switchTab(MainTabs.Coupon, false);
+                isCouponSlect = true;
                 break;
 
             case com.main.R.id.btn_img_tab_present:
                 switchTab(MainTabs.Present, false);
+                isPresentSlect = true;
                 break;
 
             case com.main.R.id.btn_img_tab_my_page:
@@ -275,7 +281,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent browserIntent;
-        String objectId = ((AnpanmanApp)getApplication()).getUserInfo().getObjectId();
+        String objectId = ((AnpanmanApp) getApplication()).getUserInfo().getObjectId();
         switch (i) {
             case 0:
                 AppLog.log("cheng", "onItemClick: " + i);
@@ -284,32 +290,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 2:
-                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_WALL+objectId));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_WALL + objectId));
                 startActivity(browserIntent);
                 break;
             case 3:
-                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_GURIDINGU+objectId));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_GURIDINGU + objectId));
                 startActivity(browserIntent);
                 break;
             case 4:
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site),false);
+                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site), false);
                 break;
             case 6:
-                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use),false);
+                openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
-                openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy),false);
+                openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
                 Intent intent = new Intent(this, IntroActivity.class);
-                intent.putExtra(IntroActivity.IS_FAQ,true);
+                intent.putExtra(IntroActivity.IS_FAQ, true);
                 startActivity(intent);
                 break;
             case 9:
-                openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact),false);
+                openWebView(RestfulUrl.URL_CONTACT, getString(R.string.title_contact), false);
                 break;
             default:
                 break;
@@ -320,7 +326,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     //=============== inner methods ================================================================
     public void openWebView(String url, String title, boolean isDetails) {
-        DialogFragment fragment = WebViewFragment.newInstance(url, title,isDetails);
+        DialogFragment fragment = WebViewFragment.newInstance(url, title, isDetails);
         fragment.show(getFragmentManager(), WebViewFragment.class.getName());
     }
 
@@ -340,7 +346,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         View navFooterView = inflater.inflate(com.main.R.layout.drawer_nav_footer, null, false);
 
         // Set favorite character on side menu
-        UserInfo userInfo = ((AnpanmanApp)(this.getApplication())).getUserInfo();
+        UserInfo userInfo = ((AnpanmanApp) (this.getApplication())).getUserInfo();
         UserCharacter userCharacter = UserCharacter.getUserCharacter(this, userInfo.getFavorite_character_code());
         mProfileImage = (ImageView) navHeaderView.findViewById(R.id.profile_image);
         mProfileImage.setImageResource(userCharacter.getIconResource());
@@ -387,7 +393,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
 
-        if(newTab != MainTabs.Setting) {
+        if (newTab != MainTabs.Setting) {
             currentTab = newTab;
         }
         setDisplayBottomNav();
@@ -478,13 +484,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgCouponNew.setVisibility(View.INVISIBLE);
+                        if(isCouponSlect){
+                            imgCouponNew.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgPresentNew.setVisibility(View.INVISIBLE);
+                        if(isPresentSlect){
+                            imgPresentNew.setVisibility(View.INVISIBLE);
+                        }
                     }
                     break;
 
@@ -494,13 +504,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgNewsNew.setVisibility(View.INVISIBLE);
+                        if (isNewSlect) {
+                            imgNewsNew.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgPresentNew.setVisibility(View.INVISIBLE);
+                        if(isPresentSlect){
+                            imgPresentNew.setVisibility(View.INVISIBLE);
+                        }
                     }
                     break;
 
@@ -510,13 +524,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgNewsNew.setVisibility(View.INVISIBLE);
+                        if(isNewSlect){
+                            imgNewsNew.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
-                        imgCouponNew.setVisibility(View.INVISIBLE);
+                        if (isCouponSlect){
+                            imgCouponNew.setVisibility(View.INVISIBLE);
+                        }
                     }
                     break;
 
@@ -540,7 +558,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 displayNewIcons((UpdatedTime) data);
-                AppLog.log("Cheng-Update",data.toString());
+                AppLog.log("Cheng-Update", data.toString());
 
             }
 
@@ -577,17 +595,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 setDisplayBottomNav();
             }
         });
-        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other),false);
+        openWebView(RestfulUrl.URL_ACCOUNT_SETTING, getString(R.string.other), false);
     }
 
-    private void showPushDialog(String url,String title, String message) {
+    private void showPushDialog(String url, String title, String message) {
         if (customDialogCoupon == null) {
-            customDialogCoupon = new CustomDialogCoupon(MainActivity.this,url,title,message);
+            customDialogCoupon = new CustomDialogCoupon(MainActivity.this, url, title, message);
         }
         customDialogCoupon.show();
     }
 
-    public void openBrower(String url){
+    public void openBrower(String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
@@ -598,7 +616,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onReceive(Context context, Intent intent) {
             String urlPush = intent.getStringExtra("url");
-            showPushDialog(urlPush, null,"");
+            showPushDialog(urlPush, null, "");
         }
 
     }
