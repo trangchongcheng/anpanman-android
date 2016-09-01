@@ -14,6 +14,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 
 public class MyWebViewClient extends WebViewClient {
@@ -47,7 +48,8 @@ public class MyWebViewClient extends WebViewClient {
         System.out.println("when you click on any interlink on webview that time you got url : " + url);
         // Open product detail
         if (url.contains("detail.html")) {
-            openWebView(url, view.getTitle(), true);
+            openWebView(url,"", true);
+            AppLog.log("Url-click",url);
             return true;
         }
         //          if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {

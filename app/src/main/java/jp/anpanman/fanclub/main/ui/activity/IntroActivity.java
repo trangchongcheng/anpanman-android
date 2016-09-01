@@ -183,7 +183,6 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
                     getApplicationContext().getResources().getStringArray(R.array.tutorial_description)[position]);
         }
 
-
         @Override
         public int getCount() {
             return 4;

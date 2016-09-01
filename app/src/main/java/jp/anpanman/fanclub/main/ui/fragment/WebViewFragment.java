@@ -159,6 +159,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
+                    AppLog.log("Url-click1",url);
                     view.clearCache(true);
                 }
 
@@ -184,6 +185,15 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                         horizontalProgress.setVisibility(View.VISIBLE);
                     }
                 }
+                @Override
+                public void onReceivedTitle(WebView view, String sTitle) {
+                    super.onReceivedTitle(view, sTitle);
+                    if (sTitle != null && sTitle.length() > 0 && isDetails) {
+                        tvTitle.setText(sTitle);
+                    } else {
+                        tvTitle.setText(mTitle);
+                    }
+                }
             });
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request", "true");
@@ -192,9 +202,10 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                 mWebView.loadUrl(mUrl, extraHeaders);
             } else {
                 mWebView.loadUrl(mUrl + objectId, extraHeaders);
-                AppLog.log("setupWebView: " + mUrl+objectId);
-
             }
+            AppLog.log("Url-click2",mUrl);
+
+
         }
 
     }
