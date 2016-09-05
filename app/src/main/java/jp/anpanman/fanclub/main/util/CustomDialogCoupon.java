@@ -92,17 +92,17 @@ public class CustomDialogCoupon extends Dialog implements
     //Show dialog confirm
     public void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Download");
-        builder.setMessage("Do you want to download image?");
+//        builder.setTitle("Download");
+        builder.setMessage(activity.getString(R.string.is_download_image));
         builder.setCancelable(false);
-        builder.setPositiveButton("Download", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(activity.getString(R.string.yes_dowload), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 new ImageLoadTask(url, activity).execute();
                 dismiss();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(activity.getString(R.string.no_download), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -153,7 +153,7 @@ public class CustomDialogCoupon extends Dialog implements
             if (isDownloaded && this.context.get() != null) {
                 Toast.makeText(this.context.get(), R.string.download_finish, Toast.LENGTH_SHORT).show();
             }else if (this.context.get() != null){
-                Toast.makeText(this.context.get(),"Download fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.context.get(),"Download Error", Toast.LENGTH_SHORT).show();
             }
         }
 
