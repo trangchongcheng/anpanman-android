@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/positive_30dp"
-        android:background="@color/color_white"
+        android:background="@drawable/popup_coupon_config"
         android:orientation="vertical">
 
         <RelativeLayout

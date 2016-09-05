@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
@@ -25,8 +27,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
 
     public static String PREF_INTRO_HAS_SHOWED = "PREF_INTRO_HAS_SHOWED";
     public static String IS_FAQ = "is_faq";
-    public static final String TITLE = "title";
-    public static final String DESCRIPTION = "description";
+    public static final String BACKGROUND_RESOURCE = "background_resource";
 
     private Button btnSkip;
     private View viewIndicator0;
@@ -142,18 +143,14 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     //============== inner classes =================================================================
     public static class IntroFragment extends Fragment {
 
-        private TextView tvTitle;
-        private TextView tvDescription;
-        private String title;
-        private String description;
+        private FrameLayout frameTutorial;
 
 
-        public static IntroFragment newInstance(String title, String description) {
+        public static IntroFragment newInstance(int imageResource) {
             IntroFragment f = new IntroFragment();
-            // Supply num input as an argument.
+            // put title Image and Description Image
             Bundle args = new Bundle();
-            args.putString(TITLE, title);
-            args.putString(DESCRIPTION, description);
+            args.putInt(BACKGROUND_RESOURCE, imageResource);
             f.setArguments(args);
 
             return f;
@@ -164,10 +161,8 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             View view = inflater.inflate(R.layout.fragment_intro, container, false);
-            tvTitle = (TextView) view.findViewById(R.id.tv_title);
-            tvDescription = (TextView) view.findViewById(R.id.tv_description);
-            tvTitle.setText(getArguments().getString(TITLE));
-            tvDescription.setText(getArguments().getString(DESCRIPTION));
+            frameTutorial = (FrameLayout) view.findViewById(R.id.frame_tutorial);
+            frameTutorial.setBackgroundResource(getArguments().getInt(BACKGROUND_RESOURCE));
             return view;
         }
     }
@@ -179,8 +174,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
 
         @Override
         public Fragment getItem(int position) {
-            return IntroFragment.newInstance(getApplicationContext().getResources().getStringArray(R.array.tutorial_title)[position],
-                    getApplicationContext().getResources().getStringArray(R.array.tutorial_description)[position]);
+            return IntroFragment.newInstance(getApplicationContext().getResources().obtainTypedArray(R.array.background_tutorial).getResourceId(position, 0));
         }
 
         @Override

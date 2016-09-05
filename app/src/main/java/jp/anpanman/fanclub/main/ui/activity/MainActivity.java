@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 //Permisson don't granted
                 if (shouldShowRequestPermissionRationale(
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    AppLog.log("Permissions dont denied");
+                    AppLog.log("Permissions dont granted");
                 }
                 // Permisson don't granted and dont show dialog again.
                 else {

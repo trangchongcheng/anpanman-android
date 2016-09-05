@@ -2,38 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/frame_tutorial"
     android:paddingTop="@dimen/positive_16dp"
-    android:background="@drawable/tutorial_background"
+    android:background="@drawable/bg_tutorial_3"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/color_white"
-        android:gravity="center_horizontal"
-        android:minHeight="@dimen/positive_190dp"
-        android:orientation="vertical"
-        android:padding="@dimen/positive_16dp">
-
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/tv_title"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/positive_16dp"
-            android:text="チュートリアル01"
-            android:textSize="@dimen/text_size_18sp" />
-
-        <TextView
-            android:id="@+id/tv_description"
-            android:gravity="center"
-            android:textSize="@dimen/text_size_12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="アンパンマン" />
-
-    </LinearLayout>
-
 </FrameLayout>
