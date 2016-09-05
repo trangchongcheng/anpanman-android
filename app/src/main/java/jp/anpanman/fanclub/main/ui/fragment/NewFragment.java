@@ -157,26 +157,4 @@ public class NewFragment extends BaseFragment {
 
     //Get Params in URL Scheme
 
-    public static Map<String, String> getParams(String url) {
-        HashMap<String, String> result = new HashMap<String, String>();
-        try {
-            if (url.indexOf('?') != -1) {
-                String[] allStrings = url.split("\\?");
-                if (allStrings.length > 1) {
-                    String content = allStrings[1];
-                    String[] contents = content.split("&");
-                    for (String item : contents) {
-                        String[] point = item.split("=");
-                        if (point.length == 2) {
-                            result.put(point[0], point[1]);
-                        }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 }
