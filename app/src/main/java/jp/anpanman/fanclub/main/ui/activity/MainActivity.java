@@ -113,7 +113,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         setDisplayBottomNav();
-        SharedPreferencesUtil.clear(this,ARG_LASTEST_UPDATED_TIME);
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
                 "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"info\":{\"updatetime\":\"2016-07-01T16:44:32+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-05T20:16:13+09:00\"}}");
         AppLog.log("Cheng-lastime",lastTime);
