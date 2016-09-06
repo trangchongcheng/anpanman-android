@@ -112,8 +112,6 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_term_use, container, false);
-        imgNext = (ImageView) root.findViewById(R.id.imgNext);
-        imgPrevious = (ImageView) root.findViewById(R.id.imgPrevious);
         ll = (LinearLayout) root.findViewById(R.id.ll);
         ll.setVisibility(View.GONE);
         mWebView = (WebView) root.findViewById(R.id.web_view);
@@ -159,7 +157,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
-                    AppLog.log("Url-click1",url);
+                    AppLog.log("Url-click1", url);
                     view.clearCache(true);
                 }
 
@@ -170,7 +168,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
 
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    AppLog.log("Cheng", "shouldOverrideUrlLoading: "+url);
+                    AppLog.log("Cheng", "shouldOverrideUrlLoading: " + url);
                     return super.shouldOverrideUrlLoading(view, url);
                 }
             });
@@ -185,6 +183,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                         horizontalProgress.setVisibility(View.VISIBLE);
                     }
                 }
+
                 @Override
                 public void onReceivedTitle(WebView view, String sTitle) {
                     super.onReceivedTitle(view, sTitle);
@@ -203,7 +202,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             } else {
                 mWebView.loadUrl(mUrl + objectId, extraHeaders);
             }
-            AppLog.log("Url-click2",mUrl);
+            AppLog.log("Url-click2", mUrl);
 
 
         }
@@ -229,20 +228,6 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
-//    public void goBack(){
-//        if (mWebView.canGoBack()) {
-//            mWebView.goBack();
-//        }else {
-//            imgPrevious.setClickable(false);
-//        }
-//    }
-//    public void goForward(){
-//        if(mWebView.canGoForward()) {
-//            mWebView.goForward();
-//        }else {
-//            imgNext.setClickable(false);
-//        }
-//    }
 
     public interface DismissCallback {
         void onDismiss();

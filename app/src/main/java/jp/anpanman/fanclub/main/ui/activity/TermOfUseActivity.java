@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.main.R;
 
@@ -33,6 +34,7 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
     public final static String PREF_TERMS_HAS_ACCEPTED = "PREF_TERMS_HAS_ACCEPTED";
 
     private WebView mWebView;
+    private TextView tvTitle;
     private ProgressBar horizontalProgress;
     private Button btnOk;
     private String mUrl = "https://www.google.com";
@@ -71,6 +73,8 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
         mWebView = (WebView) findViewById(R.id.web_view);
         horizontalProgress = (ProgressBar) findViewById(R.id.progressBar2);
         btnOk = (Button) findViewById(R.id.btn_ok);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText(getString(R.string.terms_of_use));
     }
 
     private void registerEventhandlers(){

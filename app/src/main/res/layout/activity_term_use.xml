@@ -18,37 +18,19 @@
             android:layout_centerInParent="true"
             android:padding="@dimen/positive_8dp"
             android:src="@drawable/ic_close_webview"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
+            android:maxLines="1"
+            android:ellipsize="end"
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/positive_200dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/terms_of_use"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_18sp" />
-        <ImageView
-            android:id="@+id/imgNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/positive_16dp"
-            android:src="@drawable/ic_next_page"
-            android:visibility="gone" />
-        <ImageView
-            android:id="@+id/imgPrevious"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/imgNext"
-            android:padding="@dimen/positive_16dp"
-            android:src="@drawable/ic_previous_page"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout

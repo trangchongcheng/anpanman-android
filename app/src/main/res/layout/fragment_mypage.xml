@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/positive_16dp"
             android:text="ID:0000000000"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_14sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <TextView
             android:id="@+id/tv_user_name"

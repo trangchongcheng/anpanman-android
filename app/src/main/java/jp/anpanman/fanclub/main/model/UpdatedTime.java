@@ -15,6 +15,9 @@ public class UpdatedTime extends BaseModel {
     @SerializedName("present")
     private UpdatedTimeModel present;
 
+    @SerializedName("info")
+    private UpdatedTimeModel info ;
+
     public UpdatedTimeModel getNews() {
         return news;
     }
@@ -37,6 +40,14 @@ public class UpdatedTime extends BaseModel {
 
     public void setPresent(UpdatedTimeModel present) {
         this.present = present;
+    }
+
+    public UpdatedTimeModel getInfo() {
+        return info;
+    }
+
+    public void setInfo(UpdatedTimeModel info) {
+        this.info = info;
     }
 
     public static class UpdatedTimeModel{

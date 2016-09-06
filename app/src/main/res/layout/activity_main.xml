@@ -170,56 +170,68 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical">
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_my_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@null"
                     android:src="@drawable/bg_state_my_page" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_img_tab_my_page"
+                    android:layout_centerHorizontal="true"
                     android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_my_page" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical">
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@null"
                     android:src="@drawable/bg_state_other" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:duplicateParentState="true"
+                    android:layout_below="@id/btn_img_tab_setting"
+                    android:layout_centerHorizontal="true"
                     android:textSize="@dimen/text_size_10sp"
+                    android:duplicateParentState="true"
                     android:textColor="@color/text_bottom_nav_color_state"
                     android:text="@string/tab_setting" />
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_other_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btn_img_tab_setting"
+                    android:layout_toEndOf="@id/btn_img_tab_setting"
+                    android:src="@drawable/icon_new"
+                        android:visibility="invisible"/>
+            </RelativeLayout>
 
             <View
                 android:layout_width="0dp"
@@ -243,7 +255,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/drawer_background">
+        android:background="@drawable/bg">
 
         <ListView
             android:id="@+id/lv_drawer_nav"
