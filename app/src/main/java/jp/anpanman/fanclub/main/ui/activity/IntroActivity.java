@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
+import jp.anpanman.fanclub.main.AnpanmanApp;
+import jp.anpanman.fanclub.main.util.Constant;
 
+import com.google.android.gms.analytics.Tracker;
 import com.main.R;
 
 /**
@@ -37,6 +40,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     private ViewPager viewPager;
     private IntroAdapter adapter;
     private boolean isFAQ = false;
+    private Tracker mTracker;
 
     //============== inherited methods =============================================================
     @Override
@@ -72,13 +76,22 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     }
 
     //============== implemented methods ===========================================================
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initAnalytics(true,null,null,null,0);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_skip:
                 if (isFAQ) {
+                    initAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_CLOSE,1);
                     finish();
                 } else {
+                    initAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_SKIP,1);
                     SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
                     gotoTermsOfUseScreen();
                 }
@@ -181,5 +194,16 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
         public int getCount() {
             return 4;
         }
+    }
+
+    // Init Google Analytic Tutorial Screen
+    public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
+        AnpanmanApp application = (AnpanmanApp) getApplication();
+        if(isOnlyCategory){
+            application.initAnalyticCategory(Constant.GA_TUTORIAL);
+        }else {
+            application.initAnalytic(category,action,label,value);
+        }
+
     }
 }

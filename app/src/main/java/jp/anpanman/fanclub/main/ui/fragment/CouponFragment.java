@@ -15,6 +15,7 @@ import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
@@ -51,6 +52,7 @@ public class CouponFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initAnalytics();
         Activity a = getActivity();
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -86,5 +88,11 @@ public class CouponFragment extends BaseFragment {
         extraHeaders.put("x-anp-request","true");
         String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
         webView.loadUrl(RestfulUrl.URL_COUPON+objectId, extraHeaders);
+    }
+    // init Analytics Coupon Fragment
+    public void initAnalytics(){
+        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
+        application.initAnalyticCategory(Constant.GA_OTOKU);
+
     }
 }

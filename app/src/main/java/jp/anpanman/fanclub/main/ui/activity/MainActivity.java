@@ -38,6 +38,7 @@ import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.AnpanmanApp;
+import jp.anpanman.fanclub.main.model.MainTabs;
 import jp.anpanman.fanclub.main.model.UpdatedTime;
 import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
@@ -47,6 +48,7 @@ import jp.anpanman.fanclub.main.ui.fragment.NewFragment;
 import jp.anpanman.fanclub.main.ui.fragment.PresentFragment;
 import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 import jp.anpanman.fanclub.main.util.RestfulUtil;
@@ -115,7 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
                 "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"info\":{\"updatetime\":\"2016-07-01T16:44:32+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-05T20:16:13+09:00\"}}");
-        AppLog.log("Cheng-lastime",lastTime);
+        AppLog.log("Cheng-lastime", lastTime);
         if (!TextUtils.isEmpty(lastTime)) {
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
@@ -305,15 +307,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
+                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
                 openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site), false);
                 break;
             case 6:
+                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
+                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
                 Intent intent = new Intent(this, IntroActivity.class);
                 intent.putExtra(IntroActivity.IS_FAQ, true);
                 startActivity(intent);
@@ -488,11 +493,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             switch (currentTab) {
                 case News:
-                   // imgNewsNew.setVisibility(View.INVISIBLE);
+                    // imgNewsNew.setVisibility(View.INVISIBLE);
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isCouponSelect){
+                        if (isCouponSelect) {
                             imgCouponNew.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -500,21 +505,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isPresentSelect){
+                        if (isPresentSelect) {
                             imgPresentNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
                         imgOtherNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isOtherSelect){
+                        if (isOtherSelect) {
                             imgOtherNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     break;
 
                 case Coupon:
-                   // imgCouponNew.setVisibility(View.INVISIBLE);
+                    // imgCouponNew.setVisibility(View.INVISIBLE);
 
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
@@ -527,26 +532,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isPresentSelect){
+                        if (isPresentSelect) {
                             imgPresentNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
                         imgOtherNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isOtherSelect){
+                        if (isOtherSelect) {
                             imgOtherNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     break;
 
                 case Present:
-                   // imgPresentNew.setVisibility(View.INVISIBLE);
+                    // imgPresentNew.setVisibility(View.INVISIBLE);
 
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isNewSelect){
+                        if (isNewSelect) {
                             imgNewsNew.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -554,14 +559,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
-                        if (isCouponSelect){
+                        if (isCouponSelect) {
                             imgCouponNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
                         imgOtherNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isOtherSelect){
+                        if (isOtherSelect) {
                             imgOtherNew.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -573,7 +578,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isNewSelect){
+                        if (isNewSelect) {
                             imgNewsNew.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -581,14 +586,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
-                        if (isCouponSelect){
+                        if (isCouponSelect) {
                             imgCouponNew.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
                         imgPresentNew.setVisibility(View.VISIBLE);
                     } else {
-                        if(isPresentSelect){
+                        if (isPresentSelect) {
                             imgPresentNew.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -664,6 +669,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         startActivity(i);
     }
 
+    // Init Google Analytic MainActivitv Screen
+    public void initAnalytics(String category, String action, String label, long value) {
+        AnpanmanApp application = (AnpanmanApp) getApplication();
+        application.initAnalytic(category, action, label, value);
+    }
+
     //=============== inner classes ================================================================
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override
@@ -679,10 +690,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         private int iGroup, iItem;
         private ArrayList<String> arrGroup = new ArrayList<>();
         private ArrayList<String> arrItem = new ArrayList<>();
+        private LayoutInflater mInflater;
 
         public DrawerAdapter(Context context) {
             iGroup = 0;
             iItem = 0;
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             for (int j = 0; j < context.getResources().getStringArray(R.array.group).length; j++) {
                 arrGroup.add(context.getResources().getStringArray(R.array.group)[j]);
@@ -695,6 +708,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public int getCount() {
             return 9;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+
+            return 2;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+
+            return position % 2;
         }
 
         @Override
@@ -715,111 +740,90 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             //== inflate views
-            GroupItemHolder holder = null;
-            NormalItemHolder h = null;
-            switch (getItemType(i)) {
-                case Group:
-                    if (view == null || !(view.getTag() instanceof GroupItemHolder)) {
-                        view = LayoutInflater.from(viewGroup.getContext()).inflate(com.main.R.layout.drawer_nav_item_group, viewGroup, false);
-                        holder = new GroupItemHolder(view);
-                        view.setTag(holder);
-                    }else{
-                        holder = (GroupItemHolder) view.getTag();
-                    }
-                    break;
+            NormalItemHolder holder;
+            ItemType type = getItemType(i);
+            if (view == null) {
+                holder = new NormalItemHolder();
+                switch (type) {
+                    case Group:
+                        //inflate the new layout
+                        view = mInflater.inflate(R.layout.drawer_nav_item_group, viewGroup, false);
+                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
+                        holder.txtTitle.setText(arrGroup.get((iGroup)));
+                        iGroup++;
+                        iGroup = iGroup % arrGroup.size();
+                        break;
 
-                default://normal item
-                    if (view == null || !(view.getTag() instanceof NormalItemHolder)) {
-                        view = LayoutInflater.from(viewGroup.getContext()).inflate(com.main.R.layout.drawer_nav_item, viewGroup, false);
-                        h = new NormalItemHolder(view);
-                        view.setTag(h);
-                    }else {
-                        h = (NormalItemHolder) view.getTag();
-                    }
-                    break;
+                    case Normal:
+                        //inflate the new layout
+                        view = mInflater.inflate(R.layout.drawer_nav_item, viewGroup, false);
+                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
+                        holder.txtTitle.setText(arrItem.get(iItem));
+                        iItem++;
+                        iItem = iItem % arrItem.size();
+                        break;
+                    default:
+                        break;
+                }
+                view.setTag(holder);
+            } else {
+                holder = (NormalItemHolder) view.getTag();
             }
-
-            //== setup data to views
-            switch (getItemType(i)) {
-                case Group:
-                    //GroupItemHolder holder = (GroupItemHolder) view.getTag();
-                    holder.txtTitle.setText(arrGroup.get((iGroup)));
-                    iGroup++;
-                    iGroup = iGroup % arrGroup.size();
-                    break;
-
-                default:
-                   // NormalItemHolder h = (NormalItemHolder) view.getTag();
-                    //h.txtTitle.setText("Item Title");
-                    h.txtTitle.setText(arrItem.get(iItem));
-                    iItem++;
-                    iItem = iItem % arrItem.size();
-                    break;
-            }
-
             return view;
         }
 
-        //===========
-        private ItemType getItemType(int position) {
-            switch (position) {
-                case 0:
-                case 3:
-                    return ItemType.Group;
+        //== setup data to views
+//            switch (getItemType(i)) {
+//                case Group:
+//                    //GroupItemHolder holder = (GroupItemHolder) view.getTag();
+//                    holder.txtTitle.setText(arrGroup.get((iGroup)));
+//                    iGroup++;
+//                    iGroup = iGroup % arrGroup.size();
+//                    break;
+//
+//                default:
+//                   // NormalItemHolder h = (NormalItemHolder) view.getTag();
+//                    //h.txtTitle.setText("Item Title");
+//                    h.txtTitle.setText(arrItem.get(iItem));
+//                    iItem++;
+//                    iItem = iItem % arrItem.size();
+//                    break;
+//            }
 
-                default:
-                    return ItemType.Normal;
-            }
-        }
+        //           return view;
+    }
 
-        //==========
-        enum ItemType {
-            Group, Normal
-        }
+    //===========
+    private static ItemType getItemType(int position) {
+        switch (position) {
+            case 0:
+            case 3:
+                return ItemType.Group;
 
-        //===========
-        private static class NormalItemHolder {
-            TextView txtTitle;
-
-            public NormalItemHolder(View root) {
-                txtTitle = (TextView) root.findViewById(com.main.R.id.txt_item_title);
-            }
-        }
-
-        //===========
-        private static class GroupItemHolder {
-            TextView txtTitle;
-
-            public GroupItemHolder(View root) {
-                txtTitle = (TextView) root.findViewById(com.main.R.id.txt_group_tile);
-            }
+            default:
+                return ItemType.Normal;
         }
     }
 
-    public enum MainTabs {
-        News, Coupon, Present, MyPage, Setting;
-
-        public static MainTabs get(int ordinal) {
-            MainTabs tab = News;
-            switch (ordinal) {
-                case 0:
-                    tab = News;
-                    break;
-                case 1:
-                    tab = Coupon;
-                    break;
-                case 2:
-                    tab = Present;
-                    break;
-                case 3:
-                    tab = MyPage;
-                    break;
-                case 4:
-                    tab = Setting;
-                    break;
-            }
-
-            return tab;
-        }
+    //==========
+    enum ItemType {
+        Group, Normal
     }
+
+    //===========
+    private static class NormalItemHolder {
+        TextView txtTitle;
+    }
+
+
+    //===========
+//    private static class GroupItemHolder {
+//        TextView txtTitle;
+//
+//        public GroupItemHolder(View root) {
+//            txtTitle = (TextView) root.findViewById(com.main.R.id.txt_group_tile);
+//        }
+//    }
 }
+
+//}

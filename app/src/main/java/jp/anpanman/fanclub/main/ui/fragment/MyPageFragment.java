@@ -22,6 +22,7 @@ import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
+import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
@@ -90,6 +91,7 @@ public class MyPageFragment extends BaseFragment {
                 btnRegister.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        initAnalytics(true,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_MYPAGE_ENTRY,1);
                         openWebView(RestfulUrl.URL_REGISTER_MYPAGE,getString(R.string.button_register));
                     }
                 });
@@ -175,6 +177,7 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initAnalytics(true,null,null,null,1);
         AppLog.log("onResume: ");
         Activity a = getActivity();
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
@@ -202,5 +205,15 @@ public class MyPageFragment extends BaseFragment {
     public void openWebView(String url, String title) {
         DialogFragment fragment = WebViewFragment.newInstance(url, title,false);
         fragment.show(getActivity().getFragmentManager(), WebViewFragment.class.getName());
+    }
+    // init Analytics Mypage Fragment
+    public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
+        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
+        if(isOnlyCategory){
+            application.initAnalyticCategory(Constant.GA_MYPAGE);
+        }else {
+            application.initAnalytic(category,action,label,value);
+        }
+
     }
 }

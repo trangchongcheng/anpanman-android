@@ -22,8 +22,10 @@ import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
+import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 
@@ -62,10 +64,17 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_ok:
+                initAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TERMS_AGREEMENT,1);
                 SharedPreferencesUtil.putBoolean(this, PREF_TERMS_HAS_ACCEPTED, true);
                 gotoTopScreen();
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initAnalytics(true,null,null,null,1);
     }
 
     //============== inner methods =================================================================
@@ -132,6 +141,16 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+    // Init Google Analytic Term Of Use Activity Screen
+    public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
+        AnpanmanApp application = (AnpanmanApp) getApplication();
+        if(isOnlyCategory){
+            application.initAnalyticCategory(Constant.GA_TERMS);
+        }else {
+            application.initAnalytic(category,action,label,value);
+        }
+
     }
 
 }

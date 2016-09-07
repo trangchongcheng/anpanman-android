@@ -65,6 +65,7 @@ public class NewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initAnalytics();
         Activity a = getActivity();
         if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -90,55 +91,6 @@ public class NewFragment extends BaseFragment {
 
         AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
         webView.loadUrl(RestfulUrl.URL_NEWS + objectId, extraHeaders);
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//
-//            @Override
-//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//                super.onPageStarted(view, url, favicon);
-//
-//            }
-//
-//            @Override
-//            public void onPageFinished(WebView view, String url) {
-//                super.onPageFinished(view, url);
-//                view.clearCache(true);
-//            }
-//
-//            @Override
-//            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//                Common.onSslError(getActivity(), view, handler, error);
-//            }
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                AppLog.log("Anpanman Url NewFragment",url);
-//                openWebView(url,"Title");
-//                //Callback interface Webvie
-////                if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
-////                    Map<String, String> objectID = getParams(url);
-////                    // Callback: Update ObjectId
-////                    if (objectID.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
-//////                         Toast.makeText(getActivity(), objectID.get("id"), Toast.LENGTH_SHORT).show();
-////                    }
-////
-////                    // Callback: Open Extend Browser on Device through url string
-////                    if (objectID.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
-//////                        Intent i = new Intent(Intent.ACTION_VIEW);
-//////                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//////                        i.setData(Uri.parse("https://google.com"));
-//////                        getActivity().startActivity(i);
-////                    }
-////                    return true;
-////                } else {
-////                    view.loadUrl(url);
-////                    return true;
-////                }
-//                return true;
-//            }
-//        });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -154,7 +106,11 @@ public class NewFragment extends BaseFragment {
 
 //        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
     }
+    // init Analytics TOP - NEW Fragment
+    public void initAnalytics(){
+        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
+        application.initAnalyticCategory(Constant.GA_NEW);
 
-    //Get Params in URL Scheme
+    }
 
 }

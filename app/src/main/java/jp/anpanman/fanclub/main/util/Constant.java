@@ -27,6 +27,26 @@ public class Constant {
     public static final int FAVORITE_CHARACTER_CODE_MIN         = 1;
     public static final int FAVORITE_CHARACTER_CODE_MAX         = 20;
 
+    public static final String GA_STARTUP ="Startup";
+    public static final String GA_TUTORIAL ="Tutorial";
+    public static final String GA_TUTORIAL_SKIP =GA_TUTORIAL+" Skip";
+    public static final String GA_TUTORIAL_CLOSE =GA_TUTORIAL+" Close";
+    public static final String GA_SELECT ="Select";
+    public static final String GA_TERMS ="Terms";
+    public static final String GA_TERMS_AGREEMENT = GA_TERMS + " A greement";
+    public static final String GA_MENU_PORTAL = "Menu Portal";
+    public static final String GA_MENU_FAQ = "Menu FAQ";
+    public static final String GA_MENU_TERMS = "Menu Terms";
+    public static final String GA_NEW ="New";
+    public static final String GA_OTOKU ="Otoku";
+    public static final String GA_PRESENT="Present";
+    public static final String GA_MYPAGE ="Mypage";
+    public static final String GA_MYPAGE_ENTRY =GA_MYPAGE+" Entry";
+    public static final String GA_ONCLICK ="onclick";
+    public static final String GA_MEMBERSHIP ="mebership";
+    public static final String GA_INFO ="info";
+    public static final String GA_VALUE ="1";
+
 
 
     // DEBUG Interface

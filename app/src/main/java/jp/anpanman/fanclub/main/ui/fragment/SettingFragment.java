@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 
 import com.main.R;
 
+import jp.anpanman.fanclub.main.AnpanmanApp;
+import jp.anpanman.fanclub.main.util.Constant;
+
 /**
  * Created by linhphan on 7/19/16.
  */
@@ -48,6 +51,12 @@ public class SettingFragment extends DialogFragment{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initAnalytics();
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         callback.onDismiss();
@@ -55,5 +64,11 @@ public class SettingFragment extends DialogFragment{
 
     public interface DismissCallback{
         void onDismiss();
+    }
+    // init Analytics Setting Fragment
+    public void initAnalytics(){
+        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
+        application.initAnalyticCategory(Constant.GA_INFO);
+
     }
 }

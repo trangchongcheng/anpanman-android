@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.main.R;
@@ -38,7 +40,7 @@ public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     private final int DELAY_TIME = 2000;
     private UserInfo mLocalUserInfo;
-
+    private Tracker mTracker;
     //=========== inherited methods ================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,6 @@ public class SplashScreenActivity extends BaseActivity {
         // Initialize NCMB
         NCMB.initialize(this, Constant.NOTIFY_APPLICATION_KEY_NCMB,
                 Constant.NOTIFY_CLIENT_KEY_NCMB);
-
         // Check to get user info or sign up an new account
         String json = SharedPreferencesUtil.getString(this, Constant.PREF_USER_INFO, "");
         mLocalUserInfo = UserInfo.fromJson(json, UserInfo.class);
@@ -108,6 +109,20 @@ public class SplashScreenActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initAnalytics();
+    }
+    // init Analytics
+    public void initAnalytics(){
+        AnpanmanApp application = (AnpanmanApp) getApplication();
+        application.initAnalyticCategory(Constant.GA_STARTUP);
+
+    }
+
+
 
     public void registrationId() {
         //DEBUG FOR PASSING GCM check

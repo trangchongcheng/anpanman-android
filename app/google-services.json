@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "203534712085",
+    "project_id": "anpanman-fanclub-2d3a8"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203534712085:android:5e7003261aa13380",
+        "android_client_info": {
+          "package_name": "jp.anpanman.fanclub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBow23CN7vN3L0aOJ-Vu3hF-JkCcWgGBOQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-39065841-9"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

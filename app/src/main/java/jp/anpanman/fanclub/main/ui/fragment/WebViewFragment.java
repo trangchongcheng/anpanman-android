@@ -3,39 +3,33 @@ package jp.anpanman.fanclub.main.ui.fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.main.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
+import jp.anpanman.fanclub.main.model.MainTabs;
 import jp.anpanman.fanclub.main.util.Common;
 
 /**
@@ -94,7 +88,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     public void onStop() {
         super.onStop();
         Activity a = getActivity();
-        if (MainActivity.currentTab == MainActivity.MainTabs.MyPage) {
+        if (MainActivity.currentTab == MainTabs.MyPage) {
             if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         }
     }
