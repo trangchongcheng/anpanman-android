@@ -161,6 +161,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
                     e.printStackTrace();
                 }
             }
+
             AppLog.log(getClass().getName(), "got data from server1: " + data);
             AppLog.log(getClass().getName(), "got data from server2: " + parseResponseData(data));
             return parseResponseData(data);
