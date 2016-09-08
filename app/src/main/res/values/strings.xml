@@ -38,8 +38,9 @@
         <item>FAQ</item>
         <item>お問い合わせ</item>
     </string-array>
-    <string name="drawer_nav_footer_text">(C)やなせたかし／フレーベル館・ＴＭＳ・ＮＴＶ \n
-(C)アンパンマンデジタルＬＬＰ</string>
+
+    <string name="drawer_nav_footer_text">©やなせたかし／フレーベル館・TMS・NTV \n
+©アンパンマンデジタルLLP</string>
 
 
     <!--bottom nav-->

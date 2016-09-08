@@ -646,7 +646,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
-                AppLog.log("Cheng-Update", data.toString());
                 displayNewIcons((UpdatedTime) data, tabSelected);
 
             }
