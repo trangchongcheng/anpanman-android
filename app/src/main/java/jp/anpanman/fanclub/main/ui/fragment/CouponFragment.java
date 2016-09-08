@@ -54,11 +54,11 @@ public class CouponFragment extends BaseFragment {
         super.onResume();
         initAnalytics();
         Activity a = getActivity();
-        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     //============= inner methods ==================================================================
-    private void setupWebView(){
+    private void setupWebView() {
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -72,27 +72,31 @@ public class CouponFragment extends BaseFragment {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100){
+                if (newProgress == 100) {
                     horizontalProgress.setVisibility(View.GONE);
-                }else{
+                } else {
                     horizontalProgress.setProgress(newProgress);
                     horizontalProgress.setVisibility(View.VISIBLE);
                 }
             }
         });
         Map<String, String> extraHeaders = new HashMap<>();
-        extraHeaders.put("x-anp-request","true");
-        String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
-        webView.loadUrl(RestfulUrl.URL_COUPON+objectId, extraHeaders);
+        extraHeaders.put("x-anp-request", "true");
+        String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
+        webView.loadUrl(RestfulUrl.URL_COUPON + objectId, extraHeaders);
     }
+
     // init Analytics Coupon Fragment
-    public void initAnalytics(){
-        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
-        application.initAnalyticCategory(Constant.GA_OTOKU);
+    public void initAnalytics() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            AnpanmanApp application = (AnpanmanApp) activity.getApplication();
+            application.initAnalyticCategory(Constant.GA_OTOKU);
+        }
 
     }
 }

@@ -86,7 +86,7 @@ public class MyPageFragment extends BaseFragment {
         if ("mypage_landscape".equals(root.getTag())) {
             llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
             llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
-        // nickname of user = blank
+            // nickname of user = blank
             if (TextUtils.isEmpty(userInfo.getNickName())) {
                 tvUserName.setVisibility(View.GONE);
                 imgNickName.setVisibility(View.VISIBLE);
@@ -230,6 +230,14 @@ public class MyPageFragment extends BaseFragment {
         AppLog.log("onResume: ");
         Activity a = getActivity();
         if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        //
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (a != null) {
+                AnpanmanApp application = (AnpanmanApp) a.getApplication();
+                application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
+            }
+
+        }
     }
 
     @Override
@@ -244,12 +252,6 @@ public class MyPageFragment extends BaseFragment {
     }
 
     //============= inner methods ==================================================================
-//    public void changeLayout() {
-//        tvUserName.setVisibility(View.GONE);
-//        llBage.setVisibility(View.GONE);
-//        btnRegister.setVisibility(View.VISIBLE);
-//        imgNickName.setVisibility(View.VISIBLE);
-//    }
 
     public void openWebView(String url, String title) {
         DialogFragment fragment = WebViewFragment.newInstance(url, title, false);
@@ -258,12 +260,14 @@ public class MyPageFragment extends BaseFragment {
 
     // init Analytics Mypage Fragment
     public void initAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value) {
-        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
-        if (isOnlyCategory) {
-            application.initAnalyticCategory(Constant.GA_MYPAGE);
-        } else {
-            application.initAnalytic(category, action, label, value);
+        Activity activity = getActivity();
+        if (activity != null) {
+            AnpanmanApp application = (AnpanmanApp) activity.getApplication();
+            if (isOnlyCategory) {
+                application.initAnalyticCategory(Constant.GA_MYPAGE);
+            } else {
+                application.initAnalytic(category, action, label, value);
+            }
         }
-
     }
 }

@@ -108,9 +108,11 @@ public class NewFragment extends BaseFragment {
     }
     // init Analytics TOP - NEW Fragment
     public void initAnalytics(){
-        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
-        application.initAnalyticCategory(Constant.GA_NEW);
-
+        Activity activity = getActivity();
+        if (activity != null) {
+            AnpanmanApp application = (AnpanmanApp) activity.getApplication();
+            application.initAnalyticCategory(Constant.GA_NEW);
+        }
     }
 
 }

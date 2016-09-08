@@ -90,8 +90,11 @@ public class PresentFragment extends BaseFragment {
     }
     // init Analytics Present Fragment
     public void initAnalytics(){
-        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
-        application.initAnalyticCategory(Constant.GA_PRESENT);
+        Activity activity = getActivity();
+        if (activity != null) {
+            AnpanmanApp application = (AnpanmanApp) activity.getApplication();
+            application.initAnalyticCategory(Constant.GA_PRESENT);
+        }
 
     }
 }

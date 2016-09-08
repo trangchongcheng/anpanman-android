@@ -1,5 +1,6 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -67,8 +68,10 @@ public class SettingFragment extends DialogFragment{
     }
     // init Analytics Setting Fragment
     public void initAnalytics(){
-        AnpanmanApp application = (AnpanmanApp) getActivity().getApplication();
-        application.initAnalyticCategory(Constant.GA_INFO);
-
+        Activity activity = getActivity();
+        if (activity != null) {
+            AnpanmanApp application = (AnpanmanApp) activity.getApplication();
+            application.initAnalyticCategory(Constant.GA_INFO);
+        }
     }
 }
