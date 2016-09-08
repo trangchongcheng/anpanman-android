@@ -50,13 +50,14 @@ import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
+import jp.anpanman.fanclub.main.util.DrawerLocker;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 import jp.anpanman.fanclub.main.util.RestfulUtil;
 
 /**
  * Created by linhphan on 7/15/16.
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     public static final String ARG_LASTEST_UPDATED_TIME = "ARG_LASTEST_UPDATED_TIME";
     public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
@@ -182,9 +183,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (ot) {
             case Configuration.ORIENTATION_LANDSCAPE:
                 hideMenu();
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
                 showMenu();
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 break;
         }
     }
@@ -333,10 +336,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //switchTab(MainTabs.Setting, true);
     }
 
+
     //=============== inner methods ================================================================
     public void openWebView(String url, String title, boolean isDetails) {
         DialogFragment fragment = WebViewFragment.newInstance(url, title, isDetails);
         fragment.show(getFragmentManager(), WebViewFragment.class.getName());
+    }
+    public void setDrawerLocked(boolean enabled){
+        if(enabled){
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }else{
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
     }
 
     public void hideMenu() {
@@ -410,7 +422,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             currentTab = newTab;
         }
         setDisplayBottomNav();
-        syncUpdateTimeOfServer();
+        syncUpdateTimeOfServer(newTab);
     }
 
     private void setDisplayBottomNav() {
@@ -482,7 +494,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void displayNewIcons(UpdatedTime newSync) {
+    private void displayNewIcons(UpdatedTime newSync, MainTabs tabSelected) {
 
         if (newSync == null || currentSync == null) {
             imgNewsNew.setVisibility(View.INVISIBLE);
@@ -491,9 +503,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             imgOtherNew.setVisibility(View.INVISIBLE);
 
         } else {
-            switch (currentTab) {
+            switch (tabSelected) {
                 case News:
                     // imgNewsNew.setVisibility(View.INVISIBLE);
+                    saveTimeToSharePreference(newSync.getNews(), MainTabs.News);
                     if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
                         imgCouponNew.setVisibility(View.VISIBLE);
                     } else {
@@ -520,7 +533,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 case Coupon:
                     // imgCouponNew.setVisibility(View.INVISIBLE);
-
+                    saveTimeToSharePreference(newSync.getCoupon(), MainTabs.Coupon);
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
@@ -547,7 +560,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 case Present:
                     // imgPresentNew.setVisibility(View.INVISIBLE);
-
+                    saveTimeToSharePreference(newSync.getPresent(), MainTabs.Present);
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
@@ -574,7 +587,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 case Setting:
                     //imgOtherNew.setVisibility(View.INVISIBLE);
-
+                    AppLog.log("Cheng-getinfo", newSync.getInfo().toString());
+                    saveTimeToSharePreference(newSync.getInfo(), MainTabs.Setting);
                     if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
                         imgNewsNew.setVisibility(View.VISIBLE);
                     } else {
@@ -603,20 +617,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     break;
             }
 
-            SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
-            currentSync = newSync;
+            //SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
+            //currentSync = newSync;
         }
+    }
+
+    //Save UpdateTime last
+    public void saveTimeToSharePreference(UpdatedTime.UpdatedTimeModel updateTime, MainTabs tabSellected) {
+        if (tabSellected == MainTabs.News) {
+            currentSync.setNews(updateTime);
+        } else if (tabSellected == MainTabs.Coupon) {
+            currentSync.setCoupon(updateTime);
+        } else if (tabSellected == MainTabs.Present) {
+            currentSync.setPresent(updateTime);
+        } else if (tabSellected == MainTabs.Setting) {
+            currentSync.setInfo(updateTime);
+        }
+        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
+        AppLog.log("UpdateTime-before" + lastTime);
+        SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, currentSync.toJson());
+        AppLog.log("UpdateTime-after" + SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null));
     }
 
     /**
      * try to retrieve the last time of data has updated on remote server
      */
-    private void syncUpdateTimeOfServer() {
+    private void syncUpdateTimeOfServer(final MainTabs tabSelected) {
         RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 AppLog.log("Cheng-Update", data.toString());
-                displayNewIcons((UpdatedTime) data);
+                displayNewIcons((UpdatedTime) data, tabSelected);
 
             }
 
@@ -676,6 +707,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //=============== inner classes ================================================================
+
+
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -772,25 +805,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return view;
         }
 
-        //== setup data to views
-//            switch (getItemType(i)) {
-//                case Group:
-//                    //GroupItemHolder holder = (GroupItemHolder) view.getTag();
-//                    holder.txtTitle.setText(arrGroup.get((iGroup)));
-//                    iGroup++;
-//                    iGroup = iGroup % arrGroup.size();
-//                    break;
-//
-//                default:
-//                   // NormalItemHolder h = (NormalItemHolder) view.getTag();
-//                    //h.txtTitle.setText("Item Title");
-//                    h.txtTitle.setText(arrItem.get(iItem));
-//                    iItem++;
-//                    iItem = iItem % arrItem.size();
-//                    break;
-//            }
-
-        //           return view;
     }
 
     //===========
@@ -816,14 +830,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
 
-    //===========
-//    private static class GroupItemHolder {
-//        TextView txtTitle;
-//
-//        public GroupItemHolder(View root) {
-//            txtTitle = (TextView) root.findViewById(com.main.R.id.txt_group_tile);
-//        }
-//    }
 }
-
-//}

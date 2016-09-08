@@ -3,6 +3,7 @@ package jp.anpanman.fanclub.main.ui.fragment;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -28,7 +29,9 @@ import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
+import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Constant;
+import jp.anpanman.fanclub.main.util.DrawerLocker;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
@@ -55,6 +58,7 @@ public class MyPageFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
+        MainActivity activity = (MainActivity) getActivity();
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
         //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
     }
