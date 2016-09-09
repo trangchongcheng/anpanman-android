@@ -2,6 +2,7 @@ package jp.anpanman.fanclub.main.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,12 +28,12 @@ public class UserInfo extends BaseModel{
     private String createdDate;
 
     @SerializedName("badges")
-    private Map<String, String> badges;//<id, name>
+    private LinkedHashMap<String, String> badges;//<id, name>
 
     public UserInfo() {
     }
 
-    public UserInfo(String objectId, String id, String nickName, Map<String, String> badges) {
+    public UserInfo(String objectId, String id, String nickName, LinkedHashMap<String, String> badges) {
         this.objectId = objectId;
         this.id = id;
         this.nickName = nickName;
@@ -75,7 +76,7 @@ public class UserInfo extends BaseModel{
         return badges;
     }
 
-    public void setBadges(Map<String, String> badges) {
+    public void setBadges(LinkedHashMap<String, String> badges) {
         this.badges = badges;
     }
 }

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,10 +21,8 @@ import android.widget.TextView;
 
 import com.main.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
@@ -31,7 +31,6 @@ import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Constant;
-import jp.anpanman.fanclub.main.util.DrawerLocker;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
@@ -51,6 +50,7 @@ public class MyPageFragment extends BaseFragment {
     private LinearLayout llBadge;
     private Button btnRegister;
     private ImageView imgNickName;
+    private MainActivity activity;
     //============= inherited methods ==============================================================
 
 
@@ -58,9 +58,27 @@ public class MyPageFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-        MainActivity activity = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
         //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
+        AppLog.log("onCreate");
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //Hide status bar
+            hideStatusBar();
+        }
+    }
+
+    public void hideStatusBar() {
+        if (Build.VERSION.SDK_INT < 16) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            View decorView = activity.getWindow().getDecorView();
+            // Hide the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
     }
 
     @Override
@@ -90,19 +108,21 @@ public class MyPageFragment extends BaseFragment {
             if (TextUtils.isEmpty(userInfo.getNickName())) {
                 tvUserName.setVisibility(View.GONE);
                 imgNickName.setVisibility(View.VISIBLE);
+
+                AppLog.log("imgNickName: Visible !");
             }
             // nickname of user # blank
             else {
                 imgNickName.setVisibility(View.GONE);
                 tvUserName.setVisibility(View.VISIBLE);
             }
-
             //portrait mode
         } else {
             // nickname of user = blank
-            if (!TextUtils.isEmpty(userInfo.getNickName())) {
+            if (TextUtils.isEmpty(userInfo.getNickName())) {
                 tvUserName.setVisibility(View.GONE);
                 imgNickName.setVisibility(View.VISIBLE);
+                AppLog.log("portrait imgNickName: Visible !");
                 llBadge.setVisibility(View.GONE);
 
                 btnRegister.setVisibility(View.VISIBLE);
@@ -117,54 +137,80 @@ public class MyPageFragment extends BaseFragment {
             } else {
                 tvUserName.setVisibility(View.VISIBLE);
                 llBadge.setVisibility(View.VISIBLE);
-                HashMap map1 = new HashMap();
-                map1.put("1", "cheng");
-                map1.put("2", "hihi");
-                map1.put("3", "hehe");
-                map1.put("4", "cheng");
-                map1.put("5", "hihi");
-                map1.put("7", "hehe");
-                userInfo.setBadges(map1);
-                //==display badges
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+
+                //Debug badges - Start
+                LinkedHashMap newmap = new LinkedHashMap();
+                // populate hash map
+                newmap.put("-1", "");
+                newmap.put("2", "");
+                newmap.put("8", "");
+                userInfo.setBadges(newmap);
+                //Debug badges - End
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.weight = 1.0f;
-                for (String key : userInfo.getBadges().keySet()) {
-                    if ("1".equals(key)) {
-                        ImageView imageView1 = new ImageView(getContext());
-                        imageView1.setLayoutParams(layoutParams);
-                        imageView1.setImageResource(R.drawable.badge_1);
-                        llAddBadge.addView(imageView1);
-                    } else if ("2".equals(key)) {
-                        ImageView imageView2 = new ImageView(getActivity());
-                        imageView2.setLayoutParams(layoutParams);
-                        imageView2.setImageResource(R.drawable.badge_2);
-                        llAddBadge.addView(imageView2);
-                    } else if ("3".equals(key)) {
-                        ImageView imageView3 = new ImageView(getActivity());
-                        imageView3.setLayoutParams(layoutParams);
-                        imageView3.setImageResource(R.drawable.badge_3);
-                        llAddBadge.addView(imageView3);
-                    } else if ("4".equals(key)) {
-                        ImageView imageView4 = new ImageView(getContext());
-                        imageView4.setLayoutParams(layoutParams);
-                        imageView4.setImageResource(R.drawable.badge_4);
-                        llAddBadge.addView(imageView4);
-                    } else if ("5".equals(key)) {
-                        ImageView imageView5 = new ImageView(getActivity());
-                        imageView5.setLayoutParams(layoutParams);
-                        imageView5.setImageResource(R.drawable.badge_5);
-                        llAddBadge.addView(imageView5);
-                    } else if ("7".equals(key)) {
-                        ImageView imageView7 = new ImageView(getContext());
-                        imageView7.setLayoutParams(layoutParams);
-                        imageView7.setImageResource(R.drawable.badge_7);
-                        llAddBadge.addView(imageView7);
+                ImageView imageView;
+
+                String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
+                Set<String> userBadges = userInfo.getBadges().keySet();
+
+                //Draw user badges at first
+                for (String key : userBadges) {
+                    if(userBadges.contains(key)) {
+                        imageView = makeImageView("badge_" + key, View.VISIBLE);
+                        imageView.setLayoutParams(layoutParams);
+                        llAddBadge.addView(imageView);
                     }
                 }
+
+                for (int i = 0; i < badgeIds.length; i++) {
+                    if (!userBadges.contains(badgeIds[i])) {
+                        imageView = makeImageView("badge_" + badgeIds[i], View.INVISIBLE);
+                        imageView.setLayoutParams(layoutParams);
+                        llAddBadge.addView(imageView);
+                    }
+                }
+
+//                for (String key : userInfo.getBadges().keySet()) {
+//                    AppLog.log("key: " + key);
+//
+//                    if ("1".equals(key)) {
+//                        ImageView imageView1 = new ImageView(getContext());
+//                        imageView1.setLayoutParams(layoutParams);
+//                        imageView1.setImageResource(R.drawable.badge_1);
+//                        llAddBadge.addView(imageView1);
+//                    } else if ("2".equals(key)) {
+//                        ImageView imageView2 = new ImageView(getActivity());
+//                        imageView2.setLayoutParams(layoutParams);
+//                        imageView2.setImageResource(R.drawable.badge_2);
+//                        llAddBadge.addView(imageView2);
+//                    } else if ("3".equals(key)) {
+//                        ImageView imageView3 = new ImageView(getActivity());
+//                        imageView3.setLayoutParams(layoutParams);
+//                        imageView3.setImageResource(R.drawable.badge_3);
+//                        llAddBadge.addView(imageView3);
+//                    } else if ("4".equals(key)) {
+//                        ImageView imageView4 = new ImageView(getContext());
+//                        imageView4.setLayoutParams(layoutParams);
+//                        imageView4.setImageResource(R.drawable.badge_4);
+//                        llAddBadge.addView(imageView4);
+//                    } else if ("5".equals(key)) {
+//                        ImageView imageView5 = new ImageView(getActivity());
+//                        imageView5.setLayoutParams(layoutParams);
+//                        imageView5.setImageResource(R.drawable.badge_5);
+//                        llAddBadge.addView(imageView5);
+//                    } else if ("7".equals(key)) {
+//                        ImageView imageView7 = new ImageView(getContext());
+//                        imageView7.setLayoutParams(layoutParams);
+//                        imageView7.setImageResource(R.drawable.badge_7);
+//                        llAddBadge.addView(imageView7);
+//                    }
+//                }
             }
 
         }
+    }
 
         //unregistered
 //        if (TextUtils.isEmpty(userInfo.getNickName())) {
@@ -216,7 +262,7 @@ public class MyPageFragment extends BaseFragment {
 //            tvUserName.setText(userCharacter.getName());
 //            imgUserIcon.setImageResource(userCharacter.getIconResource());
 //        }
-    }
+//    }
 
     @Override
     protected void registerEventHandlers() {
@@ -269,5 +315,13 @@ public class MyPageFragment extends BaseFragment {
                 application.initAnalytic(category, action, label, value);
             }
         }
+    }
+
+    public ImageView makeImageView(String resourceName, int visible) {
+        ImageView imageView;
+        imageView = new ImageView(getContext());
+        imageView.setImageResource(this.getResources().getIdentifier(resourceName, "drawable", activity.getPackageName()));
+        imageView.setVisibility(visible);
+        return  imageView;
     }
 }

@@ -6,6 +6,7 @@
 *.swo
 *swp
 *.iml
+/app/build.gradle
 
 #OSX file
 .DS_Store
