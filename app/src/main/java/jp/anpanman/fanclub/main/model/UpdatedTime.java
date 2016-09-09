@@ -2,10 +2,12 @@ package jp.anpanman.fanclub.main.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by linhphan on 8/22/16.
  */
-public class UpdatedTime extends BaseModel {
+public class UpdatedTime extends BaseModel implements Serializable {
     @SerializedName("new")
     private UpdatedTimeModel news;
 

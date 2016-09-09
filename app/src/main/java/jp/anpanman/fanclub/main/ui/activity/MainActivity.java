@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.main.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
@@ -50,14 +51,13 @@ import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
-import jp.anpanman.fanclub.main.util.DrawerLocker;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 import jp.anpanman.fanclub.main.util.RestfulUtil;
 
 /**
  * Created by linhphan on 7/15/16.
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String ARG_LASTEST_UPDATED_TIME = "ARG_LASTEST_UPDATED_TIME";
     public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
@@ -66,8 +66,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
     public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
     public static final String ARG_PUSH_URL = "com.nifty.RichUrl";
+    public static final String IS_FIRST_START_MAIN_ACTIVITY ="IS_FIRST_START_MAIN_ACTIVITY";
+
+
+    //new status icon on bottom bar
+    public static final String BUNDLE_KEY_ICON_NEW_IS_SHOW      = "BUNDLE_KEY_ICON_NEW_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_COUPON_IS_SHOW   = "BUNDLE_KEY_ICON_COUPON_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_PRESENT_IS_SHOW  = "BUNDLE_KEY_ICON_PRESENT_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_OTHER_IS_SHOW    = "BUNDLE_KEY_ICON_OTHER_IS_SHOW";
 
     //=============== properties ===================================================================
+
     private ImageButton btnHamburgerMenu;
     private DrawerLayout drawerLayout;
     private ListView lvDrawerNav;
@@ -87,6 +96,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgPresentNew;
     private ImageView imgOtherNew;
     private ImageView mProfileImage;
+    private ImageView imgLogo;
+    private View view;
 
     public static MainTabs currentTab;
     private UpdatedTime currentSync;
@@ -97,6 +108,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
+
+    // State data for update new symbols
+    public static HashMap<String, Integer> saveStateNewIcon = null;
+
     //=============== constructors =================================================================
 
 
@@ -108,21 +123,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
+        // processing for last data staus saved from ROTATOED
+        if (saveStateNewIcon != null) {
+            //
+            if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW) != null) {
+
+                if (!isLandcape()) {
+                    //apply last data
+                    applyStatusNewIcons();
+                }
+
+            }
+
+        }
+        if(savedInstanceState != null){
+            // apply last staus on bottom bar icon
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
             switchTab(currentTab, true);
-        } else {
+        }
+        else {
             switchTab(MainTabs.News, true);
         }
-
+        //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
-        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
-                "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"info\":{\"updatetime\":\"2016-07-01T16:44:32+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-05T20:16:13+09:00\"}}");
-        AppLog.log("Cheng-lastime", lastTime);
+
+        // processing for Sync time for compare to get new
+        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,null);
         if (!TextUtils.isEmpty(lastTime)) {
+            AppLog.log("Cheng-lastime", lastTime);
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
 
+        // processing for pushnotification dialog
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
@@ -136,6 +168,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 showPushDialog("", title, message);
             }
         }
+
+
+        // Processing for Permission writting DATA to SD CARD ( Save Wallper )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -155,6 +190,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -176,19 +212,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("cheng-resum", "onResume: ");
         registerReceiver(pushNotifyListenReceiver,
                 new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
-
+        //Hide menu Left and Menu Button when rotate.
         int ot = getResources().getConfiguration().orientation;
-        switch (ot) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                hideMenu();
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                showMenu();
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                break;
+        if (isLandcape()) {
+            hideMenu();
+            setDrawerLocked(true);
+        } else {
+            showMenu();
+            setDrawerLocked(false);
         }
     }
 
@@ -201,7 +235,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
+        if(isLandcape()){
+            setBackgroundDrawer(true);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -227,6 +265,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
+        imgLogo = (ImageView) findViewById(R.id.img_logo);
+        view = (View) findViewById(R.id.view);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(com.main.R.id.drawer);
@@ -342,13 +382,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         DialogFragment fragment = WebViewFragment.newInstance(url, title, isDetails);
         fragment.show(getFragmentManager(), WebViewFragment.class.getName());
     }
-    public void setDrawerLocked(boolean enabled){
-        if(enabled){
+
+    //Hide lest menu when rotate
+    public void setDrawerLocked(boolean enabled) {
+        if (enabled) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }else{
+        } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
 
+    }
+
+    public boolean isLandcape() {
+        int ot = getResources().getConfiguration().orientation;
+        if (ot == Configuration.ORIENTATION_LANDSCAPE) {
+            return true;
+        } else if (ot == Configuration.ORIENTATION_PORTRAIT) {
+            return false;
+        }
+        return false;
     }
 
     public void hideMenu() {
@@ -394,21 +446,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (newTab) {
             case News:
+                setBackgroundDrawer(false);
                 openNewsFragment(mTransitionAnimation);
                 imgNewsNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Coupon:
+                setBackgroundDrawer(false);
                 openCouponFragment(mTransitionAnimation);
                 imgCouponNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Present:
+                setBackgroundDrawer(false);
                 openPresentFragment(mTransitionAnimation);
                 imgPresentNew.setVisibility(View.INVISIBLE);
                 break;
 
             case MyPage:
+                setBackgroundDrawer(true);
                 openMyPageFragment(mTransitionAnimation);
                 break;
 
@@ -501,8 +557,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             imgCouponNew.setVisibility(View.INVISIBLE);
             imgPresentNew.setVisibility(View.INVISIBLE);
             imgOtherNew.setVisibility(View.INVISIBLE);
-
         } else {
+            //Save UpdateTime to Shared Preference
+            boolean isFirstStartActivity = SharedPreferencesUtil.getBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, false);
+            if(!isFirstStartActivity){
+                SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
+                SharedPreferencesUtil.putBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, true);
+
+            }
             switch (tabSelected) {
                 case News:
                     // imgNewsNew.setVisibility(View.INVISIBLE);
@@ -617,8 +679,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     break;
             }
 
-            //SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
-            //currentSync = newSync;
+            // we will save present status New for every ICON on Bottom bar
+            if (!isLandcape()) {
+                saveStatusNewIcons();
+            }
         }
     }
 
@@ -637,6 +701,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         AppLog.log("UpdateTime-before" + lastTime);
         SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, currentSync.toJson());
         AppLog.log("UpdateTime-after" + SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null));
+
     }
 
     /**
@@ -647,7 +712,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 displayNewIcons((UpdatedTime) data, tabSelected);
-
             }
 
             @Override
@@ -659,7 +723,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void openNewsFragment(FragmentTransitionInfo mTransition) {
         replaceFragment(com.main.R.id.fl_main_content, NewFragment.class.getName(), false, null, mTransition);
-        Log.e("LOG", "NewsFragment !");
     }
 
     private void openCouponFragment(FragmentTransitionInfo mTransition) {
@@ -707,7 +770,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     //=============== inner classes ================================================================
 
-
+    // Broadcast Receiver - listener when app is running and receiver push
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -806,7 +869,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-    //===========
+    //==============================================================================================
     private static ItemType getItemType(int position) {
         switch (position) {
             case 0:
@@ -818,15 +881,100 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    //==========
+    //==============================================================================================
     enum ItemType {
         Group, Normal
     }
 
-    //===========
+    //==============================================================================================
     private static class NormalItemHolder {
         TextView txtTitle;
     }
 
+    //==========================Handle save state new icon when rotate==============================
 
+    /**
+     * NEWS SYMBOL  PROCESSING
+     * Apply saved data hashMap into UI
+     *
+     */
+    public void applyStatusNewIcons() {
+
+        // TOP - NEW
+        if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW).intValue() == 1)
+            imgNewsNew.setVisibility(View.VISIBLE);
+        else
+            imgNewsNew.setVisibility(View.GONE);
+
+        // COUPON
+        if (saveStateNewIcon.get(BUNDLE_KEY_ICON_COUPON_IS_SHOW).intValue() == 1)
+            imgCouponNew.setVisibility(View.VISIBLE);
+        else
+            imgCouponNew.setVisibility(View.GONE);
+
+        // PRESENT
+        if (saveStateNewIcon.get(BUNDLE_KEY_ICON_PRESENT_IS_SHOW).intValue() == 1)
+            imgPresentNew.setVisibility(View.VISIBLE);
+        else
+            imgPresentNew.setVisibility(View.GONE);
+
+        // OTHER
+        if (saveStateNewIcon.get(BUNDLE_KEY_ICON_OTHER_IS_SHOW).intValue() == 1)
+            imgOtherNew.setVisibility(View.VISIBLE);
+        else
+            imgOtherNew.setVisibility(View.GONE);
+    }
+
+
+    /**
+     * NEWS SYMBOL  PROCESSING
+     * Save state current to Hashmap data
+     * 5 bottom tabs state will be save to saveStateNewIcon unit
+     *
+     */
+    public void saveStatusNewIcons() {
+
+        // initilizing Hashmap data
+        saveStateNewIcon = new HashMap<>();
+
+        //Save state new icon TOP - NEW tab
+        if (imgNewsNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_NEW_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_NEW_IS_SHOW, 0);
+
+        //Save state new icon Coupon tab
+        if (imgCouponNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_COUPON_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_COUPON_IS_SHOW, 0);
+
+        //Save state new icon Present tab
+        if (imgPresentNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_PRESENT_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_PRESENT_IS_SHOW, 0);
+
+        // Save state new icon Others tab
+        if (imgOtherNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_OTHER_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(BUNDLE_KEY_ICON_OTHER_IS_SHOW, 0);
+
+    }
+
+    //Background Drawer Handle
+    public void setBackgroundDrawer(boolean isChange){
+        if(isChange){
+            rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);
+            btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape_white);
+            imgLogo.setImageResource(R.drawable.logo_white);
+            view.setVisibility(View.GONE);
+        }else {
+            rl_top_nav.setBackgroundResource(0);
+            btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape);
+            imgLogo.setImageResource(R.drawable.logo_orange);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
 }
