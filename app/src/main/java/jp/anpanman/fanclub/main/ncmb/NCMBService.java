@@ -21,10 +21,13 @@ public class NCMBService extends NCMBListenerService {
         AppLog.log("tag", "title:" + title);
         AppLog.log("tag", "message:" + message);
         AppLog.log("tag", "url:" + message);
+        //App is exit
         if (!this.getPackageName().equalsIgnoreCase(((ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getPackageName())) {
             AppLog.log("app is exit","flase");
             super.onMessageReceived(from, data);
-        } else {
+        }
+        //app is running
+        else {
             AppLog.log("app is running","true");
             Intent i = new Intent("jp.anpanman.fanclub.PUSH_NOTIFY");
             i.putExtra("url",url);

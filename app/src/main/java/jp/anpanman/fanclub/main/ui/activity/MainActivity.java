@@ -30,7 +30,10 @@ import android.widget.TextView;
 
 import com.main.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
@@ -57,7 +60,7 @@ import jp.anpanman.fanclub.main.util.RestfulUtil;
 /**
  * Created by linhphan on 7/15/16.
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String ARG_LASTEST_UPDATED_TIME = "ARG_LASTEST_UPDATED_TIME";
     public static final String ARG_SHOULD_SHOW_PUSH_DIALOG = "ARG_SHOULD_SHOW_PUSH_DIALOG";
@@ -67,6 +70,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
     public static final String ARG_PUSH_URL = "com.nifty.RichUrl";
 
+
+    //new status icon on bottom bar
+    public static final String ICON_NEW_IS_SHOW = "ICON_NEW_IS_SHOW";
+    public static final String ICON_COUPON_IS_SHOW = "ICON_COUPON_IS_SHOW";
+    public static final String ICON_PRESENT_IS_SHOW = "ICON_PRESENT_IS_SHOW";
+    public static final String ICON_OTHER_IS_SHOW = "ICON_OTHER_IS_SHOW";
+    public static final String CURRENT_TIME = "CURRENT_TIME";
     //=============== properties ===================================================================
     private ImageButton btnHamburgerMenu;
     private DrawerLayout drawerLayout;
@@ -97,6 +107,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
+
+
+    public static HashMap<String, Integer> saveStateNewIcon = null;
+
     //=============== constructors =================================================================
 
 
@@ -108,14 +122,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
+
+        // processing for last data staus saved from ROTATOED
+        if (saveStateNewIcon != null) {
+            //
+            if (saveStateNewIcon.get(ICON_NEW_IS_SHOW) != null) {
+
+                if (!isLandcape()) {
+                    //apply last data
+                    applyStatusNewIcons();
+                }
+                // apply last staus on bottom bar icon
+            }
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
             switchTab(currentTab, true);
         } else {
             switchTab(MainTabs.News, true);
         }
-
+        //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
+
+        // processing for Sync time for compare to get new
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,
                 "{\"otoku\":{\"updatetime\":\"2016-07-26T21:33:41+09:00\"},\"info\":{\"updatetime\":\"2016-07-01T16:44:32+09:00\"},\"new\":{\"updatetime\":\"2016-07-26T20:46:04+09:00\"},\"present\":{\"updatetime\":\"2016-07-05T20:16:13+09:00\"}}");
         AppLog.log("Cheng-lastime", lastTime);
@@ -123,6 +150,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
 
+        // processing for pushnotification dialog
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
@@ -136,6 +164,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 showPushDialog("", title, message);
             }
         }
+
+
+        // Processing for Permission writting DATA to SD CARD ( Save Wallper )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -155,6 +186,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -176,19 +208,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("cheng-resum", "onResume: ");
         registerReceiver(pushNotifyListenReceiver,
                 new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
-
+        //Hide menu Left and Menu Button when rotate.
         int ot = getResources().getConfiguration().orientation;
-        switch (ot) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                hideMenu();
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                showMenu();
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                break;
+        if (isLandcape()) {
+            hideMenu();
+            setDrawerLocked(true);
+        } else {
+            showMenu();
+            setDrawerLocked(false);
         }
     }
 
@@ -201,7 +231,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
+//        outState.putSerializable(CURRENT_TIME, currentSync);
+//        Log.d("onSaveInstanceState1", "onSaveInstanceState: ");
+//            outState.putInt(ICON_NEW_IS_SHOW, imgNewsNew.getVisibility());
+//            outState.putInt(ICON_COUPON_IS_SHOW, imgCouponNew.getVisibility());
+//            outState.putInt(ICON_OTHER_IS_SHOW, imgOtherNew.getVisibility());
+//            outState.putInt(ICON_PRESENT_IS_SHOW, imgPresentNew.getVisibility());
         super.onSaveInstanceState(outState);
     }
 
@@ -342,13 +379,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         DialogFragment fragment = WebViewFragment.newInstance(url, title, isDetails);
         fragment.show(getFragmentManager(), WebViewFragment.class.getName());
     }
-    public void setDrawerLocked(boolean enabled){
-        if(enabled){
+
+    //Hide lest menu when rotate
+    public void setDrawerLocked(boolean enabled) {
+        if (enabled) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }else{
+        } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
 
+    }
+
+    public boolean isLandcape() {
+        int ot = getResources().getConfiguration().orientation;
+        if (ot == Configuration.ORIENTATION_LANDSCAPE) {
+            return true;
+        } else if (ot == Configuration.ORIENTATION_PORTRAIT) {
+            return false;
+        }
+        return false;
     }
 
     public void hideMenu() {
@@ -501,7 +550,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             imgCouponNew.setVisibility(View.INVISIBLE);
             imgPresentNew.setVisibility(View.INVISIBLE);
             imgOtherNew.setVisibility(View.INVISIBLE);
-
         } else {
             switch (tabSelected) {
                 case News:
@@ -616,9 +664,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 default:
                     break;
             }
-
             //SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
             //currentSync = newSync;
+
+
+            // we will save present status New for every ICON on Bottom bar
+            if (!isLandcape()) {
+                saveStatusNewIcons();
+            }
         }
     }
 
@@ -637,6 +690,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         AppLog.log("UpdateTime-before" + lastTime);
         SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, currentSync.toJson());
         AppLog.log("UpdateTime-after" + SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null));
+
     }
 
     /**
@@ -707,7 +761,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     //=============== inner classes ================================================================
 
-
+    // Broadcast Receiver - listener when app is running and receiver push
     public class PushNotifyListenReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -828,5 +882,60 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         TextView txtTitle;
     }
 
+    //==========================Handle save state new icon when rotate=======================
+// save state new icon before to landcape
+
+    public void applyStatusNewIcons() {
+
+        // TOP - NEW
+        if (saveStateNewIcon.get(ICON_NEW_IS_SHOW).intValue() == 1)
+            imgNewsNew.setVisibility(View.VISIBLE);
+        else
+            imgNewsNew.setVisibility(View.GONE);
+
+        // COUPON
+        if (saveStateNewIcon.get(ICON_COUPON_IS_SHOW).intValue() == 1)
+            imgCouponNew.setVisibility(View.VISIBLE);
+        else
+            imgCouponNew.setVisibility(View.GONE);
+
+        // PRESENT
+        if (saveStateNewIcon.get(ICON_PRESENT_IS_SHOW).intValue() == 1)
+            imgPresentNew.setVisibility(View.VISIBLE);
+        else
+            imgPresentNew.setVisibility(View.GONE);
+        // OTHER
+        if (saveStateNewIcon.get(ICON_OTHER_IS_SHOW).intValue() == 1)
+            imgOtherNew.setVisibility(View.VISIBLE);
+        else
+            imgOtherNew.setVisibility(View.GONE);
+    }
+
+
+    public void saveStatusNewIcons() {
+        saveStateNewIcon = new HashMap<>();
+        //Save state new icon TOP - NEW
+        if (imgNewsNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(ICON_NEW_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(ICON_NEW_IS_SHOW, 0);
+
+        //Save state new icon Coupon
+        if (imgCouponNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(ICON_COUPON_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(ICON_COUPON_IS_SHOW, 0);
+        //Save state new icon Present
+        if (imgPresentNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(ICON_PRESENT_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(ICON_PRESENT_IS_SHOW, 0);
+
+        if (imgOtherNew.getVisibility() == View.VISIBLE)
+            saveStateNewIcon.put(ICON_OTHER_IS_SHOW, 1);
+        else
+            saveStateNewIcon.put(ICON_OTHER_IS_SHOW, 0);
+
+    }
 
 }
