@@ -96,6 +96,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgPresentNew;
     private ImageView imgOtherNew;
     private ImageView mProfileImage;
+    private ImageView imgLogo;
+    private View view;
 
     public static MainTabs currentTab;
     private UpdatedTime currentSync;
@@ -235,12 +237,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onSaveInstanceState(Bundle outState) {
         Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
-//        outState.putSerializable(CURRENT_TIME, currentSync);
-//        Log.d("onSaveInstanceState1", "onSaveInstanceState: ");
-//            outState.putInt(ICON_NEW_IS_SHOW, imgNewsNew.getVisibility());
-//            outState.putInt(BUNDLE_KEY_ICON_COUPON_IS_SHOW, imgCouponNew.getVisibility());
-//            outState.putInt(BUNDLE_KEY_ICON_OTHER_IS_SHOW, imgOtherNew.getVisibility());
-//            outState.putInt(BUNDLE_KEY_ICON_PRESENT_IS_SHOW, imgPresentNew.getVisibility());
+        if(isLandcape()){
+            setBackgroundDrawer(true);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -266,6 +265,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
+        imgLogo = (ImageView) findViewById(R.id.img_logo);
+        view = (View) findViewById(R.id.view);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(com.main.R.id.drawer);
@@ -445,21 +446,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (newTab) {
             case News:
+                setBackgroundDrawer(false);
                 openNewsFragment(mTransitionAnimation);
                 imgNewsNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Coupon:
+                setBackgroundDrawer(false);
                 openCouponFragment(mTransitionAnimation);
                 imgCouponNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Present:
+                setBackgroundDrawer(false);
                 openPresentFragment(mTransitionAnimation);
                 imgPresentNew.setVisibility(View.INVISIBLE);
                 break;
 
             case MyPage:
+                setBackgroundDrawer(true);
                 openMyPageFragment(mTransitionAnimation);
                 break;
 
@@ -958,4 +963,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+    //Background Drawer Handle
+    public void setBackgroundDrawer(boolean isChange){
+        if(isChange){
+            rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);
+            btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape_white);
+            imgLogo.setImageResource(R.drawable.logo_white);
+            view.setVisibility(View.GONE);
+        }else {
+            rl_top_nav.setBackgroundResource(0);
+            btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape);
+            imgLogo.setImageResource(R.drawable.logo_orange);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
 }

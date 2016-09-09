@@ -58,7 +58,6 @@ public class MyPageFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-        MainActivity activity = (MainActivity) getActivity();
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
         //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
     }
@@ -228,12 +227,13 @@ public class MyPageFragment extends BaseFragment {
         super.onResume();
         initAnalytics(true, null, null, null, 1);
         AppLog.log("onResume: ");
-        Activity a = getActivity();
-        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         //
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (a != null) {
-                AnpanmanApp application = (AnpanmanApp) a.getApplication();
+            if (activity != null) {
+                AnpanmanApp application = (AnpanmanApp) activity.getApplication();
                 application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
             }
 
