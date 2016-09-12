@@ -44,7 +44,6 @@
             android:layout_marginTop="@dimen/positive_6dp"
             android:text="やまだ たろう"
             android:textSize="@dimen/text_size_24sp"
-            android:textStyle="bold"
             android:visibility="visible" />
 
         <ImageView
@@ -90,12 +89,12 @@
 
             <LinearLayout
                 android:id="@+id/ll_add_badge"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/positive_20dp"
                 android:layout_marginRight="@dimen/positive_20dp"
                 android:layout_marginTop="@dimen/positive_12dp"
-                android:layout_gravity="center"
+                android:layout_gravity="left"
                 android:orientation="horizontal"
                 android:visibility="visible">
 
