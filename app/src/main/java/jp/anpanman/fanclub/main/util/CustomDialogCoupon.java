@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,13 +22,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.main.R;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 
@@ -58,15 +66,20 @@ public class CustomDialogCoupon extends Dialog implements
         setContentView(R.layout.dialog_coupon);
         imgClose = (ImageView) findViewById(R.id.imgClose);
         imgCoupon = (ImageView) findViewById(R.id.imgCoupon);
+      //  imgCoupon.setImageBitmap(null);
         btnOk = (Button) findViewById(R.id.btnOk);
         imgClose.setOnClickListener(this);
         btnOk.setOnClickListener(this);
         if (!TextUtils.isEmpty(url)) {
-            Glide.with(activity)
-                    .load(url)
-                    .centerCrop()
-                    .placeholder(R.drawable.bitmap)
-                    .into(imgCoupon);
+//            Glide.with(activity)
+//                    .load(url)
+//                    .centerCrop()
+//                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+//                    .placeholder(R.drawable.bitmap)
+//                    .into(imgCoupon);
+            AppLog.log("Cheng url push", url);
+            new DownloadImageTask(imgCoupon).execute(url);
+
         }
     }
 
@@ -112,6 +125,35 @@ public class CustomDialogCoupon extends Dialog implements
         alertDialog.show();
 
     }
+
+    // Get bitmap from url and set into ImageView
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView imgCoupon;
+
+        public DownloadImageTask(ImageView imgCoupon) {
+            this.imgCoupon = imgCoupon;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+               AppLog.log("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imgCoupon.setImageBitmap(result);
+        }
+    }
+
+
+    ///Dowload image from url pushnotify
 
     public static class ImageLoadTask extends AsyncTask<Void, Void, Boolean> {
         private WeakReference<Context> context;

@@ -69,14 +69,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final String ARG_PUSH_TITLE = "ARG_PUSH_TITLE";
     public static final String ARG_PUSH_MESSEAGE = "ARG_PUSH_MESSEAGE";
     public static final String ARG_PUSH_URL = "com.nifty.RichUrl";
-    public static final String IS_FIRST_START_MAIN_ACTIVITY ="IS_FIRST_START_MAIN_ACTIVITY";
+    public static final String IS_FIRST_START_MAIN_ACTIVITY = "IS_FIRST_START_MAIN_ACTIVITY";
 
 
     //new status icon on bottom bar
-    public static final String BUNDLE_KEY_ICON_NEW_IS_SHOW      = "BUNDLE_KEY_ICON_NEW_IS_SHOW";
-    public static final String BUNDLE_KEY_ICON_COUPON_IS_SHOW   = "BUNDLE_KEY_ICON_COUPON_IS_SHOW";
-    public static final String BUNDLE_KEY_ICON_PRESENT_IS_SHOW  = "BUNDLE_KEY_ICON_PRESENT_IS_SHOW";
-    public static final String BUNDLE_KEY_ICON_OTHER_IS_SHOW    = "BUNDLE_KEY_ICON_OTHER_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_NEW_IS_SHOW = "BUNDLE_KEY_ICON_NEW_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_COUPON_IS_SHOW = "BUNDLE_KEY_ICON_COUPON_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_PRESENT_IS_SHOW = "BUNDLE_KEY_ICON_PRESENT_IS_SHOW";
+    public static final String BUNDLE_KEY_ICON_OTHER_IS_SHOW = "BUNDLE_KEY_ICON_OTHER_IS_SHOW";
 
     //=============== properties ===================================================================
 
@@ -139,19 +139,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
 
         }
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             // apply last staus on bottom bar icon
             currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
             switchTab(currentTab, true);
-        }
-        else {
+        } else {
             switchTab(MainTabs.News, true);
         }
         //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
 
         // processing for Sync time for compare to get new
-        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME,null);
+        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
         if (!TextUtils.isEmpty(lastTime)) {
             AppLog.log("Cheng-lastime", lastTime);
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
@@ -239,7 +238,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onSaveInstanceState(Bundle outState) {
         Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
-        if(isLandcape()){
+        if (isLandcape()) {
             setBackgroundDrawer(true);
         }
         super.onSaveInstanceState(outState);
@@ -426,6 +425,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mProfileImage = (ImageView) navHeaderView.findViewById(R.id.profile_image);
         mProfileImage.setImageResource(userCharacter.getIconResource());
 
+
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
 
@@ -482,6 +482,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
         syncUpdateTimeOfServer(newTab);
     }
+
+    int i = 0;
 
     private void setDisplayBottomNav() {
         switch (currentTab) {
@@ -709,7 +711,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 displayNewIcons((UpdatedTime) data, tabSelected);
                 //Save UpdateTime to Shared Preference
                 boolean isFirstStartActivity = SharedPreferencesUtil.getBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, false);
-                if(!isFirstStartActivity){
+                if (!isFirstStartActivity) {
                     SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, ((UpdatedTime) data).toJson());
                     SharedPreferencesUtil.putBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, true);
 
@@ -898,7 +900,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * NEWS SYMBOL  PROCESSING
      * Apply saved data hashMap into UI
-     *
      */
     public void applyStatusNewIcons() {
 
@@ -932,7 +933,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * NEWS SYMBOL  PROCESSING
      * Save state current to Hashmap data
      * 5 bottom tabs state will be save to saveStateNewIcon unit
-     *
      */
     public void saveStatusNewIcons() {
 
@@ -966,13 +966,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     //Background Drawer Handle
-    public void setBackgroundDrawer(boolean isChange){
-        if(isChange){
+    public void setBackgroundDrawer(boolean isChange) {
+        if (isChange) {
             rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);
             btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape_white);
             imgLogo.setImageResource(R.drawable.logo_white);
             view.setVisibility(View.GONE);
-        }else {
+        } else {
             rl_top_nav.setBackgroundResource(0);
             btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape);
             imgLogo.setImageResource(R.drawable.logo_orange);

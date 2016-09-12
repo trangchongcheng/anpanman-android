@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -100,6 +102,26 @@ public class MyPageFragment extends BaseFragment {
         tvUserID.setText("ID:" + userInfo.getId());
         tvUserName.setText(userInfo.getNickName());
         imgUserIcon.setImageResource(userCharacter.getIconResource());
+        final Animation zoomin = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_in);
+        final Animation zoomout = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_out);
+        imgUserIcon.setAnimation(zoomin);
+        zoomin.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imgUserIcon.setAnimation(zoomout);
+                AppLog.log("animation", "onAnimationEnd: ");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
 
         //landscape mode
         if ("mypage_landscape".equals(root.getTag())) {

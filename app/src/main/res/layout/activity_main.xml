@@ -47,6 +47,7 @@
             android:layout_height="@dimen/positive_50dp"
             android:layout_alignParentBottom="true"
             android:gravity="center"
+            android:background="@drawable/border_set"
             android:orientation="horizontal">
 
             <View

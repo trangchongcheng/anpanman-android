@@ -24,7 +24,7 @@
         <Button
             android:id="@+id/btnOk"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/positive_50dp"
+            android:layout_height="@dimen/positive_60dp"
             android:layout_below="@id/imgCoupon"
             android:layout_marginBottom="@dimen/positive_30dp"
             android:layout_marginLeft="@dimen/positive_20dp"

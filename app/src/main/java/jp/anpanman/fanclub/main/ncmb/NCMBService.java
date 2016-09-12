@@ -20,7 +20,7 @@ public class NCMBService extends NCMBListenerService {
         String url = data.getString("com.nifty.RichUrl");
         AppLog.log("tag", "title:" + title);
         AppLog.log("tag", "message:" + message);
-        AppLog.log("tag", "url:" + message);
+        AppLog.log("tag", "url:" + url);
         //App is exit
         if (!this.getPackageName().equalsIgnoreCase(((ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getPackageName())) {
             AppLog.log("app is exit","flase");
