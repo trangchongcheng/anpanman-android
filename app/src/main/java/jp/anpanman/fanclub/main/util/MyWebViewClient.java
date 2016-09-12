@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
+import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
@@ -51,7 +52,7 @@ public class MyWebViewClient extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        AppLog.log("PHVT","Current url loading completed !  : " + url);
+        AppLog.log("PHVT", "Current url loading completed !  : " + url);
         super.onPageFinished(view, url);
     }
 
@@ -178,8 +179,27 @@ public class MyWebViewClient extends WebViewClient {
     *
     */
     public void updateObjectID(String object_id) {
-        mUserInfo = ((AnpanmanApp) (activity.getApplication())).getUserInfo();
-        mUserInfo.setObjectId(object_id);
-        SharedPreferencesUtil.putString(activity, Constant.PREF_USER_INFO, mUserInfo.toJson());
+
+        //Call API to get user info in general
+        RestfulUtil.getUserInfo(this.activity, object_id, new RestfulService.Callback() {
+            @Override
+            public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
+
+                // update User info into Application
+                mUserInfo =(UserInfo) data;
+
+                // save it to SHARE PREFERENCES
+                SharedPreferencesUtil.putString(activity, Constant.PREF_USER_INFO, mUserInfo.toJson());
+            }
+
+            @Override
+            public void onDownloadFailed(Exception e, int requestCode, int responseCode) {
+
+            }
+        });
+
+
+
+
     }
 }
