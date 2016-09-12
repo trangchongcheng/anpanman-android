@@ -19,7 +19,7 @@ public class Constant {
     public static final String PUSH_ACTION = "jp.anpanman.fanclub.pushing";
     public static final String SCHEME_ANPANMANFANCLUB = "anpanmanfanclub://";
     public static final String HOST_ANPANMANFANCLUB_UPDATE_OBJECT = SCHEME_ANPANMANFANCLUB + "update_object";
-    public static final String HOST_ANPANMANFANCLUB_OPEN_BROWSER = SCHEME_ANPANMANFANCLUB + "openbrowser";
+    public static final String HOST_ANPANMANFANCLUB_OPEN_BROWSER = SCHEME_ANPANMANFANCLUB + "open_browser";
     public static final String SCHEME_URL = "url";
     public static final String SCHEME_ID = "id";
 

@@ -31,6 +31,7 @@ import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.model.MainTabs;
 import jp.anpanman.fanclub.main.util.Common;
+import jp.anpanman.fanclub.main.util.MyWebViewClient;
 
 /**
  * Created by chientruong on 8/16/16.
@@ -147,25 +148,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             mWebView.getSettings().setSupportZoom(true);
             mWebView.getSettings().setBuiltInZoomControls(true);
             mWebView.getSettings().setDisplayZoomControls(false);
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    AppLog.log("Url-click1", url);
-                    view.clearCache(true);
-                }
-
-                @Override
-                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                    Common.onSslError(getActivity(), view, handler, error);
-                }
-
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    AppLog.log("Cheng", "shouldOverrideUrlLoading: " + url);
-                    return super.shouldOverrideUrlLoading(view, url);
-                }
-            });
+            mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
             mWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public void onProgressChanged(WebView view, int newProgress) {

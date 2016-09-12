@@ -57,26 +57,24 @@ public class MyWebViewClient extends WebViewClient {
         System.out.println("when you click on any interlink on webview that time you got url : " + url);
         // Open product detail
         if (url.contains("detail.html")) {
-            openWebView(url,"", true);
-            AppLog.log("Url-click",url);
+            openWebView(url, "", true);
+            AppLog.log("Url-click", url);
+            return true;
+        } else if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
+            Map<String, String> params = getParams(url);
+            // Callback: Update ObjectId
+            if (params.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
+                updateObjectID();
+            }
+            // Callback: Open Extend Browser on Device through url string
+            else if (params.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setData(Uri.parse(params.get(Constant.SCHEME_URL)));
+                activity.startActivity(i);
+            }
             return true;
         }
-                  if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
-                    Map<String, String> params = getParams(url);
-                    // Callback: Update ObjectId
-                    if (params.get(Constant.SCHEME_ID) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
-                        updateObjectID();
-                    }
-
-                    // Callback: Open Extend Browser on Device through url string
-                    if (params.get(Constant.SCHEME_URL) != null && url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setData(Uri.parse(params.get(Constant.SCHEME_URL)));
-                        activity.startActivity(i);
-                    }
-                    return true;
-                }
         return super.shouldOverrideUrlLoading(view, url);
     }
 
@@ -84,11 +82,13 @@ public class MyWebViewClient extends WebViewClient {
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
         Common.onSslError(activity, view, handler, error);
     }
+
     //Open Fragment Dialog load URL
     public void openWebView(String url, String title, boolean isDetails) {
         DialogFragment fragment = WebViewFragment.newInstance(url, title, isDetails);
         fragment.show(activity.getFragmentManager(), WebViewFragment.class.getName());
     }
+
     //get params from scheme url
     public static Map<String, String> getParams(String url) {
         HashMap<String, String> result = new HashMap<String, String>();
@@ -114,8 +114,8 @@ public class MyWebViewClient extends WebViewClient {
     }
 
     //Update new Object ID to Shared Preferences when click url scheme has param is update_object
-    public void updateObjectID(){
-        mUserInfo = ((AnpanmanApp)(activity.getApplication())).getUserInfo();
+    public void updateObjectID() {
+        mUserInfo = ((AnpanmanApp) (activity.getApplication())).getUserInfo();
         mUserInfo.setObjectId(Constant.SCHEME_ID);
         SharedPreferencesUtil.putString(activity, Constant.PREF_USER_INFO, mUserInfo.toJson());
     }

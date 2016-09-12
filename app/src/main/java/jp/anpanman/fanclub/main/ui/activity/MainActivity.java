@@ -1,6 +1,7 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -216,7 +219,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         registerReceiver(pushNotifyListenReceiver,
                 new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
         //Hide menu Left and Menu Button when rotate.
-        int ot = getResources().getConfiguration().orientation;
         if (isLandcape()) {
             hideMenu();
             setDrawerLocked(true);
@@ -558,13 +560,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             imgPresentNew.setVisibility(View.INVISIBLE);
             imgOtherNew.setVisibility(View.INVISIBLE);
         } else {
-            //Save UpdateTime to Shared Preference
-            boolean isFirstStartActivity = SharedPreferencesUtil.getBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, false);
-            if(!isFirstStartActivity){
-                SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, newSync.toJson());
-                SharedPreferencesUtil.putBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, true);
-
-            }
             switch (tabSelected) {
                 case News:
                     // imgNewsNew.setVisibility(View.INVISIBLE);
@@ -712,6 +707,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
                 displayNewIcons((UpdatedTime) data, tabSelected);
+                //Save UpdateTime to Shared Preference
+                boolean isFirstStartActivity = SharedPreferencesUtil.getBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, false);
+                if(!isFirstStartActivity){
+                    SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, ((UpdatedTime) data).toJson());
+                    SharedPreferencesUtil.putBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, true);
+
+                }
             }
 
             @Override
@@ -977,4 +979,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             view.setVisibility(View.VISIBLE);
         }
     }
+
 }

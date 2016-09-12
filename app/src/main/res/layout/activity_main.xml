@@ -22,7 +22,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/positive_16dp"
                 android:layout_marginStart="@dimen/positive_16dp"
-                android:background="@drawable/bg_press_states"/>
+                android:background="@drawable/bg_press_states" />
 
 
             <ImageView
@@ -40,12 +40,12 @@
                 android:background="@color/colorDivider" />
         </RelativeLayout>
 
+
         <LinearLayout
             android:id="@+id/rl_bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="@dimen/positive_50dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/bottom_nav_background"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -73,19 +73,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_img_tab_news"
                     android:layout_centerHorizontal="true"
-                    android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
+                    android:text="@string/tab_news"
                     android:textColor="@color/text_bottom_nav_color_state"
-                    android:text="@string/tab_news" />
+                    android:textSize="@dimen/text_size_10sp" />
 
                 <ImageView
                     android:id="@+id/img_news_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/btn_img_tab_news"
                     android:layout_toEndOf="@id/btn_img_tab_news"
+                    android:layout_toRightOf="@id/btn_img_tab_news"
                     android:src="@drawable/icon_new"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <View
@@ -112,19 +112,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_img_tab_coupon"
                     android:layout_centerHorizontal="true"
-                    android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
+                    android:text="@string/tab_coupon"
                     android:textColor="@color/text_bottom_nav_color_state"
-                    android:text="@string/tab_coupon" />
+                    android:textSize="@dimen/text_size_10sp" />
 
                 <ImageView
                     android:id="@+id/img_coupon_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/btn_img_tab_coupon"
                     android:layout_toEndOf="@id/btn_img_tab_coupon"
+                    android:layout_toRightOf="@id/btn_img_tab_coupon"
                     android:src="@drawable/icon_new"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <View
@@ -151,19 +151,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_img_tab_present"
                     android:layout_centerHorizontal="true"
-                    android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
+                    android:text="@string/tab_present"
                     android:textColor="@color/text_bottom_nav_color_state"
-                    android:text="@string/tab_present" />
+                    android:textSize="@dimen/text_size_10sp" />
 
                 <ImageView
                     android:id="@+id/img_present_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/btn_img_tab_present"
                     android:layout_toEndOf="@id/btn_img_tab_present"
+                    android:layout_toRightOf="@id/btn_img_tab_present"
                     android:src="@drawable/icon_new"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <View
@@ -190,10 +190,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_img_tab_my_page"
                     android:layout_centerHorizontal="true"
-                    android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
+                    android:text="@string/tab_my_page"
                     android:textColor="@color/text_bottom_nav_color_state"
-                    android:text="@string/tab_my_page" />
+                    android:textSize="@dimen/text_size_10sp" />
             </RelativeLayout>
 
             <View
@@ -220,18 +220,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_img_tab_setting"
                     android:layout_centerHorizontal="true"
-                    android:textSize="@dimen/text_size_10sp"
                     android:duplicateParentState="true"
+                    android:text="@string/tab_setting"
                     android:textColor="@color/text_bottom_nav_color_state"
-                    android:text="@string/tab_setting" />
+                    android:textSize="@dimen/text_size_10sp" />
+
                 <ImageView
                     android:id="@+id/img_other_new"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/btn_img_tab_setting"
                     android:layout_toEndOf="@id/btn_img_tab_setting"
+                    android:layout_toRightOf="@id/btn_img_tab_setting"
                     android:src="@drawable/icon_new"
-                        android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <View
@@ -240,7 +241,6 @@
                 android:layout_weight="1" />
 
         </LinearLayout>
-
 
         <FrameLayout
             android:id="@+id/fl_main_content"

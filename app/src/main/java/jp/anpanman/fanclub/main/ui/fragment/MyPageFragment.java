@@ -1,15 +1,18 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -233,6 +236,7 @@ public class MyPageFragment extends BaseFragment {
         //
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if (activity != null) {
+                hideStatusBar(activity);
                 AnpanmanApp application = (AnpanmanApp) activity.getApplication();
                 application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
             }
@@ -270,4 +274,23 @@ public class MyPageFragment extends BaseFragment {
             }
         }
     }
+    //Hiding status bar when rorate screen Mypage
+    public void hideStatusBar(Activity activity) {
+        if (Build.VERSION.SDK_INT < 16) { //ye olde method
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else { // Jellybean and up, new hotness
+            View decorView = activity.getWindow().getDecorView();
+            // Hide the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+            // Remember that you should never show the action bar if the
+            // status bar is hidden, so hide that too if necessary.
+            ActionBar actionBar = activity.getActionBar();
+            if(actionBar!= null){
+                actionBar.hide();
+            }
+        }
+    }
+
 }

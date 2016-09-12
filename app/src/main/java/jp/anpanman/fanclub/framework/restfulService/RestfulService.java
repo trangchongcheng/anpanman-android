@@ -10,9 +10,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.main.R;
+
 import jp.anpanman.fanclub.framework.restfulService.parser.IParser;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.NetworkUtil;
+import jp.anpanman.fanclub.main.util.DialogFactory;
 import jp.anpanman.fanclub.main.util.NoSSLv3Factory;
 
 import org.json.JSONException;
@@ -29,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -151,6 +154,11 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             } else {
                 try {
                     data = sendGet(url, mParams, mHeader);
+                } catch (ConnectException e) {
+                    AppLog.log("Cheng-Error ConnectException");
+                    DialogFactory.showMessage(mContext.get(),"Failed to connect to");
+                    e.printStackTrace();
+                    return null;
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (CertificateException e) {
@@ -191,10 +199,10 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             mCallback.onDownloadFailed(mException, mRequestCode, mResponseCode);
         }
         try {
-            if (mProgressbar != null  && mContext.get() != null && mProgressbar.isShowing()) {
+            if (mProgressbar != null && mContext.get() != null && mProgressbar.isShowing()) {
                 mProgressbar.dismiss();
             }
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
 
@@ -299,8 +307,8 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             //== add header
             httpsURLConnection.setRequestMethod("GET");
-            if (header != null && !header.isEmpty()){
-                for (String key : header.keySet()){
+            if (header != null && !header.isEmpty()) {
+                for (String key : header.keySet()) {
                     httpsURLConnection.setRequestProperty(key, header.get(key));
                 }
             }
@@ -327,13 +335,13 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             inputStreamReader.close();
             in.close();
             httpsURLConnection.disconnect();
-        } else if(path.startsWith("http:")) {
+        } else if (path.startsWith("http:")) {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
             //== add header
             httpURLConnection.setRequestMethod("GET");
-            if (header != null && !header.isEmpty()){
-                for (String key : header.keySet()){
+            if (header != null && !header.isEmpty()) {
+                for (String key : header.keySet()) {
                     httpURLConnection.setRequestProperty(key, header.get(key));
                 }
             }
@@ -384,8 +392,8 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             httpsURLConnection.setDoOutput(true);
             httpsURLConnection.setRequestMethod("POST");
             httpsURLConnection.setRequestProperty("Content-Length", "" + Integer.toString(query.getBytes().length));
-            if (header != null && !header.isEmpty()){
-                for (String key : header.keySet()){
+            if (header != null && !header.isEmpty()) {
+                for (String key : header.keySet()) {
                     httpsURLConnection.setRequestProperty(key, header.get(key));
                 }
             }
@@ -425,8 +433,8 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             //== add header
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setRequestProperty("Content-Length", "" + Integer.toString(query.getBytes().length));
-            if (header != null && !header.isEmpty()){
-                for (String key : header.keySet()){
+            if (header != null && !header.isEmpty()) {
+                for (String key : header.keySet()) {
                     httpURLConnection.setRequestProperty(key, header.get(key));
                 }
             }
@@ -512,7 +520,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            AppLog.log("param: "+ key + " - " + params.get(key));
+            AppLog.log("param: " + key + " - " + params.get(key));
         }
 //        dos.writeBytes(CRLF);
 //        dos.flush();
@@ -530,7 +538,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
                     dos.writeBytes("Content-Type: " + URLConnection.guessContentTypeFromName(uploadFile.getName()) + CRLF);
                 } catch (Exception e) {
                     dos.writeBytes("Content-Type: " + getFileType(uploadFile.getName()) + CRLF);
-                    Log.e("File Type", uploadFile.getName()+"");
+                    Log.e("File Type", uploadFile.getName() + "");
                 }
                 dos.writeBytes("Content-Transfer-Encoding: binary" + CRLF);
                 dos.writeBytes(CRLF);
@@ -568,8 +576,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
 //                    return temp;
 //                }
 //            }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -610,7 +617,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         StringBuilder builder = new StringBuilder();
         int tamp;
         while ((tamp = reader.read()) != -1) {
-            builder.append((char)tamp);
+            builder.append((char) tamp);
         }
 
         return builder.toString();
@@ -645,7 +652,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
                     builder.append(PARAMETER_DELIMITER);
                 }
                 String value = params.get(key);
-                if (value == null){
+                if (value == null) {
                     value = "";
                 }
                 builder.append(key)
@@ -663,6 +670,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     /**
      * try to parse a string data that received from remote server,
      * retrieve response code then set that value to {@link #mRequestCode}
+     *
      * @param data to be parsed
      * @return an object that result from parsing of parser
      * @throws JSONException
@@ -674,7 +682,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
 
             return mParser.parse(mContext.get(), data);
 
-        }else {
+        } else {
             return data;
         }
     }
@@ -736,9 +744,9 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     private String getFileType(String s) {
         String type = null;
 
-        if(s.endsWith("png")) {
+        if (s.endsWith("png")) {
             type = "image/png";
-        } else if(s.endsWith("jpg")) {
+        } else if (s.endsWith("jpg")) {
             type = "image/jpeg";
         }
 

@@ -6,14 +6,10 @@
     android:gravity="center">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_width="@dimen/positive_100dp"
         android:layout_height="@dimen/positive_100dp"
-        android:layout_marginTop="@dimen/positive_20dp"
+        android:layout_marginTop="@dimen/positive_30dp"
         android:layout_marginBottom="@dimen/positive_10dp"
-        app:civ_border_width="@dimen/positive_2dp"
-        android:src="@drawable/avator_none"
-        app:civ_border_color="#fff"
-        app:civ_fill_color="#fff"/>
+        android:src="@drawable/avator_none"/>
 </LinearLayout>

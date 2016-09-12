@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:bottom="@dimen/negative_3dp" android:left="@dimen/negative_3dp"
+        android:right="@dimen/negative_3dp" android:top="@dimen/negative_1dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="@color/colorDivider" />
+            <solid android:color="@color/bottom_nav_background" />
+        </shape>
+    </item>
+</layer-list>
