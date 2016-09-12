@@ -187,6 +187,7 @@ public class MyWebViewClient extends WebViewClient {
 
                 // update User info into Application
                 mUserInfo =(UserInfo) data;
+                ((AnpanmanApp) (activity.getApplication())).updateUserInfo(mUserInfo);
 
                 // save it to SHARE PREFERENCES
                 SharedPreferencesUtil.putString(activity, Constant.PREF_USER_INFO, mUserInfo.toJson());
