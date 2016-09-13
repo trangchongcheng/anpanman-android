@@ -58,6 +58,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
@@ -97,7 +98,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp">
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_coupon"
@@ -136,7 +138,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp">
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_present"
@@ -175,7 +178,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp">
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_my_page"
@@ -205,7 +209,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp">
+                android:minWidth="@dimen/positive_50dp"
+                android:gravity="center">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_setting"
