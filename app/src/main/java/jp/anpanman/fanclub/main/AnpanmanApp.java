@@ -16,6 +16,10 @@ public class AnpanmanApp extends Application {
     UserInfo userInfo;
     private Tracker mTracker;
 
+    public void updateUserInfo(UserInfo _userInfo){
+        this.userInfo = _userInfo;
+    }
+
     public UserInfo getUserInfo() {
         return userInfo;
     }
