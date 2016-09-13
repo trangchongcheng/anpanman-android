@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -119,6 +121,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
+    private DrawerAdapter drawerAdapter;
 
     // State data for update new symbols
     public static HashMap<String, Integer> saveStateNewIcon = null;
@@ -296,24 +299,101 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         btnHamburgerMenu.setOnClickListener(this);
         lvDrawerNav.setOnItemClickListener(this);
-        mDrawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout, R.string.open_drawer, R.string.close_drawer) {
+        drawerAdapter.notifyDataSetChanged();
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //DrawableZoom.zoomImageAnimation(this,imgLogo);
+            public void onDrawerSlide(View drawerView, float slideOffset) {
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                DrawableZoom.zoomImageAnimation(MainActivity.this, mProfileImage);
+
+
+                //Start Animation
+                //TODO:
+                startAnimationAvatar();
+
+                //DrawableZoom.zoomImageAnimation(MainActivity.this, mProfileImage);
                 Toast.makeText(MainActivity.this, "Open", Toast.LENGTH_SHORT).show();
             }
-        };
-        drawerLayout.setDrawerListener(mDrawerToggle);
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                Toast.makeText(MainActivity.this, "Close", Toast.LENGTH_SHORT).show();
+
+                //Stop Animation
+                //TODO:
+                stopAnimationAvatar();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
 
     }
+
+
+    //====== ANIMATION EXAMPLES =====
+    private Animation zoomin;//= AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+    private Animation zoomout;//= AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+
+
+    /**
+     * Initilized animation for avavatar image
+     * it's called by start drawer
+     */
+
+    private void initilizedAnimationAvatarDrawer() {
+
+        zoomin = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        zoomout = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+
+
+        zoomin.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mProfileImage.setAnimation(zoomout);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Nothing to do ( debug )
+            }
+        });
+
+    }
+
+
+    /***
+     * Start animation when SLIDE LEFT MENU opened
+     * Zoom- in animation will call in first time
+     */
+    private void startAnimationAvatar() {
+        mProfileImage.requestLayout();
+        mProfileImage.startAnimation(zoomin);
+        //Holder for animation to start it
+        // mProfileImage.setAnimation(zoomin);
+        //zoomin.start();
+        //zoomin.startNow();
+    }
+
+    /**
+     * Stop Animation Avavtar
+     * Zoom - in , Zoom - out will be stop
+     */
+    private void stopAnimationAvatar() {
+
+        zoomin.cancel();
+        zoomout.cancel();
+        mProfileImage.setAnimation(zoomin);
+    }
+
 
     //=============== implemented methods ==========================================================
     @Override
@@ -447,14 +527,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         // Set favorite character on side menu
         UserInfo userInfo = ((AnpanmanApp) (this.getApplication())).getUserInfo();
         UserCharacter userCharacter = UserCharacter.getUserCharacter(this, userInfo.getFavorite_character_code());
+
+
+        // Avatar profile configuration
+        // handle from view
         mProfileImage = (ImageView) navHeaderView.findViewById(R.id.profile_image);
         mProfileImage.setImageResource(userCharacter.getIconResource());
+
+        // config imageview for animtion processing
+        initilizedAnimationAvatarDrawer();
 
 
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
 
-        DrawerAdapter drawerAdapter = new DrawerAdapter(this);
+        drawerAdapter = new DrawerAdapter(this);
         lvDrawerNav.setAdapter(drawerAdapter);
     }
 
@@ -866,6 +953,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             NormalItemHolder holder;
             ItemType type = getItemType(i);
             if (view == null) {
+                AppLog.log("view = null ");
                 holder = new NormalItemHolder();
                 switch (type) {
                     case Group:
@@ -891,6 +979,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 view.setTag(holder);
             } else {
                 holder = (NormalItemHolder) view.getTag();
+                AppLog.log("view # null ");
             }
             return view;
         }

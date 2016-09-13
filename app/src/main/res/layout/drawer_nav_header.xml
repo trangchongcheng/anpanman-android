@@ -9,7 +9,7 @@
         android:id="@+id/profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/positive_30dp"
-        android:layout_marginBottom="@dimen/positive_10dp"
+        android:layout_marginTop="@dimen/positive_15dp"
+        android:layout_marginBottom="@dimen/positive_20dp"
         android:src="@drawable/avator_none"/>
 </LinearLayout>
