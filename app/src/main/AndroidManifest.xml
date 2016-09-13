@@ -62,7 +62,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                    <data android:scheme="anpanmanfanclub" />
+                        <data android:scheme="anpanmanfanclub" />
             </intent-filter>
         </activity>
 

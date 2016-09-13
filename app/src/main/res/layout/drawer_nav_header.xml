@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:gravity="center">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="@dimen/positive_100dp"
-        android:layout_height="@dimen/positive_100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/positive_30dp"
         android:layout_marginBottom="@dimen/positive_10dp"
         android:src="@drawable/avator_none"/>

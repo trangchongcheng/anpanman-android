@@ -66,20 +66,18 @@ public class CustomDialogCoupon extends Dialog implements
         setContentView(R.layout.dialog_coupon);
         imgClose = (ImageView) findViewById(R.id.imgClose);
         imgCoupon = (ImageView) findViewById(R.id.imgCoupon);
-      //  imgCoupon.setImageBitmap(null);
         btnOk = (Button) findViewById(R.id.btnOk);
         imgClose.setOnClickListener(this);
         btnOk.setOnClickListener(this);
         if (!TextUtils.isEmpty(url)) {
-//            Glide.with(activity)
-//                    .load(url)
-//                    .centerCrop()
-//                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
-//                    .placeholder(R.drawable.bitmap)
-//                    .into(imgCoupon);
+            Glide.with(activity)
+                    .load(url)
+                    .centerCrop()
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                    .placeholder(R.drawable.bitmap)
+                    .into(imgCoupon);
             AppLog.log("Cheng url push", url);
-            new DownloadImageTask(imgCoupon).execute(url);
-
+            //  new DownloadImageTask(imgCoupon).execute(url);
         }
     }
 
@@ -135,19 +133,23 @@ public class CustomDialogCoupon extends Dialog implements
         }
 
         protected Bitmap doInBackground(String... urls) {
+
             String urldisplay = urls[0];
             Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-               AppLog.log("Error", e.getMessage());
+                AppLog.log("Error", e.getMessage());
                 e.printStackTrace();
             }
             return bitmap;
         }
 
         protected void onPostExecute(Bitmap result) {
+            imgCoupon.setImageBitmap(null);
+            imgCoupon.destroyDrawingCache();
+            AppLog.log("Loading image finish");
             imgCoupon.setImageBitmap(result);
         }
     }
@@ -178,11 +180,10 @@ public class CustomDialogCoupon extends Dialog implements
                     MediaStore.Images.Media.insertImage(context.get().getContentResolver(), myBitmap, "Anpanman", "Image");
                 }
                 return myBitmap != null;
-            }catch (SecurityException e){
+            } catch (SecurityException e) {
                 e.printStackTrace();
                 AppLog.log("Permisson wasn't deined");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
 
             }
@@ -194,8 +195,8 @@ public class CustomDialogCoupon extends Dialog implements
             super.onPostExecute(isDownloaded);
             if (isDownloaded && this.context.get() != null) {
                 Toast.makeText(this.context.get(), R.string.download_finish, Toast.LENGTH_SHORT).show();
-            }else if (this.context.get() != null){
-                Toast.makeText(this.context.get(),"Download Error", Toast.LENGTH_SHORT).show();
+            } else if (this.context.get() != null) {
+                Toast.makeText(this.context.get(), "Download Error", Toast.LENGTH_SHORT).show();
             }
         }
 

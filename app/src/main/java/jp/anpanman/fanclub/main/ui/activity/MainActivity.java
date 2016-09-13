@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,14 +23,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.main.R;
 
@@ -54,6 +59,7 @@ import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
+import jp.anpanman.fanclub.main.util.DrawableZoom;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 import jp.anpanman.fanclub.main.util.RestfulUtil;
 
@@ -100,6 +106,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgOtherNew;
     private ImageView mProfileImage;
     private ImageView imgLogo;
+    private FrameLayout frameContainer;
+    private ActionBarDrawerToggle mDrawerToggle;
     private View view;
 
     public static MainTabs currentTab;
@@ -158,6 +166,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         // processing for pushnotification dialog
         pushNotifyListenReceiver = new PushNotifyListenReceiver();
+
+        // App is exit, recieve pushnotify -> run SplashActivity to send data -> recieve data here.
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getBoolean(ARG_SHOULD_SHOW_PUSH_DIALOG, false)) {
             String title = bundle.getString(ARG_PUSH_TITLE);
@@ -170,7 +180,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 showPushDialog("", title, message);
             }
         }
-
 
         // Processing for Permission writting DATA to SD CARD ( Save Wallper )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -195,9 +204,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         // Make sure it's our original READ_CONTACTS request
         if (requestCode == 1) {
             if (grantResults.length == 1 &&
@@ -268,6 +275,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
         imgLogo = (ImageView) findViewById(R.id.img_logo);
         view = (View) findViewById(R.id.view);
+        frameContainer = (FrameLayout) findViewById(R.id.fl_main_content);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(com.main.R.id.drawer);
@@ -288,6 +296,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         btnHamburgerMenu.setOnClickListener(this);
         lvDrawerNav.setOnItemClickListener(this);
+        mDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, R.string.open_drawer, R.string.close_drawer) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //DrawableZoom.zoomImageAnimation(this,imgLogo);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                DrawableZoom.zoomImageAnimation(MainActivity.this, mProfileImage);
+                Toast.makeText(MainActivity.this, "Open", Toast.LENGTH_SHORT).show();
+            }
+        };
+        drawerLayout.setDrawerListener(mDrawerToggle);
+
     }
 
     //=============== implemented methods ==========================================================
@@ -754,9 +779,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void showPushDialog(String url, String title, String message) {
-        if (customDialogCoupon == null) {
-            customDialogCoupon = new CustomDialogCoupon(MainActivity.this, url, title, message);
-        }
+        customDialogCoupon = new CustomDialogCoupon(MainActivity.this, url, title, message);
         customDialogCoupon.show();
     }
 
@@ -779,6 +802,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onReceive(Context context, Intent intent) {
             String urlPush = intent.getStringExtra("url");
+            Log.d("Cheng-url from push ", urlPush);
             showPushDialog(urlPush, null, "");
         }
 
@@ -965,7 +989,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-    //Background Drawer Handle
+    //Background Drawer Handle when slect MyPage Tab
     public void setBackgroundDrawer(boolean isChange) {
         if (isChange) {
             rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">アンパンマンファンくらぶ</string>
 
-
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
     <!--common-->
     <string name="no_internet">通信状況をお確かめのうえ、再度お試しください。</string>
     <string name="no_data">JSON Error - Null</string>

@@ -303,6 +303,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void gotoTopScreen() {
         Intent intent = new Intent(this, MainActivity.class);
+        // When receive Notify, if app is exit run SplashActivity and then put data to MainActivity
         if (Constant.PUSH_ACTION.equals(getIntent().getAction()) && getIntent().getExtras() != null){
             Bundle bundle = new Bundle();
             bundle.putBoolean(MainActivity.ARG_SHOULD_SHOW_PUSH_DIALOG, true);

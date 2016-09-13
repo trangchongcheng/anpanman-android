@@ -34,6 +34,7 @@ import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Constant;
+import jp.anpanman.fanclub.main.util.DrawableZoom;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 /**
@@ -102,26 +103,6 @@ public class MyPageFragment extends BaseFragment {
         tvUserID.setText("ID:" + userInfo.getId());
         tvUserName.setText(userInfo.getNickName());
         imgUserIcon.setImageResource(userCharacter.getIconResource());
-        final Animation zoomin = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_in);
-        final Animation zoomout = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_out);
-        imgUserIcon.setAnimation(zoomin);
-        zoomin.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                imgUserIcon.setAnimation(zoomout);
-                AppLog.log("animation", "onAnimationEnd: ");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
 
         //landscape mode
         if ("mypage_landscape".equals(root.getTag())) {
@@ -181,7 +162,7 @@ public class MyPageFragment extends BaseFragment {
 
                 //Draw user badges at first
                 for (String key : userBadges) {
-                    if(userBadges.contains(key)) {
+                    if (userBadges.contains(key)) {
                         imageView = makeImageView("badge_" + key, View.VISIBLE);
                         imageView.setLayoutParams(layoutParams);
                         llAddBadge.addView(imageView);
@@ -236,57 +217,6 @@ public class MyPageFragment extends BaseFragment {
         }
     }
 
-        //unregistered
-//        if (TextUtils.isEmpty(userInfo.getNickName())) {
-//            if ("mypage_landscape".equals(root.getTag())) {
-//                llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
-//                llMypageBgLand.setBackgroundResource(R.drawable.img_orange_background);
-//                imgNickName.setVisibility(View.VISIBLE);
-//                tvUserName.setVisibility(View.GONE);
-//             //portrait mode
-//            } else {
-//                changeLayout();
-//                btnRegister.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        openWebView(RestfulUrl.URL_REGISTER_MYPAGE,"Register Account");
-//                    }
-//                });
-//            }
-//
-//        //registered
-//        }else {
-//            //landscape mode
-//            if ("mypage_landscape".equals(root.getTag())) {
-//                llMypageBgLand = (LinearLayout) root.findViewById(R.id.ll_mypage_bgland);
-//                llMypageBgLand.setBackgroundResource(userCharacter.getBgResource());
-//
-//            //portrait mode
-//            }else{
-//                //==display badges
-//                for (String key : userInfo.getBadges().keySet()){
-//                    if ("1".equals(key)){
-//                        root.findViewById(R.id.badge1).setVisibility(View.VISIBLE);
-//                    }else if ("2".equals(key)){
-//                        root.findViewById(R.id.badge2).setVisibility(View.VISIBLE);
-//                    }else if ("3".equals(key)){
-//                        root.findViewById(R.id.badge3).setVisibility(View.VISIBLE);
-//                    }else if ("4".equals(key)){
-//                        root.findViewById(R.id.badge4).setVisibility(View.VISIBLE);
-//                    }else if ("5".equals(key)){
-//                        root.findViewById(R.id.badge5).setVisibility(View.VISIBLE);
-//                    }else if ("6".equals(key)){
-//                        root.findViewById(R.id.badge6).setVisibility(View.VISIBLE);
-//                    }else if ("7".equals(key)){
-//                        root.findViewById(R.id.badge7).setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//            tvUserID.setText("ID:" + userInfo.getId());
-//            tvUserName.setText(userCharacter.getName());
-//            imgUserIcon.setImageResource(userCharacter.getIconResource());
-//        }
-//    }
 
     @Override
     protected void registerEventHandlers() {
@@ -301,10 +231,14 @@ public class MyPageFragment extends BaseFragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+
         //
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //Animation zoom in - zoom out character icon
+            DrawableZoom.zoomImageAnimation(getActivity(), imgUserIcon);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if (activity != null) {
-               // hideStatusBar(activity);
+                // hideStatusBar(activity);
                 AnpanmanApp application = (AnpanmanApp) activity.getApplication();
                 application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
             }
@@ -348,8 +282,9 @@ public class MyPageFragment extends BaseFragment {
         imageView = new ImageView(getContext());
         imageView.setImageResource(this.getResources().getIdentifier(resourceName, "drawable", activity.getPackageName()));
         imageView.setVisibility(visible);
-        return  imageView;
+        return imageView;
     }
+
     //Hiding status bar when rorate screen Mypage
     public void hideStatusBar(Activity activity) {
         if (Build.VERSION.SDK_INT < 16) { //ye olde method
@@ -363,7 +298,7 @@ public class MyPageFragment extends BaseFragment {
             // Remember that you should never show the action bar if the
             // status bar is hidden, so hide that too if necessary.
             ActionBar actionBar = activity.getActionBar();
-            if(actionBar!= null){
+            if (actionBar != null) {
                 actionBar.hide();
             }
         }
