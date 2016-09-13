@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -148,6 +149,8 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             mWebView.getSettings().setSupportZoom(true);
             mWebView.getSettings().setBuiltInZoomControls(true);
             mWebView.getSettings().setDisplayZoomControls(false);
+            mWebView.getSettings().setAppCacheEnabled(false);
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
             mWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
@@ -173,6 +176,8 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             });
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request", "true");
+            extraHeaders.put("Pragma", "no-cache");
+            extraHeaders.put("Cache-Control", "no-cache");
             String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
             if (isDetails) {
                 mWebView.loadUrl(mUrl, extraHeaders);

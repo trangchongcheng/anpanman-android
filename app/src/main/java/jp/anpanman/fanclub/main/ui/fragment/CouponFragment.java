@@ -1,15 +1,20 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnScrollChangeListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
@@ -67,10 +72,15 @@ public class CouponFragment extends BaseFragment {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
 
-        //set zoomable
+     //set zoomable
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+
+        //Disable cache Webview
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -86,6 +96,8 @@ public class CouponFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request", "true");
+        extraHeaders.put("Pragma", "no-cache");
+        extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
         webView.loadUrl(RestfulUrl.URL_COUPON + objectId, extraHeaders);
     }

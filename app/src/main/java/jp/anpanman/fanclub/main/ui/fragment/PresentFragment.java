@@ -1,15 +1,20 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.main.R;
 
@@ -17,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
@@ -53,11 +59,11 @@ public class PresentFragment extends BaseFragment {
         super.onResume();
         initAnalytics();
         Activity a = getActivity();
-        if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     //============= inner methods ==================================================================
-    private void setupWebView(){
+    private void setupWebView() {
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -66,30 +72,37 @@ public class PresentFragment extends BaseFragment {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
 
-        //set zoomable
+
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100){
+                if (newProgress == 100) {
                     horizontalProgress.setVisibility(View.GONE);
-                }else{
+                } else {
                     horizontalProgress.setProgress(newProgress);
                     horizontalProgress.setVisibility(View.VISIBLE);
                 }
             }
         });
         Map<String, String> extraHeaders = new HashMap<>();
-        extraHeaders.put("x-anp-request","true");
-        String objectId = ((AnpanmanApp)getActivity().getApplication()).getUserInfo().getObjectId();
-        webView.loadUrl(RestfulUrl.URL_PRESENTS+objectId, extraHeaders);
+        extraHeaders.put("x-anp-request", "true");
+        extraHeaders.put("Pragma", "no-cache");
+        extraHeaders.put("Cache-Control", "no-cache");
+        String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
+        Map<String, String> noCacheHeaders = new HashMap<String, String>(2);
+
+        webView.loadUrl(RestfulUrl.URL_PRESENTS + objectId, extraHeaders);
     }
+
     // init Analytics Present Fragment
-    public void initAnalytics(){
+    public void initAnalytics() {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
@@ -97,4 +110,5 @@ public class PresentFragment extends BaseFragment {
         }
 
     }
+
 }

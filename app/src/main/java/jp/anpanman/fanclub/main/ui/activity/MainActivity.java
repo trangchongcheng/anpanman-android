@@ -110,7 +110,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgLogo;
     private FrameLayout frameContainer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private View view;
 
     public static MainTabs currentTab;
     private UpdatedTime currentSync;
@@ -277,7 +276,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
         imgLogo = (ImageView) findViewById(R.id.img_logo);
-        view = (View) findViewById(R.id.view);
         frameContainer = (FrameLayout) findViewById(R.id.fl_main_content);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
@@ -307,20 +305,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onDrawerOpened(View drawerView) {
-
-
                 //Start Animation
                 //TODO:
                 startAnimationAvatar();
-
                 //DrawableZoom.zoomImageAnimation(MainActivity.this, mProfileImage);
-                Toast.makeText(MainActivity.this, "Open", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Toast.makeText(MainActivity.this, "Close", Toast.LENGTH_SHORT).show();
-
                 //Stop Animation
                 //TODO:
                 stopAnimationAvatar();
@@ -333,11 +325,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-
     //====== ANIMATION EXAMPLES =====
     private Animation zoomin;//= AnimationUtils.loadAnimation(this, R.anim.zoom_in);
     private Animation zoomout;//= AnimationUtils.loadAnimation(this, R.anim.zoom_out);
-
 
     /**
      * Initilized animation for avavatar image
@@ -358,7 +348,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mProfileImage.setAnimation(zoomout);
+                mProfileImage.requestLayout();
+                mProfileImage.startAnimation(zoomout);
             }
 
             @Override
@@ -368,7 +359,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });
 
     }
-
 
     /***
      * Start animation when SLIDE LEFT MENU opened
@@ -820,7 +810,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         RestfulUtil.getUpdatedTime(this, new RestfulService.Callback() {
             @Override
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
-                displayNewIcons((UpdatedTime) data, tabSelected);
                 //Save UpdateTime to Shared Preference
                 boolean isFirstStartActivity = SharedPreferencesUtil.getBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, false);
                 if (!isFirstStartActivity) {
@@ -828,6 +817,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     SharedPreferencesUtil.putBoolean(MainActivity.this, IS_FIRST_START_MAIN_ACTIVITY, true);
 
                 }
+                displayNewIcons((UpdatedTime) data, tabSelected);
+
             }
 
             @Override
@@ -1084,12 +1075,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);
             btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape_white);
             imgLogo.setImageResource(R.drawable.logo_white);
-            view.setVisibility(View.GONE);
         } else {
             rl_top_nav.setBackgroundResource(0);
             btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape);
             imgLogo.setImageResource(R.drawable.logo_orange);
-            view.setVisibility(View.VISIBLE);
         }
     }
 

@@ -14,6 +14,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -84,9 +85,13 @@ public class NewFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request", "true");
+        extraHeaders.put("Pragma", "no-cache");
+        extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
 
         AppLog.log("setupWebView: " + RestfulUrl.URL_NEWS + objectId);
