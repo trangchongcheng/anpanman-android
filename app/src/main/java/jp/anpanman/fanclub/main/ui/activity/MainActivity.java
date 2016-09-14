@@ -1,7 +1,6 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,11 +21,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -35,9 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.main.R;
 
@@ -62,7 +56,6 @@ import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.CustomDialogCoupon;
-import jp.anpanman.fanclub.main.util.DrawableZoom;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 import jp.anpanman.fanclub.main.util.RestfulUtil;
 

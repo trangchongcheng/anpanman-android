@@ -65,7 +65,6 @@ public class MyPageFragment extends BaseFragment {
         activity = (MainActivity) getActivity();
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
         //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
-        AppLog.log("onCreate");
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //Hide status bar
@@ -112,8 +111,6 @@ public class MyPageFragment extends BaseFragment {
             if (TextUtils.isEmpty(userInfo.getNickName())) {
                 tvUserName.setVisibility(View.GONE);
                 imgNickName.setVisibility(View.VISIBLE);
-
-                AppLog.log("imgNickName: Visible !");
             }
             // nickname of user # blank
             else {
@@ -127,7 +124,6 @@ public class MyPageFragment extends BaseFragment {
             if (TextUtils.isEmpty(userInfo.getNickName())) {
                 tvUserName.setVisibility(View.GONE);
                 imgNickName.setVisibility(View.VISIBLE);
-                AppLog.log("portrait imgNickName: Visible !");
                 llBadge.setVisibility(View.GONE);
 
                 btnRegister.setVisibility(View.VISIBLE);
@@ -142,15 +138,6 @@ public class MyPageFragment extends BaseFragment {
             } else {
                 tvUserName.setVisibility(View.VISIBLE);
                 llBadge.setVisibility(View.VISIBLE);
-
-                //Debug badges - Start
-             //   LinkedHashMap newmap = new LinkedHashMap();
-                // populate hash map
-//                newmap.put("-1", "");
-//                newmap.put("2", "");
-//                newmap.put("8", "");
-//                userInfo.setBadges(newmap);
-                //Debug badges - End
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -192,7 +179,7 @@ public class MyPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         initAnalytics(true, null, null, null, 1);
-        AppLog.log("onResume: ");
+
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
