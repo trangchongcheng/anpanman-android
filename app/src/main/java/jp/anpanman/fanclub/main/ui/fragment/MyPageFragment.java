@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -49,6 +50,7 @@ public class MyPageFragment extends BaseFragment {
     private LinearLayout llMypageBgLand;
     private LinearLayout llAddBadge;
     private ImageView imgUserIcon;
+    private ImageButton btnHamburgerMenu;
     private TextView tvUserName;
     private TextView tvUserID;
     private LinearLayout llBadge;
@@ -98,6 +100,7 @@ public class MyPageFragment extends BaseFragment {
         llAddBadge = (LinearLayout) root.findViewById(R.id.ll_add_badge);
         btnRegister = (Button) root.findViewById(R.id.btn_register);
         imgNickName = (ImageView) root.findViewById(R.id.img_nick_name);
+        btnHamburgerMenu = (ImageButton) root.findViewById(R.id.btn_img_hamburger_mypage);
 
         tvUserID.setText("ID:" + userInfo.getId());
         tvUserName.setText(userInfo.getNickName());
@@ -172,7 +175,18 @@ public class MyPageFragment extends BaseFragment {
 
     @Override
     protected void registerEventHandlers() {
+        //Open drawer menu in MainActivity when click hamburge icon (only Porttrail)
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            btnHamburgerMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(activity != null){
+                        activity.openDrawerMenu();
 
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -8,8 +8,32 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05"
-        android:background="@drawable/mypage_background">
+        android:layout_weight="0.3"
+        android:background="@drawable/mypage_background_2">
+
+        <RelativeLayout
+            android:id="@+id/rl_top_nav"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/positive_50dp">
+
+            <ImageButton
+                android:id="@+id/btn_img_hamburger_mypage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/positive_16dp"
+                android:layout_marginStart="@dimen/positive_16dp"
+                android:background="@drawable/combined_shape_white" />
+
+
+            <ImageView
+                android:id="@+id/img_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/logo_white" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/img_user_icon"
@@ -91,10 +115,10 @@
                 android:id="@+id/ll_add_badge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/positive_20dp"
                 android:layout_marginRight="@dimen/positive_20dp"
                 android:layout_marginTop="@dimen/positive_12dp"
-                android:layout_gravity="left"
                 android:orientation="horizontal"
                 android:visibility="visible">
 

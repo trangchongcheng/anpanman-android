@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <RelativeLayout
             android:id="@+id/rl_top_nav"
             android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/positive_16dp"
                 android:layout_marginStart="@dimen/positive_16dp"
-                android:background="@drawable/bg_press_states" />
+                android:background="@drawable/combined_shape" />
 
 
             <ImageView
@@ -40,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/positive_50dp"
             android:layout_alignParentBottom="true"
-            android:gravity="center"
             android:background="@drawable/border_set"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <View
@@ -92,8 +93,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_coupon"
@@ -132,8 +133,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_present"
@@ -172,8 +173,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_my_page"
@@ -203,8 +204,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minWidth="@dimen/positive_50dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:minWidth="@dimen/positive_50dp">
 
                 <ImageButton
                     android:id="@+id/btn_img_tab_setting"

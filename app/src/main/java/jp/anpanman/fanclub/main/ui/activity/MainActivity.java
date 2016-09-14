@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView imgOtherNew;
     private ImageView mProfileImage;
     private ImageView imgLogo;
-    private FrameLayout frameContainer;
+
     private ActionBarDrawerToggle mDrawerToggle;
 
     public static MainTabs currentTab;
@@ -130,23 +130,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // processing for last data staus saved from ROTATOED
-        if (saveStateNewIcon != null) {
-            if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW) != null) {
-                if (!isLandcape()) {
-                    //apply last data
+
+        // oritiential by LANDSCAPE
+        if (isLandcape()) {
+            //TODO: LANDSCAPE
+        }
+        // oritiential by LANDSCAPE
+        else {
+            //TODO: PORTTRAIL
+
+            // processing for last data staus saved from ROTATOED
+            if (saveStateNewIcon != null) {
+                if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW) != null) {
                     applyStatusNewIcons();
                 }
+
+            }
+            //Check bundle State -> First or return back from landscape
+            if (savedInstanceState != null) {
+                // apply last staus on bottom bar icon
+                currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
+                switchTab(currentTab, true);
+            } else {
+                switchTab(MainTabs.News, true);
             }
 
+
         }
-        if (savedInstanceState != null) {
-            // apply last staus on bottom bar icon
-            currentTab = MainTabs.get(savedInstanceState.getInt(ARG_CURRENT_TAB));
-            switchTab(currentTab, true);
-        } else {
-            switchTab(MainTabs.News, true);
-        }
+
+
         //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
 
@@ -174,25 +186,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 showPushDialog("", title, message);
             }
         }
-
-        // Processing for Permission writting DATA to SD CARD ( Save Wallper )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-                //Permisson don't granted
-                if (shouldShowRequestPermissionRationale(
-                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    AppLog.log("Permissions dont granted");
-                }
-                // Permisson don't granted and dont show dialog again.
-                else {
-                    AppLog.log("Permisson don't granted and dont show dialog again");
-                }
-                //Register permission
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-
-            }
-        }
+        requestPermissionReadExternal();
 
     }
 
@@ -222,7 +216,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             hideMenu();
             setDrawerLocked(true);
         } else {
-            showMenu();
+            if (currentTab != MainTabs.MyPage) {
+                showMenu();
+            }
             setDrawerLocked(false);
         }
     }
@@ -238,9 +234,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onSaveInstanceState(Bundle outState) {
         Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
-        if (isLandcape()) {
-            setBackgroundDrawer(true);
-        }
         super.onSaveInstanceState(outState);
     }
 
@@ -267,7 +260,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_top_nav = (RelativeLayout) findViewById(R.id.rl_top_nav);
         rl_bottom_nav = (LinearLayout) findViewById(R.id.rl_bottom_nav);
         imgLogo = (ImageView) findViewById(R.id.img_logo);
-        frameContainer = (FrameLayout) findViewById(R.id.fl_main_content);
 
         btnHamburgerMenu = (ImageButton) findViewById(com.main.R.id.btn_img_hamburger);
         drawerLayout = (DrawerLayout) findViewById(com.main.R.id.drawer);
@@ -313,6 +305,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
     }
+
+    // Request permission read External ()
+    public void requestPermissionReadExternal() {
+        // Processing for Permission writting DATA to SD CARD ( Save Wallper )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                //Permisson don't granted
+                if (shouldShowRequestPermissionRationale(
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    AppLog.log("Permissions dont granted");
+                }
+                // Permisson don't granted and dont show dialog again.
+                else {
+                    AppLog.log("Permisson don't granted and dont show dialog again");
+                }
+                //Register permission
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+            }
+        }
+    }
+
 
     //====== ANIMATION EXAMPLES =====
     private Animation zoomin;//= AnimationUtils.loadAnimation(this, R.anim.zoom_in);
@@ -379,8 +394,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onClick(View view) {
         switch (view.getId()) {
             case com.main.R.id.btn_img_hamburger:
-                //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
-                drawerLayout.openDrawer(navigationView);
+                //drawerLayout.openDrawer(navigationView);
+                openDrawerMenu();
                 break;
 
             case com.main.R.id.btn_img_tab_news:
@@ -479,6 +494,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+    //Open drawer menu when click hamburge icon
+    public void openDrawerMenu() {
+        drawerLayout.openDrawer(navigationView);
+    }
+
     public boolean isLandcape() {
         int ot = getResources().getConfiguration().orientation;
         if (ot == Configuration.ORIENTATION_LANDSCAPE) {
@@ -527,7 +547,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void switchTab(MainTabs newTab, boolean isFirstLaunch) {
         Log.e("**current tab**", (currentTab == null) ? "" : currentTab.toString());
         Log.e("**new tab**", newTab.toString());
-
         FragmentTransitionInfo mTransitionAnimation;
         if (isFirstLaunch ||
                 (newTab == currentTab)) {
@@ -536,28 +555,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             mTransitionAnimation = new FragmentTransitionInfo(com.main.R.anim.slide_enter_right_left, com.main.R.anim.slide_exit_right_left, 0, 0);
         }
-
         switch (newTab) {
             case News:
-                setBackgroundDrawer(false);
+                //  setBackgroundDrawer(false);
+                setupForFragmentMypage(false);
                 openNewsFragment(mTransitionAnimation);
                 imgNewsNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Coupon:
-                setBackgroundDrawer(false);
+                // setBackgroundDrawer(false);
+                setupForFragmentMypage(false);
                 openCouponFragment(mTransitionAnimation);
                 imgCouponNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Present:
-                setBackgroundDrawer(false);
+                // setBackgroundDrawer(false);
+                setupForFragmentMypage(false);
                 openPresentFragment(mTransitionAnimation);
                 imgPresentNew.setVisibility(View.INVISIBLE);
                 break;
 
             case MyPage:
-                setBackgroundDrawer(true);
+                //setBackgroundDrawer(true);
+                setupForFragmentMypage(true);
                 openMyPageFragment(mTransitionAnimation);
                 break;
 
@@ -828,7 +850,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void openMyPageFragment(FragmentTransitionInfo mTransition) {
-        replaceFragment(com.main.R.id.fl_main_content, MyPageFragment.class.getName(), false, null, mTransition);
+        replaceFragment(R.id.fl_main_content, MyPageFragment.class.getName(), false, null, mTransition);
     }
 
     private void openSettingDialog() {
@@ -881,7 +903,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         public DrawerAdapter(Context context) {
             this.context = context;
-            Log.d("DrawerAdapter", "DrawerAdapter: ");
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -1056,6 +1077,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             btnHamburgerMenu.setBackgroundResource(R.drawable.combined_shape);
             imgLogo.setImageResource(R.drawable.logo_orange);
         }
+    }
+
+    //Setup eader Mypage when select MyPageTab
+    public void setupForFragmentMypage(boolean isShow) {
+        if (isShow) {
+            rl_top_nav.setVisibility(View.GONE);
+        } else {
+            rl_top_nav.setVisibility(View.VISIBLE);
+        }
+
     }
 
 }
