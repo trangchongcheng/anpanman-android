@@ -519,6 +519,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
+
         drawerAdapter = new DrawerAdapter(this);
         lvDrawerNav.setAdapter(drawerAdapter);
     }
@@ -875,28 +876,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private static class DrawerAdapter extends BaseAdapter {
 
-        private int iGroup = 0, iItem = 0;
-        private ArrayList<String> arrGroup = new ArrayList<>();
-        private ArrayList<String> arrItem = new ArrayList<>();
         private LayoutInflater mInflater;
+        private Context context;
 
         public DrawerAdapter(Context context) {
-
+            this.context = context;
             Log.d("DrawerAdapter", "DrawerAdapter: ");
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            for (int i = 0; i < context.getResources().getStringArray(R.array.group).length; i++) {
-                arrGroup.add(context.getResources().getStringArray(R.array.group)[i]);
-            }
-            for (int j = 0; j < context.getResources().getStringArray(R.array.item).length; j++) {
-                arrItem.add(context.getResources().getStringArray(R.array.item)[j]);
-            }
         }
 
-        @Override
-        public int getCount() {
-            return 9;
-        }
 
         @Override
         public int getViewTypeCount() {
@@ -905,9 +893,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         @Override
-        public int getItemViewType(int position) {
-
-            return position % 2;
+        public int getCount() {
+            return 9;
         }
 
         @Override
@@ -930,40 +917,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             //== inflate views
             NormalItemHolder holder;
             ItemType type = getItemType(i);
-            View row = null;
             if (view == null) {
                 holder = new NormalItemHolder();
                 switch (type) {
                     case Group:
                         //inflate the new layout
-                        row = mInflater.inflate(R.layout.drawer_nav_item_group, viewGroup, false);
-                        holder.txtTitle = (TextView) row.findViewById(R.id.txt_item_title);
-                        holder.txtTitle.setText(arrGroup.get((iGroup)));
-                        ++iGroup;
-                        Log.d("Cheng-Group", "getView: " + iGroup);
-                         iGroup = iGroup % arrGroup.size();
-                        //  Log.d("Cheng-Group2", "getView: "+iGroup);
+                        view = mInflater.inflate(R.layout.drawer_nav_item_group, viewGroup, false);
+                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
                         break;
 
                     case Normal:
                         //inflate the new layout
-                        row = mInflater.inflate(R.layout.drawer_nav_item, viewGroup, false);
-                        holder.txtTitle = (TextView) row.findViewById(R.id.txt_item_title);
-                        holder.txtTitle.setText(arrItem.get(iItem));
-                        ++iItem;
-                        Log.d("Cheng-Normal", "getView: " + iItem);
-                         iItem = iItem % arrItem.size();
-                        // Log.d("Cheng-Normal2", "getView: "+iItem);
+                        view = mInflater.inflate(R.layout.drawer_nav_item, viewGroup, false);
+                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
                         break;
                     default:
                         break;
                 }
-                row.setTag(holder);
+                view.setTag(holder);
             } else {
-                row = view;
-                holder = (NormalItemHolder) row.getTag();
+                holder = (NormalItemHolder) view.getTag();
             }
-            return row;
+            switch (type) {
+                case Group:
+                    holder.txtTitle.setText(context.getResources().getStringArray(R.array.item_menu)[i]);
+                    break;
+                case Normal:
+                    holder.txtTitle.setText(context.getResources().getStringArray(R.array.item_menu)[i]);
+                    break;
+                default:
+                    break;
+            }
+            return view;
         }
 
     }
