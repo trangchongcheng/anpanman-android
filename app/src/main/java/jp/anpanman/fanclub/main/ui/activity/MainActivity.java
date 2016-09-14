@@ -132,14 +132,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         // processing for last data staus saved from ROTATOED
         if (saveStateNewIcon != null) {
-            //
             if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW) != null) {
-
                 if (!isLandcape()) {
                     //apply last data
                     applyStatusNewIcons();
                 }
-
             }
 
         }
@@ -157,7 +154,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
         if (!TextUtils.isEmpty(lastTime)) {
-            AppLog.log("Cheng-lastime", lastTime);
+            AppLog.log("UpdateTime-before" + lastTime);
             currentSync = UpdatedTime.fromJson(lastTime, UpdatedTime.class);
         }
 
@@ -198,7 +195,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -292,7 +288,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         btnHamburgerMenu.setOnClickListener(this);
         lvDrawerNav.setOnItemClickListener(this);
-        drawerAdapter.notifyDataSetChanged();
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -441,7 +436,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case 5:
                 initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
-                openWebView(RestfulUrl.URL_PORTAL_SITE, getString(R.string.portal_site), false);
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_PORTAL_SITE + objectId));
+                startActivity(browserIntent);
                 break;
             case 6:
                 initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
@@ -521,10 +517,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         // config imageview for animtion processing
         initilizedAnimationAvatarDrawer();
 
-
         lvDrawerNav.addHeaderView(navHeaderView, null, false);
         lvDrawerNav.addFooterView(navFooterView, null, false);
-
         drawerAdapter = new DrawerAdapter(this);
         lvDrawerNav.setAdapter(drawerAdapter);
     }
@@ -779,7 +773,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    //Save UpdateTime last
+    //Save New UpdateTime when click Menu Bottom
     public void saveTimeToSharePreference(UpdatedTime.UpdatedTimeModel updateTime, MainTabs tabSellected) {
         if (tabSellected == MainTabs.News) {
             currentSync.setNews(updateTime);
@@ -790,8 +784,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else if (tabSellected == MainTabs.Setting) {
             currentSync.setInfo(updateTime);
         }
-        String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
-        AppLog.log("UpdateTime-before" + lastTime);
         SharedPreferencesUtil.putString(getBaseContext(), ARG_LASTEST_UPDATED_TIME, currentSync.toJson());
         AppLog.log("UpdateTime-after" + SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null));
 
@@ -883,18 +875,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private static class DrawerAdapter extends BaseAdapter {
 
-        private int iGroup, iItem;
+        private int iGroup = 0, iItem = 0;
         private ArrayList<String> arrGroup = new ArrayList<>();
         private ArrayList<String> arrItem = new ArrayList<>();
         private LayoutInflater mInflater;
 
         public DrawerAdapter(Context context) {
-            iGroup = 0;
-            iItem = 0;
+
+            Log.d("DrawerAdapter", "DrawerAdapter: ");
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            for (int j = 0; j < context.getResources().getStringArray(R.array.group).length; j++) {
-                arrGroup.add(context.getResources().getStringArray(R.array.group)[j]);
+            for (int i = 0; i < context.getResources().getStringArray(R.array.group).length; i++) {
+                arrGroup.add(context.getResources().getStringArray(R.array.group)[i]);
             }
             for (int j = 0; j < context.getResources().getStringArray(R.array.item).length; j++) {
                 arrItem.add(context.getResources().getStringArray(R.array.item)[j]);
@@ -938,36 +930,40 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             //== inflate views
             NormalItemHolder holder;
             ItemType type = getItemType(i);
+            View row = null;
             if (view == null) {
-                AppLog.log("view = null ");
                 holder = new NormalItemHolder();
                 switch (type) {
                     case Group:
                         //inflate the new layout
-                        view = mInflater.inflate(R.layout.drawer_nav_item_group, viewGroup, false);
-                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
+                        row = mInflater.inflate(R.layout.drawer_nav_item_group, viewGroup, false);
+                        holder.txtTitle = (TextView) row.findViewById(R.id.txt_item_title);
                         holder.txtTitle.setText(arrGroup.get((iGroup)));
-                        iGroup++;
-                        iGroup = iGroup % arrGroup.size();
+                        ++iGroup;
+                        Log.d("Cheng-Group", "getView: " + iGroup);
+                         iGroup = iGroup % arrGroup.size();
+                        //  Log.d("Cheng-Group2", "getView: "+iGroup);
                         break;
 
                     case Normal:
                         //inflate the new layout
-                        view = mInflater.inflate(R.layout.drawer_nav_item, viewGroup, false);
-                        holder.txtTitle = (TextView) view.findViewById(R.id.txt_item_title);
+                        row = mInflater.inflate(R.layout.drawer_nav_item, viewGroup, false);
+                        holder.txtTitle = (TextView) row.findViewById(R.id.txt_item_title);
                         holder.txtTitle.setText(arrItem.get(iItem));
-                        iItem++;
-                        iItem = iItem % arrItem.size();
+                        ++iItem;
+                        Log.d("Cheng-Normal", "getView: " + iItem);
+                         iItem = iItem % arrItem.size();
+                        // Log.d("Cheng-Normal2", "getView: "+iItem);
                         break;
                     default:
                         break;
                 }
-                view.setTag(holder);
+                row.setTag(holder);
             } else {
-                holder = (NormalItemHolder) view.getTag();
-                AppLog.log("view # null ");
+                row = view;
+                holder = (NormalItemHolder) row.getTag();
             }
-            return view;
+            return row;
         }
 
     }
