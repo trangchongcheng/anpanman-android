@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -159,7 +160,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
 
-        // processing for Sync time for compare to get new
+        // processing for Sync time for compare to get new                        return false; // if you want to handle the touch event
+
         String lastTime = SharedPreferencesUtil.getString(this, ARG_LASTEST_UPDATED_TIME, null);
         if (!TextUtils.isEmpty(lastTime)) {
             AppLog.log("Cheng-lastime", lastTime);
@@ -322,7 +324,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onDrawerStateChanged(int newState) {
             }
         });
-
     }
 
     //====== ANIMATION EXAMPLES =====
@@ -873,6 +874,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         application.initAnalytic(category, action, label, value);
     }
 
+
     //=============== inner classes ================================================================
 
     // Broadcast Receiver - listener when app is running and receiver push
@@ -1069,7 +1071,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-    //Background Drawer Handle when slect MyPage Tab
+    //Background drawer handle when select MyPageTab
     public void setBackgroundDrawer(boolean isChange) {
         if (isChange) {
             rl_top_nav.setBackgroundResource(R.drawable.img_background_drawer);

@@ -144,12 +144,12 @@ public class MyPageFragment extends BaseFragment {
                 llBadge.setVisibility(View.VISIBLE);
 
                 //Debug badges - Start
-                LinkedHashMap newmap = new LinkedHashMap();
+             //   LinkedHashMap newmap = new LinkedHashMap();
                 // populate hash map
-                newmap.put("-1", "");
-                newmap.put("2", "");
-                newmap.put("8", "");
-                userInfo.setBadges(newmap);
+//                newmap.put("-1", "");
+//                newmap.put("2", "");
+//                newmap.put("8", "");
+//                userInfo.setBadges(newmap);
                 //Debug badges - End
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -176,42 +176,7 @@ public class MyPageFragment extends BaseFragment {
                         llAddBadge.addView(imageView);
                     }
                 }
-
-//                for (String key : userInfo.getBadges().keySet()) {
-//                    AppLog.log("key: " + key);
 //
-//                    if ("1".equals(key)) {
-//                        ImageView imageView1 = new ImageView(getContext());
-//                        imageView1.setLayoutParams(layoutParams);
-//                        imageView1.setImageResource(R.drawable.badge_1);
-//                        llAddBadge.addView(imageView1);
-//                    } else if ("2".equals(key)) {
-//                        ImageView imageView2 = new ImageView(getActivity());
-//                        imageView2.setLayoutParams(layoutParams);
-//                        imageView2.setImageResource(R.drawable.badge_2);
-//                        llAddBadge.addView(imageView2);
-//                    } else if ("3".equals(key)) {
-//                        ImageView imageView3 = new ImageView(getActivity());
-//                        imageView3.setLayoutParams(layoutParams);
-//                        imageView3.setImageResource(R.drawable.badge_3);
-//                        llAddBadge.addView(imageView3);
-//                    } else if ("4".equals(key)) {
-//                        ImageView imageView4 = new ImageView(getContext());
-//                        imageView4.setLayoutParams(layoutParams);
-//                        imageView4.setImageResource(R.drawable.badge_4);
-//                        llAddBadge.addView(imageView4);
-//                    } else if ("5".equals(key)) {
-//                        ImageView imageView5 = new ImageView(getActivity());
-//                        imageView5.setLayoutParams(layoutParams);
-//                        imageView5.setImageResource(R.drawable.badge_5);
-//                        llAddBadge.addView(imageView5);
-//                    } else if ("7".equals(key)) {
-//                        ImageView imageView7 = new ImageView(getContext());
-//                        imageView7.setLayoutParams(layoutParams);
-//                        imageView7.setImageResource(R.drawable.badge_7);
-//                        llAddBadge.addView(imageView7);
-//                    }
-//                }
             }
 
         }
@@ -284,24 +249,4 @@ public class MyPageFragment extends BaseFragment {
         imageView.setVisibility(visible);
         return imageView;
     }
-
-    //Hiding status bar when rorate screen Mypage
-    public void hideStatusBar(Activity activity) {
-        if (Build.VERSION.SDK_INT < 16) { //ye olde method
-            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else { // Jellybean and up, new hotness
-            View decorView = activity.getWindow().getDecorView();
-            // Hide the status bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-            // Remember that you should never show the action bar if the
-            // status bar is hidden, so hide that too if necessary.
-            ActionBar actionBar = activity.getActionBar();
-            if (actionBar != null) {
-                actionBar.hide();
-            }
-        }
-    }
-
 }

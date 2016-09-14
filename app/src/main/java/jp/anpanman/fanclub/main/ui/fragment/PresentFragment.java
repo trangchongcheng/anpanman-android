@@ -6,6 +6,8 @@ import android.content.pm.ActivityInfo;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -76,6 +78,8 @@ public class PresentFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+
+        //Disable cache Webview
         webView.getSettings().setAppCacheEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
@@ -93,12 +97,33 @@ public class PresentFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request", "true");
+
+        //Dont save cache url
         extraHeaders.put("Pragma", "no-cache");
         extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
         Map<String, String> noCacheHeaders = new HashMap<String, String>(2);
 
         webView.loadUrl(RestfulUrl.URL_PRESENTS + objectId, extraHeaders);
+
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // PRESSED
+                        Log.d("ACTION_DOWN", "onTouch: ");
+                        break;
+                     //   return false; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        // RELEASED
+                        Log.d("ACTION_UP+", "onTouch: ");
+                        break;
+                      //  return false; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
     }
 
     // init Analytics Present Fragment

@@ -85,11 +85,15 @@ public class NewFragment extends BaseFragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+
+        //Disable cache Webview
         webView.getSettings().setAppCacheEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebViewClient(new MyWebViewClient(getActivity()));
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request", "true");
+
+        //Dont save cache url
         extraHeaders.put("Pragma", "no-cache");
         extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();

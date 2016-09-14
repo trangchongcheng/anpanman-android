@@ -12,7 +12,7 @@
     <color name="text_bottom_nav_inactive">#acacac</color>
     <color name="text_bottom_nav_activated">#EE8247</color>
     <color name="progress">#edad89</color>
-
+    <color name="transp">#80000000</color>
 
     <!--drawer navigation-->
     <color name="drawer_background">#ee8247</color>

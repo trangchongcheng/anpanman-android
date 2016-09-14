@@ -149,6 +149,8 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             mWebView.getSettings().setSupportZoom(true);
             mWebView.getSettings().setBuiltInZoomControls(true);
             mWebView.getSettings().setDisplayZoomControls(false);
+
+            //Disable cache Webview
             mWebView.getSettings().setAppCacheEnabled(false);
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
@@ -176,6 +178,8 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             });
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request", "true");
+
+            //Dont save cache url
             extraHeaders.put("Pragma", "no-cache");
             extraHeaders.put("Cache-Control", "no-cache");
             String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();

@@ -96,6 +96,7 @@ public class CouponFragment extends BaseFragment {
         });
         Map<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("x-anp-request", "true");
+        //Dont save cache url
         extraHeaders.put("Pragma", "no-cache");
         extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();

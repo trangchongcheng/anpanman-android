@@ -19,8 +19,8 @@ public class DrawableZoom {
     public static void zoomImageAnimation(Activity activity, final View imageView){
         final Animation zoomin = AnimationUtils.loadAnimation(activity, R.anim.zoom_in);
         final Animation zoomout = AnimationUtils.loadAnimation(activity, R.anim.zoom_out);
+        imageView.requestLayout();
         imageView.setAnimation(zoomin);
-
         //Listener zoomin animation finish to start zoomout animation
         zoomin.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -30,6 +30,7 @@ public class DrawableZoom {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                imageView.requestLayout();
                 imageView.setAnimation(zoomout);
                 AppLog.log("animation", "onAnimationEnd: ");
             }
