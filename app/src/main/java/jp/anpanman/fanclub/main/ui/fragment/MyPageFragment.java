@@ -220,7 +220,7 @@ public class MyPageFragment extends BaseFragment {
     //============= inner methods ==================================================================
 
     //Setup badge
-    public void setupBagdes(){
+    public void setupBagdes() {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
@@ -230,8 +230,8 @@ public class MyPageFragment extends BaseFragment {
         userBadges = userInfo.getBadges();
         //Draw user badges at first
 
-        for(int i = 0; i < userBadges.size(); i++) {
-            if(userBadges.get(i).getId().contains(badgeIds[i])){
+        for (int i = 0; i < userBadges.size(); i++) {
+            if (userBadges.get(i).getId().contains(badgeIds[i])) {
                 imageView = makeImageView("badge_" + userBadges.get(i).getId(), View.VISIBLE);
                 imageView.setLayoutParams(layoutParams);
                 llAddBadge.addView(imageView);
@@ -286,10 +286,10 @@ public class MyPageFragment extends BaseFragment {
     /**
      * update UI when another process callback needing update in force now
      */
-    public void refreshUserInfoUI(){
+    public void refreshUserInfoUI() {
 
         //_debug log
-        AppLog.log("ANPANMAN" , "  Update userinfo through Interface action ...");
+        AppLog.log("ANPANMAN", "  Update userinfo through Interface action ...");
 
         //0. Character info
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
@@ -301,6 +301,20 @@ public class MyPageFragment extends BaseFragment {
         tvUserID.setText("ID:" + userInfo.getId());
         //name
         tvUserName.setText(userInfo.getNickName());
+        //Show badges if nickname # blank
+        if (!TextUtils.isEmpty(userInfo.getNickName())) {
+            llBadge.setVisibility(View.VISIBLE);
+            btnRegister.setVisibility(View.GONE);
+            tvUserName.setVisibility(View.VISIBLE);
+            imgNickName.setVisibility(View.GONE);
+        }
+        //Hide badges,show button register if nickname = blank
+        else {
+            btnRegister.setVisibility(View.VISIBLE);
+            llBadge.setVisibility(View.GONE);
+            imgNickName.setVisibility(View.VISIBLE);
+            tvUserName.setVisibility(View.GONE);
+        }
         //Update badge
 
         //1. RESET LAYOUT BADGLE
