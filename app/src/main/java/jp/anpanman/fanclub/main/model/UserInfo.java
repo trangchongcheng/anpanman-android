@@ -2,6 +2,7 @@ package jp.anpanman.fanclub.main.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,12 +29,19 @@ public class UserInfo extends BaseModel{
     private String createdDate;
 
     @SerializedName("badges")
-    private LinkedHashMap<String, String> badges;//<id, name>
+    private ArrayList<Badges> badges;
+//    private LinkedHashMap<String, String> badges;//<id, name>
 
     public UserInfo() {
     }
 
-    public UserInfo(String objectId, String id, String nickName, LinkedHashMap<String, String> badges) {
+//    public UserInfo(String objectId, String id, String nickName, LinkedHashMap<String, String> badges) {
+//        this.objectId = objectId;
+//        this.id = id;
+//        this.nickName = nickName;
+//        this.badges = badges;
+//    }
+  public UserInfo(String objectId, String id, String nickName, ArrayList<Badges> badges) {
         this.objectId = objectId;
         this.id = id;
         this.nickName = nickName;
@@ -72,11 +80,18 @@ public class UserInfo extends BaseModel{
         this.favorite_character_code = favorite_character_code;
     }
 
-    public Map<String, String> getBadges() {
+//    public Map<String, String> getBadges() {
+//        return badges;
+//    }
+//
+//    public void setBadges(LinkedHashMap<String, String> badges) {
+//        this.badges = badges;
+//    }
+    public ArrayList<Badges>  getBadges() {
         return badges;
     }
 
-    public void setBadges(LinkedHashMap<String, String> badges) {
+    public void setBadges(ArrayList<Badges> badges) {
         this.badges = badges;
     }
 }

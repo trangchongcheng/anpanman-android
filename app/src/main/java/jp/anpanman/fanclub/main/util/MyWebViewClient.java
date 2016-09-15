@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Bundle;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,21 +16,24 @@ import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserInfo;
+import jp.anpanman.fanclub.main.ui.activity.MainActivity;
+import jp.anpanman.fanclub.main.ui.fragment.MyPageFragment;
 import jp.anpanman.fanclub.main.ui.fragment.WebViewFragment;
 
 /**
  * My WEBVIEW
- *
+ * <p/>
  * Handle Proicessing for webview widget controller in App
  * Speciality in ShouldOverride Url through Open WebBrowser and
  * update something from Schema URL callBack
- *
+ * <p/>
  * lastupate : Phatvt
  * at : 2016 - 09 - 12
  */
 
 public class MyWebViewClient extends WebViewClient {
 
+    public static final String IS_UPDATE_OBJECT_ID = "IS_UPDATE_OBJECT_ID";
     //handle Activity
     private Activity activity;
 
@@ -47,7 +51,7 @@ public class MyWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-       AppLog.log("PHVT", "Current url loading : " + url);
+        AppLog.log("PHVT", "Current url loading : " + url);
     }
 
     @Override
@@ -64,44 +68,49 @@ public class MyWebViewClient extends WebViewClient {
 
     /**
      * Processing for URL open by Extenal Browser on Device
+     *
      * @param view
      * @param url
      * @return Extended Browser
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-       AppLog.log("PHVT", "Full should open by Extend Browser : " + url);
+        AppLog.log("PHVT", "Full should open by Extend Browser : " + url);
 
         // Processing for : Openning  product detail
         if (url.contains("detail.html")) {
             openWebView(url, "", true);
             return true;
-        }else
+        } else
 
-        // Processing for SCHEMAL URL CALLBACK
-        if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
+            // Processing for SCHEMAL URL CALLBACK
+            if (url.startsWith(Constant.SCHEME_ANPANMANFANCLUB)) {
 
-            // Callback: Update ObjectId
-            if ( url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
-                updateObjectID(getFullObjectIDBySchemal(url));
+                // Callback: Update ObjectId
+                if (url.startsWith(Constant.HOST_ANPANMANFANCLUB_UPDATE_OBJECT)) {
+                    updateObjectID(getFullObjectIDBySchemal(url));
+                }
+
+                // Callback: Open Extend Browser on Device through url string
+                else if (url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
+
+                    // BLOCK Split URL and Params
+                    String url_open_browser = "";
+                    url_open_browser = getFullUrlBySchemal(url);
+                    AppLog.log("PHVT", " Open URL after processing : " + url_open_browser);
+
+                    // OPEN WEB BROWSER
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url_open_browser));
+                    activity.startActivity(i);
+
+                }
+                return true;
             }
-
-            // Callback: Open Extend Browser on Device through url string
-            else if ( url.startsWith(Constant.HOST_ANPANMANFANCLUB_OPEN_BROWSER)) {
-
-                // BLOCK Split URL and Params
-                String url_open_browser = "";
-                url_open_browser = getFullUrlBySchemal(url);
-                AppLog.log("PHVT" , " Open URL after processing : " + url_open_browser);
-
-                // OPEN WEB BROWSER
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url_open_browser));
-                activity.startActivity(i);
-
-            }
-            return true;
-        }
+        //test debug scheme update object
+//        else if(url.contains("http://stg-fcapp.anpanman.jp/account/F-2-1.html")){
+//            updateObjectID("v0WytbqKna1uKuUR");
+//                }
 
 
         return super.shouldOverrideUrlLoading(view, url);
@@ -120,6 +129,7 @@ public class MyWebViewClient extends WebViewClient {
 
     /**
      * get Full URL by Schemal Links
+     *
      * @param schemaUrl
      * @return
      */
@@ -134,7 +144,7 @@ public class MyWebViewClient extends WebViewClient {
                 if (n >= 2) {
                     for (int i = 1; i < n; i++) {
                         res.append(allStrings[i]);
-                        if( i+1 < n)
+                        if (i + 1 < n)
                             res.append("?");
                     }
                 }
@@ -149,6 +159,7 @@ public class MyWebViewClient extends WebViewClient {
 
     /**
      * get Object ID by Schemal URL
+     *
      * @param schemaUrl
      * @return
      */
@@ -161,7 +172,7 @@ public class MyWebViewClient extends WebViewClient {
                 String[] allStrings = schemaUrl.split("\\?");
                 int n = allStrings.length;
                 if (n >= 2) {
-                   res.append(allStrings[1]);
+                    res.append(allStrings[1]);
                 }
             }
         } catch (Exception e) {
@@ -185,11 +196,14 @@ public class MyWebViewClient extends WebViewClient {
             public void onDownloadSuccessfully(Object data, int requestCode, int responseCode) {
 
                 // update User info into Application
-                mUserInfo =(UserInfo) data;
+                mUserInfo = (UserInfo) data;
                 ((AnpanmanApp) (activity.getApplication())).updateUserInfo(mUserInfo);
 
                 // save it to SHARE PREFERENCES
                 SharedPreferencesUtil.putString(activity, Constant.PREF_USER_INFO, mUserInfo.toJson());
+
+                //update info from main Activity
+                ((MainActivity)activity)._updateUserInfoListener.update(mUserInfo);
             }
 
             @Override
@@ -197,8 +211,6 @@ public class MyWebViewClient extends WebViewClient {
 
             }
         });
-
-
 
 
     }

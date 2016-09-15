@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,7 +26,9 @@ import android.widget.TextView;
 
 import com.main.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +36,7 @@ import java.util.Set;
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
+import jp.anpanman.fanclub.main.model.Badges;
 import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
 import jp.anpanman.fanclub.main.ui.activity.MainActivity;
@@ -48,6 +52,7 @@ public class MyPageFragment extends BaseFragment {
     private ProgressBar horizontalProgress;
     private UserCharacter userCharacter;
     private UserInfo userInfo;
+    private ArrayList<Badges> userBadges;
 
     private LinearLayout llMypageBgLand;
     private LinearLayout llAddBadge;
@@ -70,10 +75,6 @@ public class MyPageFragment extends BaseFragment {
 
         // get Application user Info general data
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-
-        //test debug
-//        userInfo.setNickName("Cheng");
-//        userInfo.setFavorite_character_code("2");
 
         // set user Character data basing on user info
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
@@ -98,6 +99,7 @@ public class MyPageFragment extends BaseFragment {
             }
         }
     }
+
 
     @Override
     public int getRootLayoutId() {
@@ -155,38 +157,7 @@ public class MyPageFragment extends BaseFragment {
                 tvUserName.setVisibility(View.VISIBLE);
                 llBadge.setVisibility(View.VISIBLE);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.weight = 1.0f;
-                ImageView imageView;
-
-//              Test debug
-//                LinkedHashMap<String, String> map = new LinkedHashMap<>();
-//                map.put("1","one");
-//                map.put("2","two");
-////                map.put("7","serven");
-//                userInfo.setBadges(map);
-
-                String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
-                Set<String> userBadges = userInfo.getBadges().keySet();
-
-                //Draw user badges at first
-                for (String key : userBadges) {
-                    if (userBadges.contains(key)) {
-                        imageView = makeImageView("badge_" + key, View.VISIBLE);
-                        imageView.setLayoutParams(layoutParams);
-                        llAddBadge.addView(imageView);
-                    }
-                }
-
-                for (int i = 0; i < badgeIds.length; i++) {
-                    if (!userBadges.contains(badgeIds[i])) {
-                        imageView = makeImageView("badge_" + badgeIds[i], View.INVISIBLE);
-                        imageView.setLayoutParams(layoutParams);
-                        llAddBadge.addView(imageView);
-                    }
-                }
-//
+                setupBagdes();
             }
 
         }
@@ -212,6 +183,8 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("Mypage", "========>    onResume: ");
+
         trackingAnalytics(true, null, null, null, 1);
 
         MainActivity activity = (MainActivity) getActivity();
@@ -232,6 +205,7 @@ public class MyPageFragment extends BaseFragment {
         }
     }
 
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -244,6 +218,43 @@ public class MyPageFragment extends BaseFragment {
     }
 
     //============= inner methods ==================================================================
+
+    //Setup badge
+    public void setupBagdes(){
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1.0f;
+        ImageView imageView;
+
+        String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
+        userBadges = userInfo.getBadges();
+        //Draw user badges at first
+
+        for(int i = 0; i < userBadges.size(); i++) {
+            if(userBadges.get(i).getId().contains(badgeIds[i])){
+                imageView = makeImageView("badge_" + userBadges.get(i).getId(), View.VISIBLE);
+                imageView.setLayoutParams(layoutParams);
+                llAddBadge.addView(imageView);
+            }
+        }
+//                for (String key : userBadges.get) {
+//                    if (userBadges.get(key)) {
+//                        imageView = makeImageView("badge_" + key, View.VISIBLE);
+//                        imageView.setLayoutParams(layoutParams);
+//                        llAddBadge.addView(imageView);
+//                    }
+//                }
+
+        for (int i = 0; i < badgeIds.length; i++) {
+            if (!userBadges.contains(badgeIds[i])) {
+                imageView = makeImageView("badge_" + badgeIds[i], View.INVISIBLE);
+                imageView.setLayoutParams(layoutParams);
+                llAddBadge.addView(imageView);
+            }
+        }
+//
+    }
+
 
     public void openWebView(String url, String title) {
         DialogFragment fragment = WebViewFragment.newInstance(url, title, false);
@@ -270,4 +281,36 @@ public class MyPageFragment extends BaseFragment {
         imageView.setVisibility(visible);
         return imageView;
     }
+
+
+    /**
+     * update UI when another process callback needing update in force now
+     */
+    public void refreshUserInfoUI(){
+
+        //_debug log
+        AppLog.log("ANPANMAN" , "  Update userinfo through Interface action ...");
+
+        //0. Character info
+        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+        //icon
+        imgUserIcon.setImageResource(userCharacter.getIconResource());
+        imgUserIcon.requestLayout();
+        //id
+        tvUserID.setText("ID:" + userInfo.getId());
+        //name
+        tvUserName.setText(userInfo.getNickName());
+        //Update badge
+
+        //1. RESET LAYOUT BADGLE
+        llAddBadge.removeAllViewsInLayout();
+        llAddBadge.removeAllViews();
+        llAddBadge.requestLayout();
+        //2. RELOAD + APPEND NEW ICON BADGLE
+        setupBagdes();
+
+    }
+
+
 }

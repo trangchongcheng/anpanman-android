@@ -55,6 +55,7 @@ public class CouponFragment extends BaseFragment {
 
     //============= inner methods ==================================================================
     private void setupWebView() {
+        webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

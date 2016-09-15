@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
+import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
@@ -348,7 +350,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         zoomin.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //userInfo = ((AnpanmanApp) (MainActivity.this.getApplication())).getUserInfo();
+                UserCharacter userCharacter = UserCharacter.getUserCharacter(MainActivity.this, userInfo.getFavorite_character_code());
+                mProfileImage.setImageResource(userCharacter.getIconResource());
             }
 
             @Override
@@ -599,6 +603,40 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setDisplayBottomNav();
         syncUpdateTimeOfServer(newTab);
     }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public UpdateUserInfoListener _updateUserInfoListener = new UpdateUserInfoListener() {
+
+        @Override
+        public void update(UserInfo _userInfo) {
+            //update _userInfo
+            userInfo = _userInfo;//((AnpanmanApp) (MainActivity.this.getApplication())).getUserInfo();
+            //update character info
+
+            // get current Fragment call back in present
+            if ( currentTab == MainTabs.MyPage ) {
+                AppLog.log("ANPANMAN" , " My Page Activing ... UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE ");
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.fl_main_content);
+                if (f instanceof MyPageFragment){
+                    ((MyPageFragment) f).refreshUserInfoUI();
+                }
+
+
+            }
+
+        }
+    };
+
+
+
+    public interface UpdateUserInfoListener{
+        public void update(UserInfo _userInfo);
+    }
+
+
+
 
     int i = 0;
 

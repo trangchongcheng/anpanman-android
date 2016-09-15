@@ -14,7 +14,10 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_margin="@dimen/positive_10dp"
+            android:layout_marginLeft="@dimen/positive_25dp"
+            android:layout_marginRight="@dimen/positive_25dp"
+            android:layout_marginTop="@dimen/positive_30dp"
+            android:layout_marginBottom="@dimen/positive_20dp"
             android:id="@+id/imgCoupon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/positive_250dp"
@@ -26,9 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/positive_50dp"
             android:layout_below="@id/imgCoupon"
+            android:layout_marginLeft="@dimen/positive_25dp"
+            android:layout_marginRight="@dimen/positive_25dp"
             android:layout_marginBottom="@dimen/positive_30dp"
-            android:layout_marginLeft="@dimen/positive_20dp"
-            android:layout_marginRight="@dimen/positive_20dp"
             android:background="@drawable/button_term_use"
             android:text="@string/button_ok"
             android:textColor="@color/color_white"
