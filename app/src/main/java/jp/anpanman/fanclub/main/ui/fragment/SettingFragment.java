@@ -54,7 +54,7 @@ public class SettingFragment extends DialogFragment{
     @Override
     public void onResume() {
         super.onResume();
-        initAnalytics();
+        trackingAnalytics();
     }
 
     @Override
@@ -66,12 +66,12 @@ public class SettingFragment extends DialogFragment{
     public interface DismissCallback{
         void onDismiss();
     }
-    // init Analytics Setting Fragment
-    public void initAnalytics(){
+    // Tracking Google Analytics for SettingFragment
+    public void trackingAnalytics(){
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.initAnalyticCategory(Constant.GA_INFO);
+            application.trackingAnalyticByCategory(Constant.GA_INFO);
         }
     }
 }

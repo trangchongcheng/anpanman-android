@@ -18,25 +18,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.main.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
@@ -116,7 +112,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private PushNotifyListenReceiver pushNotifyListenReceiver;
     private CustomDialogCoupon customDialogCoupon;
     private DrawerAdapter drawerAdapter;
-
+    private UserInfo userInfo;
     // State data for update new symbols
     public static HashMap<String, Integer> saveStateNewIcon = null;
 
@@ -267,7 +263,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav = (ListView) findViewById(com.main.R.id.lv_drawer_nav);
         navigationView = (NavigationView) findViewById(com.main.R.id.navView);
 
-        setDrawerNavigation();
+        createLeftMenuSlidingMaster();
     }
 
     @Override
@@ -453,19 +449,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
+                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
                 browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_PORTAL_SITE + objectId));
                 startActivity(browserIntent);
                 break;
             case 6:
-                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
+                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
-                initAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
+                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
                 Intent intent = new Intent(this, IntroActivity.class);
                 intent.putExtra(IntroActivity.IS_FAQ, true);
                 startActivity(intent);
@@ -522,13 +518,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_top_nav.setVisibility(View.VISIBLE);
     }
 
-    private void setDrawerNavigation() {
+    /**
+     * on Create LEFT MENU SLIDING
+     * It will be Open by touch & Drag during time eslapse !
+     *
+     */
+    private void createLeftMenuSlidingMaster() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(com.main.R.layout.drawer_nav_footer, null, false);
 
         // Set favorite character on side menu
-        UserInfo userInfo = ((AnpanmanApp) (this.getApplication())).getUserInfo();
+        userInfo = ((AnpanmanApp) (this.getApplication())).getUserInfo();
         UserCharacter userCharacter = UserCharacter.getUserCharacter(this, userInfo.getFavorite_character_code());
 
 
@@ -879,10 +880,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         startActivity(i);
     }
 
-    // Init Google Analytic MainActivitv Screen
-    public void initAnalytics(String category, String action, String label, long value) {
+    // Tracking Google Analytics for MainActivitv
+    public void trackingAnalytics(String category, String action, String label, long value) {
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        application.initAnalytic(category, action, label, value);
+        application.trackingWithAnalyticGoogleServices(category, action, label, value);
     }
 
 
@@ -1091,5 +1092,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
     }
+
 
 }

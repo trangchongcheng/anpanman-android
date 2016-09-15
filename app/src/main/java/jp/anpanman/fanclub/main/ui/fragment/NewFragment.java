@@ -1,39 +1,23 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
-import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
 
 import com.main.R;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +50,7 @@ public class NewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        initAnalytics();
+        trackingAnalytics();
         Activity a = getActivity();
         if (a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -115,12 +99,12 @@ public class NewFragment extends BaseFragment {
 
 //        webView.loadUrl("http://phatvan.info/test_url_scheme.html", extraHeaders);
     }
-    // init Analytics TOP - NEW Fragment
-    public void initAnalytics(){
+    // Tracking Analytics for TOP - NEW Fragment
+    public void trackingAnalytics(){
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.initAnalyticCategory(Constant.GA_NEW);
+            application.trackingAnalyticByCategory(Constant.GA_NEW);
         }
     }
 

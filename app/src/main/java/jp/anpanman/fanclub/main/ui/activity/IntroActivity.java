@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
@@ -80,7 +78,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        initAnalytics(true,null,null,null,0);
+        trackingAnalytics(true,null,null,null,0);
     }
 
     @Override
@@ -88,10 +86,10 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
         switch (view.getId()) {
             case R.id.btn_skip:
                 if (isFAQ) {
-                    initAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_CLOSE,1);
+                    trackingAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_CLOSE,1);
                     finish();
                 } else {
-                    initAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_SKIP,1);
+                    trackingAnalytics(false,Constant.GA_SELECT,Constant.GA_ONCLICK,Constant.GA_TUTORIAL_SKIP,1);
                     SharedPreferencesUtil.putBoolean(this, PREF_INTRO_HAS_SHOWED, true);
                     gotoTermsOfUseScreen();
                 }
@@ -196,13 +194,13 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    // Init Google Analytic Tutorial Screen
-    public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
+    // Tracking Google Analytic Tutorial Screen
+    public void trackingAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
         if(isOnlyCategory){
-            application.initAnalyticCategory(Constant.GA_TUTORIAL);
+            application.trackingAnalyticByCategory(Constant.GA_TUTORIAL);
         }else {
-            application.initAnalytic(category,action,label,value);
+            application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }
 
     }

@@ -40,7 +40,15 @@ public class AnpanmanApp extends Application {
         }
         return mTracker;
     }
-    public void initAnalytic(String categoryId, String actionId,String labelId,long valueId){
+
+    /**
+     * Tracking this Action by some params input
+     * @param categoryId
+     * @param actionId
+     * @param labelId
+     * @param valueId
+     */
+    public void trackingWithAnalyticGoogleServices(String categoryId, String actionId, String labelId, long valueId){
         getDefaultTracker();
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory(categoryId)
@@ -50,7 +58,13 @@ public class AnpanmanApp extends Application {
                 .build());
 
     }
-    public void initAnalyticCategory(String categoryId){
+
+
+    /**
+     * Tracking this Action by category
+     * @param categoryId
+     */
+    public void trackingAnalyticByCategory(String categoryId){
         getDefaultTracker();
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory(categoryId)

@@ -72,7 +72,6 @@ public class MyWebViewClient extends WebViewClient {
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
        AppLog.log("PHVT", "Full should open by Extend Browser : " + url);
 
-
         // Processing for : Openning  product detail
         if (url.contains("detail.html")) {
             openWebView(url, "", true);

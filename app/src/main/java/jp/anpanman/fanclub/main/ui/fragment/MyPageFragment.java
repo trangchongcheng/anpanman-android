@@ -25,7 +25,9 @@ import android.widget.TextView;
 
 import com.main.R;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
@@ -63,19 +65,28 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-        activity = (MainActivity) getActivity();
-        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
-        //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
 
+        activity = (MainActivity) getActivity();
+
+        // get Application user Info general data
+        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
+
+        //test debug
+//        userInfo.setNickName("Cheng");
+//        userInfo.setFavorite_character_code("2");
+
+        // set user Character data basing on user info
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+
+        // Status bar will be hided when Device rotatoe to LANDSCAPE
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //Hide status bar
             hideStatusBar();
         }
+
     }
 
     public void hideStatusBar() {
-        if(activity!=null){
+        if (activity != null) {
             if (Build.VERSION.SDK_INT < 16) {
                 activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                         WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -149,6 +160,13 @@ public class MyPageFragment extends BaseFragment {
                 layoutParams.weight = 1.0f;
                 ImageView imageView;
 
+//              Test debug
+//                LinkedHashMap<String, String> map = new LinkedHashMap<>();
+//                map.put("1","one");
+//                map.put("2","two");
+////                map.put("7","serven");
+//                userInfo.setBadges(map);
+
                 String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
                 Set<String> userBadges = userInfo.getBadges().keySet();
 
@@ -178,11 +196,11 @@ public class MyPageFragment extends BaseFragment {
     @Override
     protected void registerEventHandlers() {
         //Open drawer menu in MainActivity when click hamburge icon (only Porttrail)
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             btnHamburgerMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(activity != null){
+                    if (activity != null) {
                         activity.openDrawerMenu();
 
                     }
@@ -208,7 +226,7 @@ public class MyPageFragment extends BaseFragment {
             if (activity != null) {
                 // hideStatusBar(activity);
                 AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-                application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
+                application.trackingAnalyticByCategory(Constant.GA_MEMBERSHIP);
             }
 
         }
@@ -238,9 +256,9 @@ public class MyPageFragment extends BaseFragment {
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
             if (isOnlyCategory) {
-                application.initAnalyticCategory(Constant.GA_MYPAGE);
+                application.trackingAnalyticByCategory(Constant.GA_MYPAGE);
             } else {
-                application.initAnalytic(category, action, label, value);
+                application.trackingWithAnalyticGoogleServices(category, action, label, value);
             }
         }
     }
