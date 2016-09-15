@@ -1,6 +1,5 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
@@ -13,8 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,11 +22,9 @@ import android.widget.TextView;
 
 import com.main.R;
 
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
-import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.UserCharacter;
 import jp.anpanman.fanclub.main.model.UserInfo;
@@ -63,21 +58,29 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
-        activity = (MainActivity) getActivity();
-        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
-        //  userCharacter = UserCharacter.getUserCharacter(getActivity(), 8);
 
+        activity = (MainActivity) getActivity();
+
+        // get Application user Info general data
+        userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
+
+        // set user Character data basing on user info
+        userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
+
+        // Status bar will be hided when Device rotatoe to LANDSCAPE
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //Hide status bar
             hideStatusBar();
         }
+
     }
 
     public void hideStatusBar() {
         if (Build.VERSION.SDK_INT < 16) {
-            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            activity.getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+            );
+
         } else {
             View decorView = activity.getWindow().getDecorView();
             // Hide the status bar.
@@ -166,7 +169,6 @@ public class MyPageFragment extends BaseFragment {
                         llAddBadge.addView(imageView);
                     }
                 }
-//
             }
 
         }
@@ -206,7 +208,7 @@ public class MyPageFragment extends BaseFragment {
             if (activity != null) {
                 // hideStatusBar(activity);
                 AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-                application.initAnalyticCategory(Constant.GA_MEMBERSHIP);
+                application.trackingAnalyticByCategory(Constant.GA_MEMBERSHIP);
             }
 
         }
@@ -236,9 +238,9 @@ public class MyPageFragment extends BaseFragment {
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
             if (isOnlyCategory) {
-                application.initAnalyticCategory(Constant.GA_MYPAGE);
+                application.trackingAnalyticByCategory(Constant.GA_MYPAGE);
             } else {
-                application.initAnalytic(category, action, label, value);
+                application.trackingWithAnalyticGoogleServices(category, action, label, value);
             }
         }
     }

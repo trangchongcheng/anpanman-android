@@ -1,22 +1,15 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.main.R;
 
@@ -24,9 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
-import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.main.AnpanmanApp;
-import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.MyWebViewClient;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
@@ -131,7 +122,7 @@ public class PresentFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.initAnalyticCategory(Constant.GA_PRESENT);
+            application.trackingAnalyticByCategory(Constant.GA_PRESENT);
         }
 
     }

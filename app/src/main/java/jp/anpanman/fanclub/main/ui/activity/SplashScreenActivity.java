@@ -2,13 +2,11 @@ package jp.anpanman.fanclub.main.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -118,7 +116,7 @@ public class SplashScreenActivity extends BaseActivity {
     // init Analytics
     public void initAnalytics(){
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        application.initAnalyticCategory(Constant.GA_STARTUP);
+        application.trackingAnalyticByCategory(Constant.GA_STARTUP);
 
     }
 

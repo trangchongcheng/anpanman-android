@@ -71,7 +71,7 @@ public class SettingFragment extends DialogFragment{
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.initAnalyticCategory(Constant.GA_INFO);
+            application.trackingAnalyticByCategory(Constant.GA_INFO);
         }
     }
 }

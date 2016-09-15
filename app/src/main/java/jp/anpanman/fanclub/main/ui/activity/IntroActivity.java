@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
@@ -200,9 +198,9 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
         if(isOnlyCategory){
-            application.initAnalyticCategory(Constant.GA_TUTORIAL);
+            application.trackingAnalyticByCategory(Constant.GA_TUTORIAL);
         }else {
-            application.initAnalytic(category,action,label,value);
+            application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }
 
     }

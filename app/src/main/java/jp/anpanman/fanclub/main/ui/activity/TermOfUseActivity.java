@@ -23,7 +23,6 @@ import java.util.Map;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
 import jp.anpanman.fanclub.main.AnpanmanApp;
-import jp.anpanman.fanclub.main.ui.activity.MainActivity;
 import jp.anpanman.fanclub.main.util.Common;
 import jp.anpanman.fanclub.main.util.Constant;
 import jp.anpanman.fanclub.main.util.RestfulUrl;
@@ -146,9 +145,9 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
     public void initAnalytics(Boolean isOnlyCategory,String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
         if(isOnlyCategory){
-            application.initAnalyticCategory(Constant.GA_TERMS);
+            application.trackingAnalyticByCategory(Constant.GA_TERMS);
         }else {
-            application.initAnalytic(category,action,label,value);
+            application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }
 
     }

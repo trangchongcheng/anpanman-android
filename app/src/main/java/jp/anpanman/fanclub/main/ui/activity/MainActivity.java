@@ -18,14 +18,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +33,6 @@ import android.widget.TextView;
 
 import com.main.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
@@ -266,7 +263,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         lvDrawerNav = (ListView) findViewById(com.main.R.id.lv_drawer_nav);
         navigationView = (NavigationView) findViewById(com.main.R.id.navView);
 
-        setDrawerNavigation();
+        createLeftMenuSlidingMaster();
     }
 
     @Override
@@ -519,7 +516,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_top_nav.setVisibility(View.VISIBLE);
     }
 
-    private void setDrawerNavigation() {
+    /**
+     * on Create LEFT MENU SLIDING
+     * It will be Open by touch & Drag during time eslapse !
+     *
+     */
+    private void createLeftMenuSlidingMaster() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View navHeaderView = inflater.inflate(com.main.R.layout.drawer_nav_header, null, false);
         View navFooterView = inflater.inflate(com.main.R.layout.drawer_nav_footer, null, false);
@@ -879,7 +881,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     // Init Google Analytic MainActivitv Screen
     public void initAnalytics(String category, String action, String label, long value) {
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        application.initAnalytic(category, action, label, value);
+        application.trackingWithAnalyticGoogleServices(category, action, label, value);
     }
 
 
