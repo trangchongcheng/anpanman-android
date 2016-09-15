@@ -75,14 +75,16 @@ public class MyPageFragment extends BaseFragment {
     }
 
     public void hideStatusBar() {
-        if (Build.VERSION.SDK_INT < 16) {
-            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            View decorView = activity.getWindow().getDecorView();
-            // Hide the status bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
+        if(activity!=null){
+            if (Build.VERSION.SDK_INT < 16) {
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                View decorView = activity.getWindow().getDecorView();
+                // Hide the status bar.
+                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
         }
     }
 
@@ -133,7 +135,7 @@ public class MyPageFragment extends BaseFragment {
                 btnRegister.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initAnalytics(true, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
+                        trackingAnalytics(true, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
                         openWebView(RestfulUrl.URL_REGISTER_MYPAGE, getString(R.string.button_register));
                     }
                 });
@@ -192,7 +194,7 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        initAnalytics(true, null, null, null, 1);
+        trackingAnalytics(true, null, null, null, 1);
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
@@ -230,8 +232,8 @@ public class MyPageFragment extends BaseFragment {
         fragment.show(getActivity().getFragmentManager(), WebViewFragment.class.getName());
     }
 
-    // init Analytics Mypage Fragment
-    public void initAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value) {
+    // Tracking Analytics Mypage Fragment
+    public void trackingAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value) {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();

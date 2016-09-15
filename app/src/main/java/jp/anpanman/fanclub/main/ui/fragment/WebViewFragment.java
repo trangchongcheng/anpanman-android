@@ -153,6 +153,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             //Disable cache Webview
             mWebView.getSettings().setAppCacheEnabled(false);
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
             mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
             mWebView.setWebChromeClient(new WebChromeClient() {
                 @Override

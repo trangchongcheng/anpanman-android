@@ -30,6 +30,7 @@ public class DrawableZoom {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                imageView.setVisibility(View.VISIBLE);
                 imageView.requestLayout();
                 imageView.setAnimation(zoomout);
                 AppLog.log("animation", "onAnimationEnd: ");
@@ -37,6 +38,22 @@ public class DrawableZoom {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        zoomout.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                imageView.clearAnimation();
             }
         });
     }

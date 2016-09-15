@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.main.R;
 
@@ -289,6 +290,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onDrawerOpened(View drawerView) {
                 //Start Animation
                 //TODO:
+                mProfileImage.setVisibility(View.VISIBLE);
                 startAnimationAvatar();
                 //DrawableZoom.zoomImageAnimation(MainActivity.this, mProfileImage);
             }
@@ -298,6 +300,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 //Stop Animation
                 //TODO:
                 stopAnimationAvatar();
+                //Clear animation and hide Avatar Image
+                mProfileImage.clearAnimation();
+                mProfileImage.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -382,10 +387,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * Zoom - in , Zoom - out will be stop
      */
     private void stopAnimationAvatar() {
-
         zoomin.cancel();
         zoomout.cancel();
-        mProfileImage.setAnimation(zoomin);
     }
 
 
