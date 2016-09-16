@@ -51,7 +51,7 @@ public class AnpanmanApp extends Application {
     public void trackingWithAnalyticGoogleServices(String categoryId, String actionId, String labelId, long valueId){
         getDefaultTracker();
         mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory(categoryId)
+                .setCategory(categoryId +" - Android")
                 .setAction(actionId)
                 .setLabel(labelId)
                 .setValue(valueId)
@@ -66,7 +66,7 @@ public class AnpanmanApp extends Application {
      */
     public void trackingAnalyticByScreen(String nameScreen){
         getDefaultTracker();
-        mTracker.setScreenName(nameScreen);
+        mTracker.setScreenName(nameScreen + " - Android");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
     }

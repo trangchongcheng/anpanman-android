@@ -26,4 +26,12 @@ public class Badges extends BaseModel{
     public void setName(String name) {
         this.name = name;
     }
+
+    public Badges() {
+    }
+
+    public Badges(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

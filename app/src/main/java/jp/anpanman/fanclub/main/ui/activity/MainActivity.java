@@ -129,7 +129,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // oritiential by LANDSCAPE
         if (isLandcape()) {
             //TODO: LANDSCAPE
@@ -460,10 +459,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case 6:
                 trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
+                trackingAnalytics(true,Constant.GA_TERMS,null, null, null, 0);
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
-                trackingAnalytics(true,Constant.GA_TERMS,null, null, null, 0);
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
@@ -568,28 +567,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         switch (newTab) {
             case News:
-                //  setBackgroundDrawer(false);
                 setupForFragmentMypage(false);
                 openNewsFragment(mTransitionAnimation);
                 imgNewsNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Coupon:
-                // setBackgroundDrawer(false);
                 setupForFragmentMypage(false);
                 openCouponFragment(mTransitionAnimation);
                 imgCouponNew.setVisibility(View.INVISIBLE);
                 break;
 
             case Present:
-                // setBackgroundDrawer(false);
                 setupForFragmentMypage(false);
                 openPresentFragment(mTransitionAnimation);
                 imgPresentNew.setVisibility(View.INVISIBLE);
                 break;
 
             case MyPage:
-                //setBackgroundDrawer(true);
                 setupForFragmentMypage(true);
                 openMyPageFragment(mTransitionAnimation);
                 break;

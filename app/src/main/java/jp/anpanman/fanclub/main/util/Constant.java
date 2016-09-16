@@ -43,7 +43,7 @@ public class Constant {
     public static final String GA_MYPAGE ="Mypage";
     public static final String GA_MYPAGE_ENTRY =GA_MYPAGE+" Entry";
     public static final String GA_ONCLICK ="onclick";
-    public static final String GA_MEMBERSHIP ="mebership";
+    public static final String GA_MEMBERSHIP ="Membership";
     public static final String GA_INFO ="info";
     public static final String GA_VALUE ="1";
 

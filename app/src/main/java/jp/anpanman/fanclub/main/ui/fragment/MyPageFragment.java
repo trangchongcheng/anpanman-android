@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -62,35 +63,42 @@ public class MyPageFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         activity = (MainActivity) getActivity();
 
         // get Application user Info general data
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
 
+        //test dubug
+        //userInfo.setNickName("Chien Truong");
+//        userInfo.setFavorite_character_code("2");
+
         // set user Character data basing on user info
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
 
-        // Status bar will be hided when Device rotatoe to LANDSCAPE
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            hideStatusBar();
-        }
 
     }
 
-    public void hideStatusBar() {
-        if (activity != null) {
-            if (Build.VERSION.SDK_INT < 16) {
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            } else {
-                View decorView = activity.getWindow().getDecorView();
-                // Hide the status bar.
-                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-                decorView.setSystemUiVisibility(uiOptions);
-            }
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("FIRT", "Cheng");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState == null) {
+            Log.d("xin ", "onCreate: ");
+        }
+
+    }
 
     @Override
     public int getRootLayoutId() {
@@ -139,7 +147,7 @@ public class MyPageFragment extends BaseFragment {
                 btnRegister.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        trackingAnalytics(false, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
+                        trackingAnalytics(false, null, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
                         openWebView(RestfulUrl.URL_REGISTER_MYPAGE, getString(R.string.button_register));
                     }
                 });
@@ -171,44 +179,41 @@ public class MyPageFragment extends BaseFragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         Log.d("Mypage", "========>    onResume: ");
-
-        trackingAnalytics(true, null, null, null, 1);
-
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-
-        //
+        //On Portrait mode => set Animation zoom in - zoom out character icon
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //Animation zoom in - zoom out character icon
+            trackingAnalytics(true, Constant.GA_MYPAGE, null, null, null, 0);
             DrawableZoom.zoomImageAnimation(getActivity(), imgUserIcon);
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //tracking Google analytic for MemberShip Sreen (Landscape)
-            if (activity != null) {
-                AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-                application.trackingAnalyticByScreen(Constant.GA_MEMBERSHIP);
-            }
-
+            //On LandScape => hide status bar and tracking Google analytic for MemberShip Sreen
+        } else {
+            hideStatusBar();
+            trackingAnalytics(true, Constant.GA_MEMBERSHIP, null, null, null, 0);
         }
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-//            Activity a = getActivity();
-//            if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        Log.d("cheng", "setUserVisibleHint: " + isVisibleToUser);
-
     }
 
     //============= inner methods ==================================================================
+
+    //Hide status bar when in landscape mode
+    public void hideStatusBar() {
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT < 16) {
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                View decorView = activity.getWindow().getDecorView();
+                // Hide the status bar.
+                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
+        }
+    }
 
     //Setup badge
     public void setupBagdes() {
@@ -218,23 +223,24 @@ public class MyPageFragment extends BaseFragment {
         ImageView imageView;
 
         String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
-        userBadges = userInfo.getBadges();
-        //Draw user badges at first
 
+        //hard code to test debug
+        userBadges = userInfo.getBadges();
+//        userBadges.add(new Badges("1","Cheng"));
+//        userBadges.add(new Badges("2","Cheng"));
+//        userBadges.add(new Badges("7","Cheng"));
+
+        //Draw user badges at first
         for (int i = 0; i < userBadges.size(); i++) {
-            if (userBadges.get(i).getId().contains(badgeIds[i])) {
-                imageView = makeImageView("badge_" + userBadges.get(i).getId(), View.VISIBLE);
-                imageView.setLayoutParams(layoutParams);
-                llAddBadge.addView(imageView);
+            for (int j = 0; j < badgeIds.length; j++) {
+                if (userBadges.get(i).getId().contains(badgeIds[j])) {
+                    imageView = makeImageView("badge_" + userBadges.get(i).getId(), View.VISIBLE);
+                    imageView.setLayoutParams(layoutParams);
+                    llAddBadge.addView(imageView);
+                }
             }
+
         }
-//                for (String key : userBadges.get) {
-//                    if (userBadges.get(key)) {
-//                        imageView = makeImageView("badge_" + key, View.VISIBLE);
-//                        imageView.setLayoutParams(layoutParams);
-//                        llAddBadge.addView(imageView);
-//                    }
-//                }
 
         for (int i = 0; i < badgeIds.length; i++) {
             if (!userBadges.contains(badgeIds[i])) {
@@ -253,12 +259,12 @@ public class MyPageFragment extends BaseFragment {
     }
 
     // Tracking Analytics Mypage Fragment
-    public void trackingAnalytics(Boolean isOnlyScreen, String category, String action, String label, long value) {
+    public void trackingAnalytics(Boolean isOnlyScreen, String nameScreen, String category, String action, String label, long value) {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
             if (isOnlyScreen) {
-                application.trackingAnalyticByScreen(Constant.GA_MYPAGE);
+                application.trackingAnalyticByScreen(nameScreen);
             } else {
                 application.trackingWithAnalyticGoogleServices(category, action, label, value);
             }

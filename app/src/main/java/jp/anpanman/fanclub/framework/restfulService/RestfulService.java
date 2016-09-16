@@ -15,7 +15,7 @@ import jp.anpanman.fanclub.framework.restfulService.parser.IParser;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.NetworkUtil;
 import jp.anpanman.fanclub.main.util.DialogFactory;
-import jp.anpanman.fanclub.main.util.NoSSLv3Factory;
+import jp.anpanman.fanclub.main.util.NoSSLv3SocketFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +45,8 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Created by linhphan on 11/17/15.
@@ -303,7 +305,13 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
         String result = null;
 
         if (path.startsWith("https:")) {
-            HttpsURLConnection.setDefaultSSLSocketFactory(new NoSSLv3Factory());
+            SSLContext sslcontext = SSLContext.getInstance("TLSv1");
+            sslcontext.init(null,
+                    null,
+                    null);
+            SSLSocketFactory NoSSLv3Factory = new NoSSLv3SocketFactory(sslcontext.getSocketFactory());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             //== add header
             httpsURLConnection.setRequestMethod("GET");
@@ -384,6 +392,7 @@ public class RestfulService extends AsyncTask<String, Integer, Object> {
     protected String sendPost(String path, Map<String, String> params, Map<String, String> header) throws IOException {
         URL url = new URL(path);
         String result = null;
+
         if (path.startsWith("https:")) {
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             String query = encodeQueryString(params);
