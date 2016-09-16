@@ -143,10 +143,10 @@ public class TermOfUseActivity extends AppCompatActivity implements View.OnClick
     }
 
     // Tracking Google Analytic for TermOfUseActivity
-    public void trackingAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value){
+    public void trackingAnalytics(Boolean inOnlyScreen, String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        if(isOnlyCategory){
-            application.trackingAnalyticByCategory(Constant.GA_TERMS);
+        if(inOnlyScreen){
+            application.trackingAnalyticByScreen(Constant.GA_TERMS);
         }else {
             application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }

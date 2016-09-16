@@ -1,6 +1,5 @@
 package jp.anpanman.fanclub.main.ui.fragment;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.pm.ActivityInfo;
@@ -10,12 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,11 +23,6 @@ import android.widget.TextView;
 import com.main.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
 import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
@@ -148,7 +139,7 @@ public class MyPageFragment extends BaseFragment {
                 btnRegister.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        trackingAnalytics(true, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
+                        trackingAnalytics(false, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MYPAGE_ENTRY, 1);
                         openWebView(RestfulUrl.URL_REGISTER_MYPAGE, getString(R.string.button_register));
                     }
                 });
@@ -166,7 +157,7 @@ public class MyPageFragment extends BaseFragment {
 
     @Override
     protected void registerEventHandlers() {
-        //Open drawer menu in MainActivity when click hamburge icon (only Porttrail)
+        //Open drawer menu in MainActivity when click hamburge icon (only Porttrait)
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             btnHamburgerMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -189,17 +180,17 @@ public class MyPageFragment extends BaseFragment {
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
         //
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             //Animation zoom in - zoom out character icon
             DrawableZoom.zoomImageAnimation(getActivity(), imgUserIcon);
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //tracking Google analytic for MemberShip Sreen (Landscape)
             if (activity != null) {
-                // hideStatusBar(activity);
                 AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-                application.trackingAnalyticByCategory(Constant.GA_MEMBERSHIP);
+                application.trackingAnalyticByScreen(Constant.GA_MEMBERSHIP);
             }
 
         }
@@ -262,12 +253,12 @@ public class MyPageFragment extends BaseFragment {
     }
 
     // Tracking Analytics Mypage Fragment
-    public void trackingAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value) {
+    public void trackingAnalytics(Boolean isOnlyScreen, String category, String action, String label, long value) {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            if (isOnlyCategory) {
-                application.trackingAnalyticByCategory(Constant.GA_MYPAGE);
+            if (isOnlyScreen) {
+                application.trackingAnalyticByScreen(Constant.GA_MYPAGE);
             } else {
                 application.trackingWithAnalyticGoogleServices(category, action, label, value);
             }
@@ -325,6 +316,4 @@ public class MyPageFragment extends BaseFragment {
         setupBagdes();
 
     }
-
-
 }

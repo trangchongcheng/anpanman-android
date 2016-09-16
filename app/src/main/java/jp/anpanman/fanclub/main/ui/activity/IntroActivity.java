@@ -195,10 +195,10 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener,
     }
 
     // Tracking Google Analytic Tutorial Screen
-    public void trackingAnalytics(Boolean isOnlyCategory, String category, String action, String label, long value){
+    public void trackingAnalytics(Boolean isOnlyScreen, String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        if(isOnlyCategory){
-            application.trackingAnalyticByCategory(Constant.GA_TUTORIAL);
+        if(isOnlyScreen){
+            application.trackingAnalyticByScreen(Constant.GA_TUTORIAL);
         }else {
             application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }

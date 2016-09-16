@@ -421,6 +421,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case com.main.R.id.btn_img_tab_setting:
+                trackingAnalytics(true,Constant.GA_INFO,null,null,null,0);
                 switchTab(MainTabs.Setting, false);
                 isOtherSelect = true;
                 break;
@@ -453,19 +454,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
+                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
                 browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_PORTAL_SITE + objectId));
                 startActivity(browserIntent);
                 break;
             case 6:
-                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
+                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
+                trackingAnalytics(true,Constant.GA_TERMS,null, null, null, 0);
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
-                trackingAnalytics(Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
+                trackingAnalytics(true,Constant.GA_TUTORIAL,null, null, null, 0);
+                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
                 Intent intent = new Intent(this, IntroActivity.class);
                 intent.putExtra(IntroActivity.IS_FAQ, true);
                 startActivity(intent);
@@ -614,7 +617,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             //update _userInfo
             userInfo = _userInfo;//((AnpanmanApp) (MainActivity.this.getApplication())).getUserInfo();
             //update character info
-
             // get current Fragment call back in present
             if ( currentTab == MainTabs.MyPage ) {
                 AppLog.log("ANPANMAN" , " My Page Activing ... UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE ");
@@ -919,11 +921,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     // Tracking Google Analytics for MainActivitv
-    public void trackingAnalytics(String category, String action, String label, long value) {
+    public void trackingAnalytics(Boolean inOnlyScreen, String screenName,String category, String action, String label, long value){
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        application.trackingWithAnalyticGoogleServices(category, action, label, value);
-    }
+        if(inOnlyScreen){
+            application.trackingAnalyticByScreen(screenName);
+        }else {
+            application.trackingWithAnalyticGoogleServices(category, action, label, value);
+        }
 
+    }
 
     //=============== inner classes ================================================================
 

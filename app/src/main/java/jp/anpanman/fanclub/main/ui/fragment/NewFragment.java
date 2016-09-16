@@ -105,7 +105,7 @@ public class NewFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.trackingAnalyticByCategory(Constant.GA_NEW);
+            application.trackingAnalyticByScreen(Constant.GA_NEW);
         }
     }
 

@@ -61,14 +61,13 @@ public class AnpanmanApp extends Application {
 
 
     /**
-     * Tracking this Action by category
-     * @param categoryId
+     * Tracking this Action by screen
+     * @param nameScreen
      */
-    public void trackingAnalyticByCategory(String categoryId){
+    public void trackingAnalyticByScreen(String nameScreen){
         getDefaultTracker();
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory(categoryId)
-                .build());
+        mTracker.setScreenName(nameScreen);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 }

@@ -40,9 +40,8 @@
             android:id="@+id/progressBar2"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/positive_3dp"
             android:layout_gravity="start|top"
-            android:layout_marginTop="@dimen/negative_8dp"
             android:max="100"
             android:padding="0dp"
             android:progressDrawable="@drawable/progress_horizontal" />
@@ -57,6 +56,7 @@
         android:layout_weight="1">
 
         <WebView
+            android:scrollbarStyle="insideOverlay"
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,7 +65,7 @@
     </FrameLayout>
 
     <LinearLayout
-        android:background="@color/text_bottom_nav_inactive"
+        android:background="@color/color_footer"
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

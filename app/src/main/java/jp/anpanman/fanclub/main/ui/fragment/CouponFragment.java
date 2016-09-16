@@ -100,7 +100,7 @@ public class CouponFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.trackingAnalyticByCategory(Constant.GA_OTOKU);
+            application.trackingAnalyticByScreen(Constant.GA_OTOKU);
         }
 
     }

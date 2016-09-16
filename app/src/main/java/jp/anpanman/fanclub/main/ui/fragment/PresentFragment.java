@@ -124,7 +124,7 @@ public class PresentFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             AnpanmanApp application = (AnpanmanApp) activity.getApplication();
-            application.trackingAnalyticByCategory(Constant.GA_PRESENT);
+            application.trackingAnalyticByScreen(Constant.GA_PRESENT);
         }
 
     }

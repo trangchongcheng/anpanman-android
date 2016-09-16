@@ -39,6 +39,7 @@ public class SplashScreenActivity extends BaseActivity {
     private final int DELAY_TIME = 2000;
     private UserInfo mLocalUserInfo;
     private Tracker mTracker;
+
     //=========== inherited methods ================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,23 +114,22 @@ public class SplashScreenActivity extends BaseActivity {
         super.onResume();
         trackingAnalytics();
     }
+
     // Tracking Google Analytics for Splash Screen
-    public void trackingAnalytics(){
+    public void trackingAnalytics() {
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        application.trackingAnalyticByCategory(Constant.GA_STARTUP);
-
+        application.trackingAnalyticByScreen(Constant.GA_STARTUP);
     }
-
 
 
     public void registrationId() {
         //DEBUG FOR PASSING GCM check
-        if( Constant.Apanman_Debug.contains(Constant.DebugFlags.DEBUG_PASS_GCM_INSTALLED)){
+        if (Constant.Apanman_Debug.contains(Constant.DebugFlags.DEBUG_PASS_GCM_INSTALLED)) {
             gotoNextScreen();
             return;
         }
 
-        if (!isGooglePlayInstalled()){
+        if (!isGooglePlayInstalled()) {
             DialogFactory.showMessage(SplashScreenActivity.this, "you must have google play store to continue", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -275,16 +275,16 @@ public class SplashScreenActivity extends BaseActivity {
         boolean isTermsAccepted = SharedPreferencesUtil.getBoolean(this, TermOfUseActivity.PREF_TERMS_HAS_ACCEPTED, false);
         if (!isIntroHasShowed) {
             gotoIntroScreen();
-        } else if (!isTermsAccepted){
+        } else if (!isTermsAccepted) {
             gotoTermsOfUseScreen();
-        }else{
+        } else {
             gotoTopScreen();
         }
         finish();
     }
 
     public void saveUserInfoToLocal() {
-        ((AnpanmanApp)(getApplication())).setUserInfo(mLocalUserInfo);
+        ((AnpanmanApp) (getApplication())).setUserInfo(mLocalUserInfo);
         SharedPreferencesUtil.putString(getBaseContext(), Constant.PREF_USER_INFO, mLocalUserInfo.toJson());
     }
 
@@ -293,7 +293,7 @@ public class SplashScreenActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void gotoTermsOfUseScreen(){
+    private void gotoTermsOfUseScreen() {
         Intent intent = new Intent(this, TermOfUseActivity.class);
         startActivity(intent);
         finish();
@@ -302,12 +302,12 @@ public class SplashScreenActivity extends BaseActivity {
     private void gotoTopScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         // When receive Notify, if app is exit run SplashActivity and then put data to MainActivity
-        if (Constant.PUSH_ACTION.equals(getIntent().getAction()) && getIntent().getExtras() != null){
+        if (Constant.PUSH_ACTION.equals(getIntent().getAction()) && getIntent().getExtras() != null) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(MainActivity.ARG_SHOULD_SHOW_PUSH_DIALOG, true);
-            bundle.putString(MainActivity.ARG_PUSH_MESSEAGE,getIntent().getExtras().getString("message"));
-            bundle.putString(MainActivity.ARG_PUSH_TITLE,getIntent().getExtras().getString("title"));
-            bundle.putString(MainActivity.ARG_PUSH_URL,getIntent().getExtras().getString("com.nifty.RichUrl"));
+            bundle.putString(MainActivity.ARG_PUSH_MESSEAGE, getIntent().getExtras().getString("message"));
+            bundle.putString(MainActivity.ARG_PUSH_TITLE, getIntent().getExtras().getString("title"));
+            bundle.putString(MainActivity.ARG_PUSH_URL, getIntent().getExtras().getString("com.nifty.RichUrl"));
 
             intent.putExtras(bundle);
         }

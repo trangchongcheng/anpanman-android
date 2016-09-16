@@ -59,7 +59,7 @@
         </FrameLayout>
 
         <LinearLayout
-            android:background="@color/text_bottom_nav_inactive"
+            android:background="@color/color_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/positive_8dp"
