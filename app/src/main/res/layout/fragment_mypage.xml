@@ -7,8 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_height="0dp"
+        android:layout_weight="0.45"
         android:background="@drawable/mypage_background_2">
 
         <RelativeLayout
@@ -35,19 +35,25 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/img_user_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/avator_none" />
+        <RelativeLayout
+            android:layout_below="@+id/rl_top_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_user_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/avator_none" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.95"
+        android:layout_weight="0.55"
         android:orientation="vertical">
 
         <TextView
