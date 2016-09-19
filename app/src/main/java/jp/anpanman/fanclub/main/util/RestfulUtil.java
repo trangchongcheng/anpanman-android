@@ -2,6 +2,8 @@ package jp.anpanman.fanclub.main.util;
 
 import android.content.Context;
 
+import com.main.BuildConfig;
+
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.parser.DeviceTokenParser;
 import jp.anpanman.fanclub.main.parser.SignupParser;
@@ -20,7 +22,7 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_SIGNUP);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("POST", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("POST", uri, BuildConfig.NOTIFY_APPLICATION_KEY, BuildConfig.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> params = new HashMap<>();
             params.put("appVersion", "1.0.0");
@@ -28,7 +30,7 @@ public class RestfulUtil {
             params.put("deviceToken", gcmRegId);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", BuildConfig.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
@@ -50,7 +52,7 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_REGISTER_DEVICE_TOKEN);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("POST", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("POST", uri, BuildConfig.NOTIFY_APPLICATION_KEY, BuildConfig.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> params = new HashMap<>();
             params.put("appVersion", "1.0.0");
@@ -59,7 +61,7 @@ public class RestfulUtil {
             params.put("objectId", objectId);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", BuildConfig.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
@@ -81,10 +83,10 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.NOTIFY_HOST_GET_USER_INFO + objectId);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("GET", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("GET", uri, BuildConfig.NOTIFY_APPLICATION_KEY, BuildConfig.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", BuildConfig.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");
@@ -104,10 +106,10 @@ public class RestfulUtil {
         try {
             URI uri = URI.create(RestfulUrl.API_UPDATED_TIME);
             String timestamp = Common.getTimeStamp();
-            String signature = Common.getSignature("GET", uri, Constant.NOTIFY_APPLICATION_KEY, Constant.NOTIFY_CLIENT_KEY, timestamp);
+            String signature = Common.getSignature("GET", uri, BuildConfig.NOTIFY_APPLICATION_KEY, BuildConfig.NOTIFY_CLIENT_KEY, timestamp);
 
             Map<String, String> header = new HashMap<>();
-            header.put("X-NCMB-Application-Key", Constant.NOTIFY_APPLICATION_KEY);
+            header.put("X-NCMB-Application-Key", BuildConfig.NOTIFY_APPLICATION_KEY);
             header.put("X-NCMB-Signature", signature);
             header.put("X-NCMB-Timestamp", timestamp);
             header.put("x-anp-request", "true");

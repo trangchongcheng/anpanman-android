@@ -1,5 +1,7 @@
 package jp.anpanman.fanclub.main.util;
 
+import com.main.BuildConfig;
+
 /**
  * Created by linhphan on 7/14/16.
  */
@@ -9,10 +11,8 @@ public class RestfulUrl {
     public final static String NOTIFY_HOST_REGISTER_DEVICE_TOKEN = "https://script.mb.api.cloud.nifty.com/2015-09-01/script/device.js";
     public final static String NOTIFY_HOST_GET_USER_INFO = "https://mb.api.cloud.nifty.com/2013-09-01/classes/User/";
 
-    //== web view urls
-    public final static String WEB_VIEW_DOMAIN_PRODUCT_MODE = "http://fcapp.anpanman.jp";
-    public final static String WEB_VIEW_DOMAIN_STAGING_MODE = "http://stg-fcapp.anpanman.jp";
-    public final static String WEB_VIEW_DOMAIN = WEB_VIEW_DOMAIN_STAGING_MODE;
+    // Host
+    public final static String WEB_VIEW_DOMAIN = BuildConfig.HOST;
 
     public final static String URL_NEWS = WEB_VIEW_DOMAIN+ "/new?id=";
     public final static String URL_PORTAL_SITE = "http://www.anpanman.jp/sp/?id=";
