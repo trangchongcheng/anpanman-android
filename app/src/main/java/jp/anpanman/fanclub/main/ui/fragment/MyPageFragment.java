@@ -70,7 +70,7 @@ public class MyPageFragment extends BaseFragment {
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
 
         //test dubug
-        //userInfo.setNickName("Chien Truong");
+//        userInfo.setNickName("Chien Truong");
 //        userInfo.setFavorite_character_code("2");
 
         // set user Character data basing on user info
@@ -87,7 +87,6 @@ public class MyPageFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("FIRT", "Cheng");
         super.onSaveInstanceState(outState);
     }
 
@@ -95,7 +94,6 @@ public class MyPageFragment extends BaseFragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState == null) {
-            Log.d("xin ", "onCreate: ");
         }
 
     }
@@ -153,15 +151,15 @@ public class MyPageFragment extends BaseFragment {
                 });
                 // nickname of user # blank
             } else {
-                //if badge = blank to hide text 獲得バッジ
-                if(userInfo.getBadges()== null){
-                    llBadge.setVisibility(View.INVISIBLE);
-                }else {
-                    llBadge.setVisibility(View.VISIBLE);
-
-                }
                 tvUserName.setVisibility(View.VISIBLE);
                 setupBagdes();
+                //if badge = blank to hide text 獲得バッジ
+                if (userInfo.getBadges().size() > 0) {
+                    llBadge.setVisibility(View.VISIBLE);
+                } else {
+                    llBadge.setVisibility(View.INVISIBLE);
+
+                }
             }
 
         }
@@ -231,7 +229,7 @@ public class MyPageFragment extends BaseFragment {
 
         //hard code to test debug
         userBadges = userInfo.getBadges();
-//        userBadges.add(new Badges("1","Cheng"));
+//        userBadges.add(new Badges("1", "Cheng"));
 //        userBadges.add(new Badges("2","Cheng"));
 //        userBadges.add(new Badges("7","Cheng"));
 
@@ -306,10 +304,10 @@ public class MyPageFragment extends BaseFragment {
         //Show badges if nickname # blank
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
             //if badge = blank to hide text 獲得バッジ
-            if(userInfo.getBadges()== null){
-                llBadge.setVisibility(View.INVISIBLE);
-            }else {
+            if (userInfo.getBadges().size() > 0) {
                 llBadge.setVisibility(View.VISIBLE);
+            } else {
+                llBadge.setVisibility(View.INVISIBLE);
 
             }
             //Hide button Register User
