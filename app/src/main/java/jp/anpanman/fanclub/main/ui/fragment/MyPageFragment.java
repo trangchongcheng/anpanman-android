@@ -153,9 +153,14 @@ public class MyPageFragment extends BaseFragment {
                 });
                 // nickname of user # blank
             } else {
-                tvUserName.setVisibility(View.VISIBLE);
-                llBadge.setVisibility(View.VISIBLE);
+                //if badge = blank to hide text 獲得バッジ
+                if(userInfo.getBadges()== null){
+                    llBadge.setVisibility(View.INVISIBLE);
+                }else {
+                    llBadge.setVisibility(View.VISIBLE);
 
+                }
+                tvUserName.setVisibility(View.VISIBLE);
                 setupBagdes();
             }
 
@@ -300,16 +305,30 @@ public class MyPageFragment extends BaseFragment {
         tvUserName.setText(userInfo.getNickName());
         //Show badges if nickname # blank
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
-            llBadge.setVisibility(View.VISIBLE);
+            //if badge = blank to hide text 獲得バッジ
+            if(userInfo.getBadges()== null){
+                llBadge.setVisibility(View.INVISIBLE);
+            }else {
+                llBadge.setVisibility(View.VISIBLE);
+
+            }
+            //Hide button Register User
             btnRegister.setVisibility(View.GONE);
+            //Visible textview nickname
             tvUserName.setVisibility(View.VISIBLE);
+            //Hide nickName image --- ---
             imgNickName.setVisibility(View.GONE);
+
         }
         //Hide badges,show button register if nickname = blank
         else {
+            //Visible button register user
             btnRegister.setVisibility(View.VISIBLE);
+            //Hide icon badge
             llBadge.setVisibility(View.GONE);
+            //Show nickname image --- ---
             imgNickName.setVisibility(View.VISIBLE);
+            //Hide textview nickname
             tvUserName.setVisibility(View.GONE);
         }
         //Update badge
