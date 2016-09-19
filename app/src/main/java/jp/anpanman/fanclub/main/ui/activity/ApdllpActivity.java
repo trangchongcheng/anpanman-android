@@ -7,22 +7,23 @@ import android.os.Handler;
 import com.main.R;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
+import jp.anpanman.fanclub.main.util.Constant;
 
 /**
  * Created by chientruong on 9/19/16.
  */
 public class ApdllpActivity extends BaseActivity {
-    private final int DELAY_TIME = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Delay 2 milliseconds and then start SplashActivity
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 startSplasActivity();
             }
-        },DELAY_TIME);
+        }, Constant.DELAY_TIME_APDLLPACTIVITY);
 
     }
 
@@ -40,6 +41,7 @@ public class ApdllpActivity extends BaseActivity {
     protected void registerEventHandlers() {
 
     }
+    //Start SpashActivity when delay 2000 milliseconds
     public void startSplasActivity(){
         Intent intent = new Intent(ApdllpActivity.this, SplashScreenActivity.class);
         startActivity(intent);

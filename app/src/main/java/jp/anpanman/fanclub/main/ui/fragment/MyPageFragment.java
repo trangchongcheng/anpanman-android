@@ -69,9 +69,13 @@ public class MyPageFragment extends BaseFragment {
         // get Application user Info general data
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
 
-        //test dubug
+        //Hard code test dbug
 //        userInfo.setNickName("Chien Truong");
 //        userInfo.setFavorite_character_code("2");
+//        userBadges = userInfo.getBadges();
+//        userBadges.add(new Badges("1", "Cheng"));
+////        userBadges.add(new Badges("2","Cheng"));
+//        userBadges.add(new Badges("7", "Cheng"));
 
         // set user Character data basing on user info
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
@@ -154,7 +158,7 @@ public class MyPageFragment extends BaseFragment {
                 tvUserName.setVisibility(View.VISIBLE);
                 setupBagdes();
                 //if badge = blank to hide text 獲得バッジ
-                if (userInfo.getBadges().size() > 0) {
+                if (!userInfo.getBadges().isEmpty()) {
                     llBadge.setVisibility(View.VISIBLE);
                 } else {
                     llBadge.setVisibility(View.INVISIBLE);
@@ -186,7 +190,6 @@ public class MyPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Mypage", "========>    onResume: ");
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -220,18 +223,20 @@ public class MyPageFragment extends BaseFragment {
 
     //Setup badge
     public void setupBagdes() {
+        //1. RESET LAYOUT BADGLE
+        //Returns the number of children in the group, if > 0 then remove all Children view
+        if (llAddBadge.getChildCount() > 0) {
+            llAddBadge.removeAllViews();
+            llAddBadge.requestLayout();
+        }
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.weight = 1.0f;
         ImageView imageView;
 
         String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
 
-        //hard code to test debug
         userBadges = userInfo.getBadges();
-//        userBadges.add(new Badges("1", "Cheng"));
-//        userBadges.add(new Badges("2","Cheng"));
-//        userBadges.add(new Badges("7","Cheng"));
 
         //Draw user badges at first
         for (int i = 0; i < userBadges.size(); i++) {
@@ -244,15 +249,6 @@ public class MyPageFragment extends BaseFragment {
             }
 
         }
-
-        for (int i = 0; i < badgeIds.length; i++) {
-            if (!userBadges.contains(badgeIds[i])) {
-                imageView = makeImageView("badge_" + badgeIds[i], View.INVISIBLE);
-                imageView.setLayoutParams(layoutParams);
-                llAddBadge.addView(imageView);
-            }
-        }
-//
     }
 
 
@@ -304,7 +300,7 @@ public class MyPageFragment extends BaseFragment {
         //Show badges if nickname # blank
         if (!TextUtils.isEmpty(userInfo.getNickName())) {
             //if badge = blank to hide text 獲得バッジ
-            if (userInfo.getBadges().size() > 0) {
+            if (!userInfo.getBadges().isEmpty()) {
                 llBadge.setVisibility(View.VISIBLE);
             } else {
                 llBadge.setVisibility(View.INVISIBLE);
@@ -330,11 +326,6 @@ public class MyPageFragment extends BaseFragment {
             tvUserName.setVisibility(View.GONE);
         }
         //Update badge
-
-        //1. RESET LAYOUT BADGLE
-        llAddBadge.removeAllViewsInLayout();
-        llAddBadge.removeAllViews();
-        llAddBadge.requestLayout();
         //2. RELOAD + APPEND NEW ICON BADGLE
         setupBagdes();
 

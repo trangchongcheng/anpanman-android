@@ -206,7 +206,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("cheng-resum", "onResume: ");
         registerReceiver(pushNotifyListenReceiver,
                 new IntentFilter("jp.anpanman.fanclub.PUSH_NOTIFY"));
         //Hide menu Left and Menu Button when rotate.
@@ -230,7 +229,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("onSaveInstanceState", "onSaveInstanceState: ");
         outState.putInt(ARG_CURRENT_TAB, currentTab.ordinal());
         super.onSaveInstanceState(outState);
     }
@@ -933,7 +931,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onReceive(Context context, Intent intent) {
             String urlPush = intent.getStringExtra("url");
-            Log.d("Cheng-url from push ", urlPush);
+            AppLog.log("Cheng-url from push ", urlPush);
             showPushDialog(urlPush, null, "");
         }
 

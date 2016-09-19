@@ -74,7 +74,7 @@ public class BitmapUtil {
 			//Comppute inSampleSize
 			if(requiredWidth != -1 && requiredHeight != -1) {
 				options.inSampleSize = computeInSampleSize(options, requiredWidth, requiredHeight);
-				Log.d(TAG, "inSampleSize: " + options.inSampleSize);
+				AppLog.log(TAG, "inSampleSize: " + options.inSampleSize);
 			}
 
 			//Decode bitmap with inSampleSize set
@@ -110,7 +110,7 @@ public class BitmapUtil {
 			//Comppute inSampleSize
 			if(requiredWidth != -1 && requiredHeight != -1) {
 				options.inSampleSize = computeInSampleSize(options, requiredWidth, requiredHeight);
-				Log.d(TAG, "inSampleSize: " + options.inSampleSize);
+				AppLog.log(TAG, "inSampleSize: " + options.inSampleSize);
 			}
 
 			//Decode bitmap with inSampleSize set

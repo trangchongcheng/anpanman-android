@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -36,7 +37,6 @@ import jp.anpanman.fanclub.main.util.RestfulUtil;
  */
 public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
-    private final int DELAY_TIME = 2000;
     private UserInfo mLocalUserInfo;
     private Tracker mTracker;
 
@@ -52,9 +52,8 @@ public class SplashScreenActivity extends BaseActivity {
             public void run() {
                 mainProcess();
             }
-        }, DELAY_TIME);
+        }, Constant.DELAY_TIME_SPLASHACTIVITY);
     }
-
     public void mainProcess() {
         // Initialize NCMB
         NCMB.initialize(this, Constant.NOTIFY_APPLICATION_KEY_NCMB,

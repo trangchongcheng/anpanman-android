@@ -94,28 +94,8 @@ public class PresentFragment extends BaseFragment {
         extraHeaders.put("Pragma", "no-cache");
         extraHeaders.put("Cache-Control", "no-cache");
         String objectId = ((AnpanmanApp) getActivity().getApplication()).getUserInfo().getObjectId();
-        Map<String, String> noCacheHeaders = new HashMap<String, String>(2);
 
         webView.loadUrl(RestfulUrl.URL_PRESENTS + objectId, extraHeaders);
-
-        webView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // PRESSED
-                        Log.d("ACTION_DOWN", "onTouch: ");
-                        break;
-                     //   return false; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                        // RELEASED
-                        Log.d("ACTION_UP+", "onTouch: ");
-                        break;
-                      //  return false; // if you want to handle the touch event
-                }
-                return false;
-            }
-        });
     }
 
     // Tracking Google Analytics for PresentFragment
