@@ -76,6 +76,7 @@ public class MyPageFragment extends BaseFragment {
 //        userBadges.add(new Badges("1", "Cheng"));
 ////        userBadges.add(new Badges("2","Cheng"));
 //        userBadges.add(new Badges("7", "Cheng"));
+//        ((AnpanmanApp) (getActivity().getApplication())).updateUserInfo(userInfo);
 
         // set user Character data basing on user info
         userCharacter = UserCharacter.getUserCharacter(getActivity(), userInfo.getFavorite_character_code());
