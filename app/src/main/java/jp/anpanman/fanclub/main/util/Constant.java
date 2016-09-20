@@ -52,7 +52,10 @@ public class Constant {
     public static final String GA_INFO ="info";
     public static final String GA_VALUE ="1";
 
+    //Delay APDLLP Screen
     public static final int DELAY_TIME_APDLLPACTIVITY = 2000;
+    
+    //Delay Splash Screen
     public static final int DELAY_TIME_SPLASHACTIVITY = 2000;
 
 
