@@ -136,7 +136,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         // oritiential by LANDSCAPE
         else {
             //TODO: PORTTRAIL
-
             // processing for last data staus saved from ROTATOED
             if (saveStateNewIcon != null) {
                 if (saveStateNewIcon.get(BUNDLE_KEY_ICON_NEW_IS_SHOW) != null) {
@@ -153,9 +152,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 switchTab(MainTabs.News, true);
             }
 
-
         }
-
 
         //processing for diplay FOCUS [Booto0m Bar ICONS
         setDisplayBottomNav();
@@ -418,7 +415,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case com.main.R.id.btn_img_tab_setting:
-                trackingAnalytics(true,Constant.GA_INFO,null,null,null,0);
+                trackingAnalytics(true, Constant.GA_INFO, null, null, null, 0);
                 switchTab(MainTabs.Setting, false);
                 isOtherSelect = true;
                 break;
@@ -451,21 +448,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 AppLog.log("cheng", "onItemClick: " + i);
                 break;
             case 5:
-                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
+                trackingAnalytics(false, null, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_PORTAL, 1);
                 browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestfulUrl.URL_PORTAL_SITE + objectId));
                 startActivity(browserIntent);
                 break;
             case 6:
-                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
-                trackingAnalytics(true,Constant.GA_TERMS,null, null, null, 0);
+                trackingAnalytics(false, null, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_TERMS, 1);
+                trackingAnalytics(true, Constant.GA_TERMS, null, null, null, 0);
                 openWebView(RestfulUrl.URL_TERMS, getString(R.string.terms_of_use), false);
                 break;
             case 7:
                 openWebView(RestfulUrl.URL_POLICY, getString(R.string.title_policy), false);
                 break;
             case 8:
-                trackingAnalytics(true,Constant.GA_TUTORIAL,null, null, null, 0);
-                trackingAnalytics(false,null,Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
+                trackingAnalytics(true, Constant.GA_TUTORIAL, null, null, null, 0);
+                trackingAnalytics(false, null, Constant.GA_SELECT, Constant.GA_ONCLICK, Constant.GA_MENU_FAQ, 1);
                 Intent intent = new Intent(this, IntroActivity.class);
                 intent.putExtra(IntroActivity.IS_FAQ, true);
                 startActivity(intent);
@@ -525,7 +522,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * on Create LEFT MENU SLIDING
      * It will be Open by touch & Drag during time eslapse !
-     *
      */
     private void createLeftMenuSlidingMaster() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -611,10 +607,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             userInfo = _userInfo;//((AnpanmanApp) (MainActivity.this.getApplication())).getUserInfo();
             //update character info
             // get current Fragment call back in present
-            if ( currentTab == MainTabs.MyPage ) {
-                AppLog.log("ANPANMAN" , " My Page Activing ... UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE ");
+            if (currentTab == MainTabs.MyPage) {
+                AppLog.log("ANPANMAN", " My Page Activing ... UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE ");
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.fl_main_content);
-                if (f instanceof MyPageFragment){
+                if (f instanceof MyPageFragment) {
                     ((MyPageFragment) f).refreshUserInfoUI();
                 }
 
@@ -625,12 +621,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     };
 
 
-
-    public interface UpdateUserInfoListener{
+    public interface UpdateUserInfoListener {
         public void update(UserInfo _userInfo);
     }
-
-
 
 
     int i = 0;
@@ -694,12 +687,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case Setting:
-//                btnNewsTab.setSelected(false);
-//                btnCouponTab.setSelected(false);
-//                btnPresentTab.setSelected(false);
-//                btnMyPageTab.setSelected(false);
-//                btnSettingTab.setSelected(false);
-//                currentTab = MainTabs.Setting;
                 break;
         }
     }
@@ -914,11 +901,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     // Tracking Google Analytics for MainActivitv
-    public void trackingAnalytics(Boolean inOnlyScreen, String screenName,String category, String action, String label, long value){
+    public void trackingAnalytics(Boolean inOnlyScreen, String screenName, String category, String action, String label, long value) {
         AnpanmanApp application = (AnpanmanApp) getApplication();
-        if(inOnlyScreen){
+        if (inOnlyScreen) {
             application.trackingAnalyticByScreen(screenName);
-        }else {
+        } else {
             application.trackingWithAnalyticGoogleServices(category, action, label, value);
         }
 
