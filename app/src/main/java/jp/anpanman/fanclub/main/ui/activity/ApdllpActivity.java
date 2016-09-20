@@ -1,6 +1,8 @@
 package jp.anpanman.fanclub.main.ui.activity;
 
+
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -16,6 +18,7 @@ public class ApdllpActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //Delay 2 milliseconds and then start SplashActivity
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -41,9 +44,14 @@ public class ApdllpActivity extends BaseActivity {
     protected void registerEventHandlers() {
 
     }
-    //Start SpashActivity when delay 2000 milliseconds
+
+
+    //Start SpashActivity when delay 2000 milliseconds without animation
     public void startSplasActivity(){
         Intent intent = new Intent(ApdllpActivity.this, SplashScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+
     }
+
 }

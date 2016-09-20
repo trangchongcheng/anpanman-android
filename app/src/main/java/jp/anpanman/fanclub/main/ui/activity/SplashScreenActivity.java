@@ -311,6 +311,12 @@ public class SplashScreenActivity extends BaseActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     //=========== inner classes ====================================================================
