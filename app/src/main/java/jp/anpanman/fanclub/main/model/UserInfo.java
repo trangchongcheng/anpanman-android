@@ -20,7 +20,7 @@ public class UserInfo extends BaseModel{
     private String nickName;
 
     @SerializedName("deviceInfo")
-    private String deviceInfo;
+    private DeviceInfo deviceInfo;
 
     @SerializedName("favorite_character_code")
     private String favorite_character_code;
@@ -80,7 +80,15 @@ public class UserInfo extends BaseModel{
         this.favorite_character_code = favorite_character_code;
     }
 
-//    public Map<String, String> getBadges() {
+    public DeviceInfo getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+    //    public Map<String, String> getBadges() {
 //        return badges;
 //    }
 //

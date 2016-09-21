@@ -65,7 +65,6 @@ public class MyPageFragment extends BaseFragment {
 
 
         activity = (MainActivity) getActivity();
-
         // get Application user Info general data
         userInfo = ((AnpanmanApp) (getActivity().getApplication())).getUserInfo();
 
