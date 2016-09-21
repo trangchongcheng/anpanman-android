@@ -14,11 +14,12 @@ public class Constant {
     public static final String PREF_USER_INFO = "PREF_USER_INFO";
 
     //Push GCM
-    public static final String GCM_SENDER_ID = "87274862508";//project number
+    public static final String GCM_SENDER_ID = BuildConfig.GCM_SENDER_ID;//project number
 
-    //NCMB Keys
-    public static String NOTIFY_APPLICATION_KEY_NCMB = "2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a";
-    public static String NOTIFY_CLIENT_KEY_NCMB = "06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9";
+    //NCMB Keys ( Pushnotification )
+    public static String NOTIFY_APPLICATION_KEY_NCMB = BuildConfig.PUSH_APPLICATION_KEY;
+    public static String NOTIFY_CLIENT_KEY_NCMB = BuildConfig.PUSH_CLIENT_KEY;
+
     public static final String PUSH_ACTION = "jp.anpanman.fanclub.pushing";
 
     //Schema
