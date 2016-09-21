@@ -45,7 +45,6 @@ public class SplashScreenActivity extends BaseActivity {
     private Tracker mTracker;
     private ImageView imgApdll;
     private Animation fadeIn;
-    private Animation fadeOut;
 
     //=========== inherited methods ================================================================
     @Override
@@ -172,7 +171,9 @@ public class SplashScreenActivity extends BaseActivity {
 
         //installationの作成
         //GCMからRegistrationIdを取得
+
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+        AppLog.log("Sender ID",Constant.GCM_SENDER_ID);
         installation.getRegistrationIdInBackground(Constant.GCM_SENDER_ID
                 , new DoneCallback() {
                     @Override
