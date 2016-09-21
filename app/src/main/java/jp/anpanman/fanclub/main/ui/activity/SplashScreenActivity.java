@@ -6,6 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -39,11 +43,15 @@ public class SplashScreenActivity extends BaseActivity {
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     private UserInfo mLocalUserInfo;
     private Tracker mTracker;
+    private ImageView imgApdll;
+    private Animation fadeIn;
+    private Animation fadeOut;
 
     //=========== inherited methods ================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //== delay this screen a particular time
 
         Handler handler = new Handler();
@@ -85,11 +93,35 @@ public class SplashScreenActivity extends BaseActivity {
 
     @Override
     protected void getMandatoryViews(Bundle savedInstanceState) {
-
+        fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        imgApdll = (ImageView) findViewById(R.id.imgApdll);
+        //Set Animation for Apdll Image
+        imgApdll.requestLayout();
+        imgApdll.setAnimation(fadeIn);
     }
 
     @Override
     protected void registerEventHandlers() {
+        /*
+        Listener Animation of imgApdll
+        Invisible Apdll image for display Splash Image
+        */
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imgApdll.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
     }
 
@@ -311,7 +343,7 @@ public class SplashScreenActivity extends BaseActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
     }
 
     @Override
