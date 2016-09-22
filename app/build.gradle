@@ -24,8 +24,8 @@ android {
             buildConfigField "String", "NOTIFY_CLIENT_KEY", '"ce128960dd747c968359493771eb18c4cd368d9e41e88e5091e3f043711d094d"'
             buildConfigField "String", "HOST", '"http://stg-fcapp.anpanman.jp"'
             buildConfigField "String", "GCM_SENDER_ID", '"87274862508"'
-            buildConfigField "String", "PUSH_APPLICATION_KEY", '"2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a"'
-            buildConfigField "String", "PUSH_CLIENT_KEY", '"06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9"'
+            buildConfigField "String", "PUSH_APPLICATION_KEY", '"053783832795fdd71457a12a03ac4e2815b5d91f9a8a78335162e38e67ff044d"'
+            buildConfigField "String", "PUSH_CLIENT_KEY", '"ce128960dd747c968359493771eb18c4cd368d9e41e88e5091e3f043711d094d"'
         }
 
         anpanman_prod{
@@ -33,8 +33,8 @@ android {
             buildConfigField "String", "NOTIFY_CLIENT_KEY", '"8b3fc5a7c299d585f760e24f4b90b6430e7126e499eae221157a6dfd5c89179c"'
             buildConfigField "String", "HOST", '"http://fcapp.anpanman.jp"'
             buildConfigField "String", "GCM_SENDER_ID", '"866234032360"'
-            buildConfigField "String", "PUSH_APPLICATION_KEY", '"2599db8a34a793b8e4634ee93738472983466aeccb859f4ada3d40df1eb5775a"'
-            buildConfigField "String", "PUSH_CLIENT_KEY", '"06bd0fc517d3e66d8489bc32ce1f68a479925cc398bd323d82674705f73fa8c9"'
+            buildConfigField "String", "PUSH_APPLICATION_KEY", '"7f7bd645a0944f6c8df502775e6720b78eb95c7ddd348f10d3293fc25a0fbe4b"'
+            buildConfigField "String", "PUSH_CLIENT_KEY", '"8b3fc5a7c299d585f760e24f4b90b6430e7126e499eae221157a6dfd5c89179c"'
         }
     }
 
