@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -43,6 +44,7 @@ public class SplashScreenActivity extends BaseActivity {
     private UserInfo mLocalUserInfo;
     private Tracker mTracker;
     private ImageView imgApdll;
+    private RelativeLayout llSplash;
     private Animation fadeIn;
     private Animation fadeOut;
 
@@ -95,6 +97,7 @@ public class SplashScreenActivity extends BaseActivity {
         fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_apdll);
         fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out_apdll);
         imgApdll = (ImageView) findViewById(R.id.imgApdll);
+        llSplash = (RelativeLayout) findViewById(R.id.ll);
         //Set Animation for Apdll Image
     }
 
@@ -111,7 +114,6 @@ public class SplashScreenActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-//                imgApdll.setVisibility(View.GONE);
                 imgApdll.setAnimation(fadeOut);
 
             }
@@ -130,6 +132,8 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 imgApdll.setVisibility(View.GONE);
+                llSplash.setBackgroundResource(R.drawable.bg_splash_screen);
+
             }
 
             @Override
