@@ -195,7 +195,7 @@ public class CustomDialogCoupon extends Dialog implements
             if (isDownloaded && this.context.get() != null) {
                 Toast.makeText(this.context.get(), R.string.download_finish, Toast.LENGTH_SHORT).show();
             } else if (this.context.get() != null) {
-                Toast.makeText(this.context.get(), "Download Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.context.get(), R.string.download_error, Toast.LENGTH_SHORT).show();
             }
         }
 

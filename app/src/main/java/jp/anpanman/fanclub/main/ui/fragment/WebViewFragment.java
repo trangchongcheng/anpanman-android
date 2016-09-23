@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -29,6 +32,10 @@ import android.widget.TextView;
 
 import com.main.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +65,12 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     private DismissCallback callback;
 
 
-
+    public static final String TYPE_IMAGE = "image/*";
+    public static final int INPUT_FILE_REQUEST_CODE = 1;
+    public static final int REQUEST_CODE_FROM_JS = 2;
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mFilePathCallback;
-
+    private String mCameraPhotoPath;;
     public void setCallback(DismissCallback callback) {
         this.callback = callback;
     }
@@ -192,42 +201,112 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                 * openFileChooser : config for each type version API
                 * */
                 // For Android < 3.0
-                public void openFileChooser(ValueCallback<Uri> uploadFile) {
+                public void openFileChooser(ValueCallback<Uri[]> uploadFile) {
                     openFileChooser(uploadFile, "");
                 }
 
                 // For 3.0 <= Android < 4.1
-                public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType) {
+                public void openFileChooser(ValueCallback<Uri[]> uploadFile, String acceptType) {
                     openFileChooser(uploadFile, acceptType, "");
                 }
 
                 // For 4.1 <= Android < 5.0
-                public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType, String capture) {
-                    if(mUploadMessage != null){
-                        mUploadMessage.onReceiveValue(null);
+                public void openFileChooser(ValueCallback<Uri[]> uploadFile, String acceptType, String capture) {
+                    if(mFilePathCallback != null) {
+                        mFilePathCallback.onReceiveValue(null);
                     }
-                    mUploadMessage = uploadFile;
+                    mFilePathCallback = uploadFile;
 
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType(MainActivity.TYPE_IMAGE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                            takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            AppLog.log("Unable to create Image File", ex.toString());
+                        }
 
-                    startActivityForResult(intent, MainActivity.INPUT_FILE_REQUEST_CODE);
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                        } else {
+                            takePictureIntent = null;
+                        }
+                    }
+
+                    Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                    contentSelectionIntent.setType(TYPE_IMAGE);
+
+                    Intent[] intentArray;
+                    if(takePictureIntent != null) {
+                        intentArray = new Intent[]{takePictureIntent};
+                    } else {
+                        intentArray = new Intent[0];
+                    }
+
+                    Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+                    chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                    chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+                    startActivityForResult(chooserIntent,INPUT_FILE_REQUEST_CODE);
+
                 }
 
                 // For Android 5.0+
                 @Override
                 public boolean onShowFileChooser(WebView webView,
                                                            ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                    if (mFilePathCallback != null) {
+                    if(mFilePathCallback != null) {
                         mFilePathCallback.onReceiveValue(null);
                     }
                     mFilePathCallback = filePathCallback;
 
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType(MainActivity.TYPE_IMAGE);
-                    startActivityForResult(intent, MainActivity.INPUT_FILE_REQUEST_CODE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                            takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            AppLog.log("Unable to create Image File", ex.toString());
+                        }
+
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                        } else {
+                            takePictureIntent = null;
+                        }
+                    }
+
+                    Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                    contentSelectionIntent.setType(TYPE_IMAGE);
+
+                    Intent[] intentArray;
+                    if(takePictureIntent != null) {
+                        intentArray = new Intent[]{takePictureIntent};
+                    } else {
+                        intentArray = new Intent[0];
+                    }
+
+                    Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+                    chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                    chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+                    startActivityForResult(chooserIntent,INPUT_FILE_REQUEST_CODE);
 
                     return true;
                 }
@@ -254,7 +333,7 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     //Listener result return when upload file from webview
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode != MainActivity.INPUT_FILE_REQUEST_CODE) {
+        if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
@@ -267,31 +346,23 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
             Uri[] results = null;
 
             // Check that the response is a good one
-            if (resultCode == MainActivity.RESULT_OK) {
-                String dataString = data.getDataString();
-                if (dataString != null) {
-                    results = new Uri[] { Uri.parse(dataString) };
+            if(resultCode == Activity.RESULT_OK) {
+                if(data == null) {
+                    // If there is not data, then we may have taken a photo
+                    if(mCameraPhotoPath != null) {
+                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                    }
+                } else {
+                    String dataString = data.getDataString();
+                    if (dataString != null) {
+                        results = new Uri[]{Uri.parse(dataString)};
+                    }
                 }
             }
 
             mFilePathCallback.onReceiveValue(results);
             mFilePathCallback = null;
-        } else {
-            if (mUploadMessage == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-
-            Uri result = null;
-
-            if (resultCode == MainActivity.RESULT_OK) {
-                if (data != null) {
-                    result = data.getData();
-                }
-            }
-
-            mUploadMessage.onReceiveValue(result);
-            mUploadMessage = null;
+            return;
         }
     }
 
@@ -322,5 +393,18 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String imageFileName = "JPEG_ANPANMAN_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return imageFile;
     }
 }

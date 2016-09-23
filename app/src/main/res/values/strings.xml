@@ -83,6 +83,7 @@
     <string name="is_download_image">画像を端末に保存しますか？</string>
     <string name="yes_dowload">はい</string>
     <string name="no_download">いいえ</string>
+    <string name="download_error">通信状況を確かめのうえ、再度お試しください</string>
 
     <!-- Tutorial sceen title-->
     <string-array name="background_tutorial">
