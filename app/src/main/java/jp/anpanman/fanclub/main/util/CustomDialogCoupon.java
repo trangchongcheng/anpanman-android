@@ -74,7 +74,6 @@ public class CustomDialogCoupon extends Dialog implements
                     .load(url)
                     .centerCrop()
                     .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
-                    .placeholder(R.drawable.bitmap)
                     .into(imgCoupon);
             AppLog.log("Cheng url push", url);
             //  new DownloadImageTask(imgCoupon).execute(url);

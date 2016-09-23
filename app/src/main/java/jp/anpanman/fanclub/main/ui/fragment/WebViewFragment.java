@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -52,6 +56,11 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
     private static final String IS_DETAILS = "is_details";
     private ProgressBar horizontalProgress;
     private DismissCallback callback;
+
+
+
+    private ValueCallback<Uri> mUploadMessage;
+    private ValueCallback<Uri[]> mFilePathCallback;
 
     public void setCallback(DismissCallback callback) {
         this.callback = callback;
@@ -178,6 +187,50 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
                         tvTitle.setText(mTitle);
                     }
                 }
+
+                /*Allow upload file from local to webview
+                * openFileChooser : config for each type version API
+                * */
+                // For Android < 3.0
+                public void openFileChooser(ValueCallback<Uri> uploadFile) {
+                    openFileChooser(uploadFile, "");
+                }
+
+                // For 3.0 <= Android < 4.1
+                public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType) {
+                    openFileChooser(uploadFile, acceptType, "");
+                }
+
+                // For 4.1 <= Android < 5.0
+                public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType, String capture) {
+                    if(mUploadMessage != null){
+                        mUploadMessage.onReceiveValue(null);
+                    }
+                    mUploadMessage = uploadFile;
+
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType(MainActivity.TYPE_IMAGE);
+
+                    startActivityForResult(intent, MainActivity.INPUT_FILE_REQUEST_CODE);
+                }
+
+                // For Android 5.0+
+                @Override
+                public boolean onShowFileChooser(WebView webView,
+                                                           ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                    if (mFilePathCallback != null) {
+                        mFilePathCallback.onReceiveValue(null);
+                    }
+                    mFilePathCallback = filePathCallback;
+
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType(MainActivity.TYPE_IMAGE);
+                    startActivityForResult(intent, MainActivity.INPUT_FILE_REQUEST_CODE);
+
+                    return true;
+                }
             });
             Map<String, String> extraHeaders = new HashMap<>();
             extraHeaders.put("x-anp-request", "true");
@@ -196,6 +249,50 @@ public class WebViewFragment extends DialogFragment implements View.OnClickListe
 
         }
 
+    }
+
+    //Listener result return when upload file from webview
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode != MainActivity.INPUT_FILE_REQUEST_CODE) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mFilePathCallback == null) {
+                super.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
+            Uri[] results = null;
+
+            // Check that the response is a good one
+            if (resultCode == MainActivity.RESULT_OK) {
+                String dataString = data.getDataString();
+                if (dataString != null) {
+                    results = new Uri[] { Uri.parse(dataString) };
+                }
+            }
+
+            mFilePathCallback.onReceiveValue(results);
+            mFilePathCallback = null;
+        } else {
+            if (mUploadMessage == null) {
+                super.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
+
+            Uri result = null;
+
+            if (resultCode == MainActivity.RESULT_OK) {
+                if (data != null) {
+                    result = data.getData();
+                }
+            }
+
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+        }
     }
 
     @Override

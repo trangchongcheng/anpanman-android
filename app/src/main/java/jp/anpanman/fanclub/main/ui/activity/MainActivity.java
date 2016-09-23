@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ValueCallback;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -78,6 +79,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final String BUNDLE_KEY_ICON_COUPON_IS_SHOW = "BUNDLE_KEY_ICON_COUPON_IS_SHOW";
     public static final String BUNDLE_KEY_ICON_PRESENT_IS_SHOW = "BUNDLE_KEY_ICON_PRESENT_IS_SHOW";
     public static final String BUNDLE_KEY_ICON_OTHER_IS_SHOW = "BUNDLE_KEY_ICON_OTHER_IS_SHOW";
+
+
+    public static final String HTML_FILE_NAME = "sample.html";
+    public static final String UTF8 = "UTF-8";
+    public static final String TYPE_IMAGE = "image/*";
+    public static final int INPUT_FILE_REQUEST_CODE = 1;
+    public static final int REQUEST_CODE_FROM_JS = 2;
+
+    public ValueCallback<Uri> mUploadMessage;
+    public ValueCallback<Uri[]> mFilePathCallback;
 
     //=============== properties ===================================================================
 
