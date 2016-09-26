@@ -702,110 +702,150 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             switch (tabSelected) {
                 case News:
-                    // imgNewsNew.setVisibility(View.INVISIBLE);
-                    saveTimeToSharePreference(newSync.getNews(), MainTabs.News);
-                    if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
-                        imgCouponNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isCouponSelect) {
-                            imgCouponNew.setVisibility(View.INVISIBLE);
+                    //Check UpdateTime of News is null for save to SharePrefrence
+                    if(null != newSync.getNews()){
+                        saveTimeToSharePreference(newSync.getNews(), MainTabs.News);
+                    }
+                    //Check updateTime is null?
+                    if(newSync.getCoupon()!= null && currentSync.getCoupon()!=null){
+                        if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
+                            imgCouponNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isCouponSelect) {
+                                imgCouponNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
 
-                    if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
-                        imgPresentNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isPresentSelect) {
-                            imgPresentNew.setVisibility(View.INVISIBLE);
+                    if(newSync.getPresent()!= null && currentSync.getPresent()!=null){
+                        if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
+                            imgPresentNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isPresentSelect) {
+                                imgPresentNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
-                    if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
-                        imgOtherNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isOtherSelect) {
-                            imgOtherNew.setVisibility(View.INVISIBLE);
+
+                    if(newSync.getInfo()!=null && currentSync.getInfo()!= null){
+                        if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
+                            imgOtherNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isOtherSelect) {
+                                imgOtherNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
+
+
                     break;
 
                 case Coupon:
-                    // imgCouponNew.setVisibility(View.INVISIBLE);
-                    saveTimeToSharePreference(newSync.getCoupon(), MainTabs.Coupon);
-                    if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
-                        imgNewsNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isNewSelect) {
-                            imgNewsNew.setVisibility(View.INVISIBLE);
+                    //Check CouponTime of News is null for save to SharePrefrence
+                    if(null != newSync.getCoupon()){
+                        saveTimeToSharePreference(newSync.getCoupon(), MainTabs.Coupon);
+                    }
+                    if(newSync.getNews()!= null && currentSync.getNews()!= null){
+                        if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
+                            imgNewsNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isNewSelect) {
+                                imgNewsNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
 
-                    if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
-                        imgPresentNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isPresentSelect) {
-                            imgPresentNew.setVisibility(View.INVISIBLE);
+                    if(newSync.getPresent()!= null && currentSync.getPresent()!= null){
+                        if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
+                            imgPresentNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isPresentSelect) {
+                                imgPresentNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
-                    if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
-                        imgOtherNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isOtherSelect) {
-                            imgOtherNew.setVisibility(View.INVISIBLE);
+
+                    if(newSync.getInfo()!=null && currentSync.getInfo()!= null){
+                        if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
+                            imgOtherNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isOtherSelect) {
+                                imgOtherNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
+
                     break;
 
                 case Present:
-                    // imgPresentNew.setVisibility(View.INVISIBLE);
-                    saveTimeToSharePreference(newSync.getPresent(), MainTabs.Present);
-                    if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
-                        imgNewsNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isNewSelect) {
-                            imgNewsNew.setVisibility(View.INVISIBLE);
+                    //Check PresentTime of News is null for save to SharePrefrence
+                    if(null != newSync.getPresent()){
+                        saveTimeToSharePreference(newSync.getPresent(), MainTabs.Present);
+                    }
+                    if(newSync.getNews()!= null && currentSync.getNews()!= null){
+                        if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
+                            imgNewsNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isNewSelect) {
+                                imgNewsNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
 
-                    if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
-                        imgCouponNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isCouponSelect) {
-                            imgCouponNew.setVisibility(View.INVISIBLE);
+                    if(newSync.getCoupon()!= null && currentSync.getCoupon()!= null){
+                        if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
+                            imgCouponNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isCouponSelect) {
+                                imgCouponNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
-                    if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
-                        imgOtherNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isOtherSelect) {
-                            imgOtherNew.setVisibility(View.INVISIBLE);
+                    if(newSync.getInfo()!=null && currentSync.getInfo()!= null){
+                        if (Common.compareTimeGreater(newSync.getInfo().getUpdatedTime(), currentSync.getInfo().getUpdatedTime())) {
+                            imgOtherNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isOtherSelect) {
+                                imgOtherNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
+
                     break;
 
                 case Setting:
-                    //imgOtherNew.setVisibility(View.INVISIBLE);
-                    AppLog.log("Cheng-getinfo", newSync.getInfo().toString());
-                    saveTimeToSharePreference(newSync.getInfo(), MainTabs.Setting);
-                    if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
-                        imgNewsNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isNewSelect) {
-                            imgNewsNew.setVisibility(View.INVISIBLE);
+                    //Check SettingTime of News is null for save to SharePrefrence
+                    if(null != newSync.getInfo()){
+                        AppLog.log("Cheng-getinfo", newSync.getInfo().toString());
+                        saveTimeToSharePreference(newSync.getInfo(), MainTabs.Setting);
+                    }
+                    if(newSync.getNews()!= null && currentSync.getNews()!= null){
+                        if (Common.compareTimeGreater(newSync.getNews().getUpdatedTime(), currentSync.getNews().getUpdatedTime())) {
+                            imgNewsNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isNewSelect) {
+                                imgNewsNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
 
-                    if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
-                        imgCouponNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isCouponSelect) {
-                            imgCouponNew.setVisibility(View.INVISIBLE);
+                    if(newSync.getCoupon()!= null && currentSync.getCoupon()!= null){
+                        if (Common.compareTimeGreater(newSync.getCoupon().getUpdatedTime(), currentSync.getCoupon().getUpdatedTime())) {
+                            imgCouponNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isCouponSelect) {
+                                imgCouponNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
-                    if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
-                        imgPresentNew.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isPresentSelect) {
-                            imgPresentNew.setVisibility(View.INVISIBLE);
+
+                    if(newSync.getPresent()!= null && currentSync.getPresent()!= null){
+                        if (Common.compareTimeGreater(newSync.getPresent().getUpdatedTime(), currentSync.getPresent().getUpdatedTime())) {
+                            imgPresentNew.setVisibility(View.VISIBLE);
+                        } else {
+                            if (isPresentSelect) {
+                                imgPresentNew.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                     break;
