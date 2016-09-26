@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -232,6 +232,8 @@ public class MyPageFragment extends BaseFragment {
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1;
+        layoutParams.gravity = Gravity.CENTER_VERTICAL;
         ImageView imageView;
 
         String badgeIds[] = {"1", "2", "3", "4", "5", "7", "8"};
@@ -247,7 +249,22 @@ public class MyPageFragment extends BaseFragment {
                     llAddBadge.addView(imageView);
                 }
             }
+        }
 
+        boolean flag;
+        for(int i = 0; i < badgeIds.length; i++) {
+            flag = true;
+            for (int j = 0; j < userBadges.size(); j++) {
+                if(badgeIds[i].equals(userBadges.get(j).getId())) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag == true) {
+                imageView = makeImageView("badge_" + badgeIds[i], View.INVISIBLE);
+                imageView.setLayoutParams(layoutParams);
+                llAddBadge.addView(imageView);
+            }
         }
     }
 

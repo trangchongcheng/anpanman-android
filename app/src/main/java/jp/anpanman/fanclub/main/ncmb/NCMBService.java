@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
-
 import java.util.List;
+
+import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
+import jp.anpanman.fanclub.framework.phvtUtils.StringUtil;
 
 /**
  * 独自受信クラス
@@ -29,6 +30,10 @@ public class NCMBService extends NCMBListenerService {
         //app is running
         else {
             AppLog.log("app is running","true");
+            if (StringUtil.isEmpty(url)) {
+                return;
+            }
+
             Intent i = new Intent("jp.anpanman.fanclub.PUSH_NOTIFY");
             i.putExtra("url",url);
             sendBroadcast(i);

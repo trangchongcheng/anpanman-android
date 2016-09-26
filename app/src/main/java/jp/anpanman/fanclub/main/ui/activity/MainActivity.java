@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.ValueCallback;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -39,9 +38,9 @@ import java.util.HashMap;
 
 import jp.anpanman.fanclub.framework.phvtActivity.BaseActivity;
 import jp.anpanman.fanclub.framework.phvtCommon.FragmentTransitionInfo;
-import jp.anpanman.fanclub.framework.phvtFragment.BaseFragment;
 import jp.anpanman.fanclub.framework.phvtUtils.AppLog;
 import jp.anpanman.fanclub.framework.phvtUtils.SharedPreferencesUtil;
+import jp.anpanman.fanclub.framework.phvtUtils.StringUtil;
 import jp.anpanman.fanclub.framework.restfulService.RestfulService;
 import jp.anpanman.fanclub.main.AnpanmanApp;
 import jp.anpanman.fanclub.main.model.MainTabs;
@@ -931,6 +930,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void showPushDialog(String url, String title, String message) {
+        if (StringUtil.isEmpty(url)) {
+            return;
+        }
         customDialogCoupon = new CustomDialogCoupon(MainActivity.this, url, title, message);
         customDialogCoupon.show();
     }
@@ -959,7 +961,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onReceive(Context context, Intent intent) {
             String urlPush = intent.getStringExtra("url");
-            AppLog.log("Cheng-url from push ", urlPush);
+            //AppLog.log("Cheng-url from push ", urlPush);
             showPushDialog(urlPush, null, "");
         }
 
